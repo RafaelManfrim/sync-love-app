@@ -7,7 +7,6 @@ import { AuthRoutes } from './auth.routes'
 
 import { gluestackUIConfig } from '../../config/gluestack-ui.config'
 import { Loading } from '@components/Loading'
-import { SignIn } from '@screens/SignIn'
 
 export function Routes() {
   const { user, isLoadingUserStorageData } = useAuth()
@@ -24,7 +23,6 @@ export function Routes() {
     <Box flex={1} bg="$gray700">
       <NavigationContainer theme={theme}>
         {user.id ? <AppRoutes /> : <AuthRoutes />}
-        <SignIn></SignIn>
       </NavigationContainer>
     </Box>
   )

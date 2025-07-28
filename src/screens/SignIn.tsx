@@ -75,69 +75,67 @@ export function SignIn() {
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
     >
-      <VStack flex={1}>
-        <VStack flex={1} px="$10" pb="$16">
-          <Center my="$24">
-            <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
+      <VStack flex={1} px="$10" pb="$16">
+        <Center my="$24">
+          <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
 
-            <Text color="$gray100" fontSize="$sm" textAlign="center">
-              Tenha um relacionamento melhor com seu parceiro
-            </Text>
-          </Center>
+          <Text color="$gray100" fontSize="$sm" textAlign="center">
+            Tenha um relacionamento melhor com seu parceiro
+          </Text>
+        </Center>
 
-          <Center gap="$2">
-            <Heading color="$gray100">Acesse a conta</Heading>
+        <Center gap="$2">
+          <Heading color="$gray100">Acesse a conta</Heading>
 
-            <Controller
-              name="email"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  placeholder="E-mail"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  onChangeText={onChange}
-                  value={value}
-                  errorMessage={formState.errors?.email?.message}
-                />
-              )}
-            />
+          <Controller
+            name="email"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="E-mail"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                onChangeText={onChange}
+                value={value}
+                errorMessage={formState.errors?.email?.message}
+              />
+            )}
+          />
 
-            <Controller
-              name="password"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  placeholder="Senha"
-                  secureTextEntry
-                  onChangeText={onChange}
-                  value={value}
-                  errorMessage={formState.errors?.password?.message}
-                  onSubmitEditing={handleSubmit(handleSignIn)}
-                  returnKeyType="send"
-                />
-              )}
-            />
+          <Controller
+            name="password"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="Senha"
+                secureTextEntry
+                onChangeText={onChange}
+                value={value}
+                errorMessage={formState.errors?.password?.message}
+                onSubmitEditing={handleSubmit(handleSignIn)}
+                returnKeyType="send"
+              />
+            )}
+          />
 
-            <Button
-              title="Acessar"
-              isLoading={isLoading}
-              onPress={handleSubmit(handleSignIn)}
-            />
-          </Center>
+          <Button
+            title="Acessar"
+            isLoading={isLoading}
+            onPress={handleSubmit(handleSignIn)}
+          />
+        </Center>
 
-          <Center flex={1} justifyContent="flex-end" mt="$4">
-            <Text color="$gray100" fontSize="$sm" mb="$3" fontFamily="$body">
-              Ainda não tem acesso?
-            </Text>
+        <Center flex={1} justifyContent="flex-end" mt="$4">
+          <Text color="$gray100" fontSize="$sm" mb="$3" fontFamily="$body">
+            Ainda não tem acesso?
+          </Text>
 
-            <Button
-              title="Criar conta"
-              variant="outline"
-              onPress={handleNavigateToSignUp}
-            />
-          </Center>
-        </VStack>
+          <Button
+            title="Criar conta"
+            variant="outline"
+            onPress={handleNavigateToSignUp}
+          />
+        </Center>
       </VStack>
     </ScrollView>
   )

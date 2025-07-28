@@ -4,19 +4,14 @@ import {
   Image,
   ScrollView,
   Text,
-  Toast,
-  ToastDescription,
-  ToastTitle,
   useToast,
   VStack,
 } from '@gluestack-ui/themed'
 import { useNavigation } from '@react-navigation/native'
 import { useForm, Controller } from 'react-hook-form'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
-
-import BackgroundImg from '@assets/background.png'
-import Logo from '@assets/logo.svg'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import Logo from '@assets/sync_love_square-no-bg.png'
 import { Input } from '@components/Input'
 import { Button } from '@components/Button'
 import { AuthNavigationRoutesProps } from '@routes/auth.routes'
@@ -33,23 +28,33 @@ type FormDataProps = {
   password_confirm: string
 }
 
-const signUpSchema = yup.object({
-  name: yup.string().required('Informe o nome'),
-  email: yup.string().email('E-mail inválido').required('Informe o e-mail'),
-  password: yup
+const signUpSchema = z.object({
+  name: z.string().nonempty('Informe o nome'),
+  email: z.string().email('E-mail inválido').nonempty('Informe o e-mail'),
+  password: z
     .string()
     .min(6, 'A senha deve ter pelo menos 6 dígitos')
-    .required('Informe a senha'),
-  password_confirm: yup
+    .nonempty('Informe a senha'),
+  password_confirm: z
     .string()
-    .oneOf([yup.ref('password'), ''], 'As senhas não conferem')
-    .required('Confirme a senha'),
+    .nonempty('Confirme a senha')
+    .refine((value, ctx) => {
+      if (value !== ctx.parent.password) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'As senhas não conferem',
+          path: ['password_confirm'],
+        })
+        return false
+      }
+      return true
+    }),
 })
 export function SignUp() {
   const [isLoading, setIsLoading] = useState(false)
 
   const { control, handleSubmit, formState } = useForm<FormDataProps>({
-    resolver: yupResolver(signUpSchema),
+    resolver: zodResolver(signUpSchema),
   })
 
   const toast = useToast()
@@ -94,101 +99,90 @@ export function SignUp() {
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
     >
-      <VStack flex={1}>
-        <Image
-          w="$full"
-          h={624}
-          source={BackgroundImg}
-          defaultSource={BackgroundImg}
-          alt="Pessoas treinando"
-          position="absolute"
-        />
+      <VStack flex={1} px="$10" pb="$16">
+        <Center my="$24">
+          <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
 
-        <VStack flex={1} px="$10" pb="$16">
-          <Center my="$24">
-            <Logo />
+          <Text color="$gray100" fontSize="$sm">
+            Treine sua mente e seu corpo
+          </Text>
+        </Center>
 
-            <Text color="$gray100" fontSize="$sm">
-              Treine sua mente e seu corpo
-            </Text>
-          </Center>
+        <Center gap="$2">
+          <Heading color="$gray100">Crie sua conta</Heading>
 
-          <Center gap="$2">
-            <Heading color="$gray100">Crie sua conta</Heading>
+          <Controller
+            name="name"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="Nome"
+                onChangeText={onChange}
+                value={value}
+                errorMessage={formState.errors?.name?.message}
+              />
+            )}
+          />
 
-            <Controller
-              name="name"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  placeholder="Nome"
-                  onChangeText={onChange}
-                  value={value}
-                  errorMessage={formState.errors?.name?.message}
-                />
-              )}
-            />
+          <Controller
+            name="email"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="E-mail"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                onChangeText={onChange}
+                value={value}
+                errorMessage={formState.errors?.email?.message}
+              />
+            )}
+          />
 
-            <Controller
-              name="email"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  placeholder="E-mail"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  onChangeText={onChange}
-                  value={value}
-                  errorMessage={formState.errors?.email?.message}
-                />
-              )}
-            />
+          <Controller
+            name="password"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="Senha"
+                secureTextEntry
+                onChangeText={onChange}
+                value={value}
+                errorMessage={formState.errors?.password?.message}
+              />
+            )}
+          />
 
-            <Controller
-              name="password"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  placeholder="Senha"
-                  secureTextEntry
-                  onChangeText={onChange}
-                  value={value}
-                  errorMessage={formState.errors?.password?.message}
-                />
-              )}
-            />
+          <Controller
+            name="password_confirm"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="Confirme a Senha"
+                secureTextEntry
+                errorMessage={formState.errors?.password_confirm?.message}
+                onChangeText={onChange}
+                value={value}
+                onSubmitEditing={handleSubmit(handleSignUp)}
+                returnKeyType="send"
+              />
+            )}
+          />
 
-            <Controller
-              name="password_confirm"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <Input
-                  placeholder="Confirme a Senha"
-                  secureTextEntry
-                  errorMessage={formState.errors?.password_confirm?.message}
-                  onChangeText={onChange}
-                  value={value}
-                  onSubmitEditing={handleSubmit(handleSignUp)}
-                  returnKeyType="send"
-                />
-              )}
-            />
+          <Button
+            title="Criar e acessar"
+            onPress={handleSubmit(handleSignUp)}
+            isLoading={isLoading}
+          />
+        </Center>
 
-            <Button
-              title="Criar e acessar"
-              onPress={handleSubmit(handleSignUp)}
-              isLoading={isLoading}
-            />
-          </Center>
-
-          <Center flex={1} justifyContent="flex-end" mt="$4">
-            <Button
-              title="Voltar para o login"
-              variant="outline"
-              onPress={handleNavigateToSignIn}
-            />
-          </Center>
-        </VStack>
+        <Center flex={1} justifyContent="flex-end" mt="$4">
+          <Button
+            title="Voltar para o login"
+            variant="outline"
+            onPress={handleNavigateToSignIn}
+          />
+        </Center>
       </VStack>
     </ScrollView>
   )
