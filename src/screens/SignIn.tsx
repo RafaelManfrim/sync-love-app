@@ -1,22 +1,21 @@
 import {
   Center,
   Heading,
-  // Image,
+  Image,
   ScrollView,
   Text,
   useToast,
   VStack,
 } from '@gluestack-ui/themed'
-// import { useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-// import BackgroundImg from '@assets/background.png'
-// import Logo from '@assets/logo.svg'
+import Logo from '@assets/sync_love_square-no-bg.png'
 import { Input } from '@components/Input'
 import { Button } from '@components/Button'
-// import { AuthNavigationRoutesProps } from '@routes/auth.routes'
-// import { useAuth } from '@hooks/useAuth'
+import { AuthNavigationRoutesProps } from '@routes/auth.routes'
+import { useAuth } from '@hooks/useAuth'
 import { AppError } from '@utils/AppError'
 import { ToastMessage } from '@components/ToastMessage'
 import { useState } from 'react'
@@ -36,19 +35,19 @@ export function SignIn() {
     resolver: zodResolver(signInSchema),
   })
 
-  // const { signIn } = useAuth()
+  const { signIn } = useAuth()
   const toast = useToast()
 
-  // const navigator = useNavigation<AuthNavigationRoutesProps>()
+  const navigator = useNavigation<AuthNavigationRoutesProps>()
 
   function handleNavigateToSignUp() {
-    // navigator.navigate('signUp')
+    navigator.navigate('signUp')
   }
 
   async function handleSignIn({ email, password }: FormDataProps) {
     try {
       setIsLoading(true)
-      // await signIn(email, password)
+      await signIn(email, password)
     } catch (error) {
       const isAppError = error instanceof AppError
       const title = isAppError
@@ -77,18 +76,9 @@ export function SignIn() {
       showsVerticalScrollIndicator={false}
     >
       <VStack flex={1}>
-        {/* <Image
-          w="$full"
-          h={624}
-          source={BackgroundImg}
-          defaultSource={BackgroundImg}
-          alt="Pessoas treinando"
-          position="absolute"
-        /> */}
-
         <VStack flex={1} px="$10" pb="$16">
           <Center my="$24">
-            {/* <Logo /> */}
+            <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
 
             <Text color="$gray100" fontSize="$sm" textAlign="center">
               Tenha um relacionamento melhor com seu parceiro
