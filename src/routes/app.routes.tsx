@@ -4,20 +4,25 @@ import {
 } from '@react-navigation/bottom-tabs'
 import { Platform } from 'react-native'
 
-// import { Home } from '@screens/Home'
-// import { Exercise } from '@screens/Exercise'
-// import { History } from '@screens/History'
-// import { Profile } from '@screens/Profile'
+import { Home } from '@screens/Home'
 
 import HomeSvg from '@assets/home.svg'
-import HistorySvg from '@assets/history.svg'
-import ProfileSvg from '@assets/profile.svg'
+// import HistorySvg from '@assets/history.svg'
+// import ProfileSvg from '@assets/profile.svg'
 import { gluestackUIConfig } from '../../config/gluestack-ui.config'
+import { Settings } from '@screens/Settings'
+import { Language } from '@screens/Language'
+import { Profile } from '@screens/Profile'
+import { Theme } from '@screens/Theme'
 
 type AppRoutesProps = {
-  // home: undefined
-  // history: undefined
-  // profile: undefined
+  home: undefined
+  history: undefined
+  profile: undefined
+  settings: undefined
+  language: undefined
+  theme: undefined
+  importantDates: undefined
   // exercise: {
   //   exerciseId: number
   // }
@@ -37,17 +42,27 @@ export function AppRoutes() {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarActiveTintColor: tokens.colors.green500,
-        tabBarInactiveTintColor: tokens.colors.gray200,
+        tabBarInactiveTintColor: tokens.colors.backgroundDark200,
         tabBarStyle: {
-          backgroundColor: tokens.colors.gray600,
+          backgroundColor: tokens.colors.backgroundDark600,
           borderTopWidth: 0,
           height: Platform.OS === 'android' ? 'auto' : 96,
-          paddingBottom: tokens.space['7'],
+          paddingBottom: tokens.space['20'],
           paddingTop: tokens.space['7'],
         },
       }}
     >
-      {/* <Screen
+      <Screen
+        name="history"
+        component={Home}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <HomeSvg width={iconSize} height={iconSize} fill={color} />
+          ),
+        }}
+      />
+
+      <Screen
         name="home"
         component={Home}
         options={{
@@ -58,11 +73,11 @@ export function AppRoutes() {
       />
 
       <Screen
-        name="history"
-        component={History}
+        name="settings"
+        component={Settings}
         options={{
           tabBarIcon: ({ color }) => (
-            <HistorySvg width={iconSize} height={iconSize} fill={color} />
+            <HomeSvg width={iconSize} height={iconSize} fill={color} />
           ),
         }}
       />
@@ -70,18 +85,26 @@ export function AppRoutes() {
       <Screen
         name="profile"
         component={Profile}
-        options={{
-          tabBarIcon: ({ color }) => (
-            <ProfileSvg width={iconSize} height={iconSize} fill={color} />
-          ),
-        }}
+        options={{ tabBarButton: () => null }}
       />
 
       <Screen
-        name="exercise"
-        component={Exercise}
+        name="theme"
+        component={Theme}
         options={{ tabBarButton: () => null }}
-      /> */}
+      />
+
+      <Screen
+        name="language"
+        component={Language}
+        options={{ tabBarButton: () => null }}
+      />
+
+      <Screen
+        name="importantDates"
+        component={Home}
+        options={{ tabBarButton: () => null }}
+      />
     </Navigator>
   )
 }
