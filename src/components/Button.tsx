@@ -21,11 +21,11 @@ export function Button({
     <GluestackButton
       w="$full"
       h="$12"
-      bg={variant === 'outline' ? 'transparent' : '$green700'}
+      bg={variant === 'outline' ? 'transparent' : '$red700'}
       borderWidth={variant === 'outline' ? '$1' : '$0'}
-      borderColor="$green500"
+      borderColor="$red500"
       rounded="$md"
-      $active-bg={variant === 'outline' ? '$gray500' : '$green500'}
+      $active-bg={variant === 'outline' ? '$gray500' : '$red500'}
       disabled={isLoading}
       {...rest}
     >
@@ -33,7 +33,7 @@ export function Button({
         <ButtonSpinner color="$white" accessibilityLabel="Carregando" />
       ) : (
         <Text
-          color={variant === 'outline' ? '$green500' : '$white'}
+          color={variant === 'outline' ? '$red500' : '$white'}
           fontFamily="$heading"
           fontSize="$sm"
         >
