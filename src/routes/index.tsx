@@ -7,6 +7,8 @@ import { AuthRoutes } from './auth.routes'
 
 import { gluestackUIConfig } from '../../config/gluestack-ui.config'
 import { Loading } from '@components/Loading'
+import { SignUp } from '@screens/SignUp'
+import { InvitePartner } from '@screens/InvitePartner'
 
 export function Routes() {
   const { user, isLoadingUserStorageData } = useAuth()

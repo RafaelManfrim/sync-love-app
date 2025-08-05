@@ -6,10 +6,10 @@ import { ChevronRight } from 'lucide-react-native'
 import { Button } from '@components/Button'
 import { TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { AppNavigationRoutesProps } from '@routes/app.routes'
+import { SettingsNavigationRoutesProps } from '@routes/settings.routes'
 
 export function Settings() {
-  const navigation = useNavigation<AppNavigationRoutesProps>()
+  const navigation = useNavigation<SettingsNavigationRoutesProps>()
 
   function handleNavigateToProfile() {
     navigation.navigate('profile')

@@ -7,25 +7,15 @@ import { Platform } from 'react-native'
 import { Home } from '@screens/Home'
 
 import HomeSvg from '@assets/home.svg'
-// import HistorySvg from '@assets/history.svg'
-// import ProfileSvg from '@assets/profile.svg'
+import HistorySvg from '@assets/history.svg'
+import GearSvg from '@assets/gear.svg'
 import { gluestackUIConfig } from '../../config/gluestack-ui.config'
-import { Settings } from '@screens/Settings'
-import { Language } from '@screens/Language'
-import { Profile } from '@screens/Profile'
-import { Theme } from '@screens/Theme'
+import { SettingsRoutes } from './settings.routes'
 
 type AppRoutesProps = {
   home: undefined
   history: undefined
-  profile: undefined
-  settings: undefined
-  language: undefined
-  theme: undefined
-  importantDates: undefined
-  // exercise: {
-  //   exerciseId: number
-  // }
+  settingsStack: undefined
 }
 
 export type AppNavigationRoutesProps = BottomTabNavigationProp<AppRoutesProps>
@@ -41,14 +31,14 @@ export function AppRoutes() {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarActiveTintColor: tokens.colors.green500,
-        tabBarInactiveTintColor: tokens.colors.backgroundDark200,
+        tabBarActiveTintColor: tokens.colors.red500,
+        tabBarInactiveTintColor: tokens.colors.backgroundDark500,
         tabBarStyle: {
-          backgroundColor: tokens.colors.backgroundDark600,
+          backgroundColor: tokens.colors.backgroundDark200,
           borderTopWidth: 0,
           height: Platform.OS === 'android' ? 'auto' : 96,
           paddingBottom: tokens.space['20'],
-          paddingTop: tokens.space['7'],
+          paddingTop: tokens.space['6'],
         },
       }}
     >
@@ -57,7 +47,7 @@ export function AppRoutes() {
         component={Home}
         options={{
           tabBarIcon: ({ color }) => (
-            <HomeSvg width={iconSize} height={iconSize} fill={color} />
+            <HistorySvg width={iconSize} height={iconSize} fill={color} />
           ),
         }}
       />
@@ -73,37 +63,13 @@ export function AppRoutes() {
       />
 
       <Screen
-        name="settings"
-        component={Settings}
+        name="settingsStack"
+        component={SettingsRoutes}
         options={{
           tabBarIcon: ({ color }) => (
-            <HomeSvg width={iconSize} height={iconSize} fill={color} />
+            <GearSvg width={iconSize} height={iconSize} fill={color} />
           ),
         }}
-      />
-
-      <Screen
-        name="profile"
-        component={Profile}
-        options={{ tabBarButton: () => null }}
-      />
-
-      <Screen
-        name="theme"
-        component={Theme}
-        options={{ tabBarButton: () => null }}
-      />
-
-      <Screen
-        name="language"
-        component={Language}
-        options={{ tabBarButton: () => null }}
-      />
-
-      <Screen
-        name="importantDates"
-        component={Home}
-        options={{ tabBarButton: () => null }}
       />
     </Navigator>
   )

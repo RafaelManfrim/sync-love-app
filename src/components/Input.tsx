@@ -29,10 +29,10 @@ export function Input({
         borderColor="$gray700"
         borderRadius="$md"
         $focus={{
-          borderColor: invalid ? '$red500' : '$green500',
+          borderColor: invalid ? '$error500' : '$red500',
         }}
         $invalid={{
-          borderColor: '$red500',
+          borderColor: '$error500',
         }}
         isReadOnly={isReadOnly}
         opacity={isReadOnly ? 0.5 : 1}
@@ -47,7 +47,7 @@ export function Input({
         />
       </GluestackInput>
       <FormControlError>
-        <FormControlErrorText color="$red500">
+        <FormControlErrorText color="$error500">
           {errorMessage}
         </FormControlErrorText>
       </FormControlError>
