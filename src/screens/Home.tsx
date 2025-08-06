@@ -1,13 +1,16 @@
 import { ScreenHeader } from '@components/ScreenHeader'
 import { VStack, Text, HStack, Icon } from '@gluestack-ui/themed'
 import { useNavigation } from '@react-navigation/native'
+import { HomeNavigationRoutesProps } from '@routes/home.routes'
 import { ChevronRight } from 'lucide-react-native'
 import { TouchableOpacity } from 'react-native'
 
 export function Home() {
-  const navigation = useNavigation<>()
+  const navigation = useNavigation<HomeNavigationRoutesProps>()
 
-  function handleNavigateToA() {}
+  function handleNavigateToShoppingLists() {
+    navigation.navigate('shoppingLists')
+  }
 
   function handleNavigateToB() {}
 
@@ -16,7 +19,7 @@ export function Home() {
       <ScreenHeader title="Tela Inicial" />
 
       <VStack flex={1} p="$6" gap="$3">
-        <TouchableOpacity onPress={handleNavigateToA}>
+        <TouchableOpacity onPress={handleNavigateToShoppingLists}>
           <HStack
             w="$full"
             bgColor="$trueGray200"

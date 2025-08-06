@@ -11,9 +11,10 @@ import HistorySvg from '@assets/history.svg'
 import GearSvg from '@assets/gear.svg'
 import { gluestackUIConfig } from '../../config/gluestack-ui.config'
 import { SettingsRoutes } from './settings.routes'
+import { HomeRoutes } from './home.routes'
 
 type AppRoutesProps = {
-  home: undefined
+  homeStack: undefined
   history: undefined
   settingsStack: undefined
 }
@@ -53,8 +54,8 @@ export function AppRoutes() {
       />
 
       <Screen
-        name="home"
-        component={Home}
+        name="homeStack"
+        component={HomeRoutes}
         options={{
           tabBarIcon: ({ color }) => (
             <HomeSvg width={iconSize} height={iconSize} fill={color} />
