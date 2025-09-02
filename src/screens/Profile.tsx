@@ -201,7 +201,7 @@ export function Profile() {
 
   return (
     <VStack flex={1}>
-      <ScreenHeader title="Perfil" />
+      <ScreenHeader title="Perfil" hasGoBackButton />
       <VStack flex={1} p="$6" gap="$3"></VStack>
 
       <Center w="$full" gap="$3" p="$6">

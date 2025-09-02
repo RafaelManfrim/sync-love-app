@@ -1,9 +1,10 @@
-import { Box, Text } from '@gluestack-ui/themed'
+import { ScreenHeader } from '@components/ScreenHeader'
+import { VStack } from '@gluestack-ui/themed'
 
 export function ImportantDates() {
   return (
-    <Box flex={1} justifyContent="center" alignItems="center">
-      <Text>ImportantDates Screen</Text>
-    </Box>
+    <VStack flex={1}>
+      <ScreenHeader title="Datas Importantes" hasGoBackButton />
+    </VStack>
   )
 }

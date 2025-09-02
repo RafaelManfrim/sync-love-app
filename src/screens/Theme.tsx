@@ -6,7 +6,7 @@ export function Theme() {
   function handleChangeTheme() {}
   return (
     <VStack flex={1}>
-      <ScreenHeader title="Temas" />
+      <ScreenHeader title="Temas" hasGoBackButton />
       <VStack flex={1} p="$6" gap="$3">
         <HStack
           bgColor="$trueGray200"

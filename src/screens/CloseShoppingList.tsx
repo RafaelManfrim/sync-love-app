@@ -4,7 +4,7 @@ import { VStack } from '@gluestack-ui/themed'
 export function CloseShoppingList() {
   return (
     <VStack flex={1}>
-      <ScreenHeader title="Fechar Lista de Compras" />
+      <ScreenHeader title="Fechar Lista de Compras" hasGoBackButton />
     </VStack>
   )
 }

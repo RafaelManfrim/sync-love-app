@@ -7,7 +7,7 @@ export function Language() {
 
   return (
     <VStack flex={1}>
-      <ScreenHeader title="Idiomas" />
+      <ScreenHeader title="Idiomas" hasGoBackButton />
       <VStack flex={1} p="$6" gap="$3">
         <Box
           bgColor="$trueGray200"
