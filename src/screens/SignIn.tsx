@@ -18,7 +18,7 @@ import { AuthNavigationRoutesProps } from '@routes/auth.routes'
 import { useAuth } from '@hooks/useAuth'
 import { AppError } from '@utils/AppError'
 import { ToastMessage } from '@components/ToastMessage'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { z } from 'zod'
 
 const signInSchema = z.object({
@@ -35,7 +35,7 @@ export function SignIn() {
     resolver: zodResolver(signInSchema),
   })
 
-  const { signIn } = useAuth()
+  const { signIn, user } = useAuth()
   const toast = useToast()
 
   const navigator = useNavigation<AuthNavigationRoutesProps>()
@@ -70,22 +70,29 @@ export function SignIn() {
     }
   }
 
+  useEffect(() => {
+    if (user?.id && !user.couple_id) {
+      navigator.navigate('waitingPartner')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
+
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
     >
       <VStack flex={1} px="$10" pb="$16">
-        <Center my="$24">
+        <Center my="$16">
           <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
 
-          <Text color="$gray100" fontSize="$sm" textAlign="center">
+          <Text color="$trueGray700" fontSize="$sm" textAlign="center">
             Tenha um relacionamento melhor com seu parceiro
           </Text>
         </Center>
 
         <Center gap="$2">
-          <Heading color="$gray100">Acesse a conta</Heading>
+          <Heading color="$trueGray700">Acesse a conta</Heading>
 
           <Controller
             name="email"
@@ -126,7 +133,7 @@ export function SignIn() {
         </Center>
 
         <Center flex={1} justifyContent="flex-end" mt="$4">
-          <Text color="$gray100" fontSize="$sm" mb="$3" fontFamily="$body">
+          <Text color="$trueGray700" fontSize="$sm" mb="$3" fontFamily="$body">
             Ainda não tem acesso?
           </Text>
 

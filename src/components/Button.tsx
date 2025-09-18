@@ -25,7 +25,7 @@ export function Button({
       borderWidth={variant === 'outline' ? '$1' : '$0'}
       borderColor="$red500"
       rounded="$md"
-      $active-bg={variant === 'outline' ? '$gray500' : '$red500'}
+      $active-bg={variant === 'outline' ? '$trueGray100' : '$red500'}
       disabled={isLoading}
       {...rest}
     >

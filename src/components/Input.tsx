@@ -26,7 +26,7 @@ export function Input({
       <GluestackInput
         h="$12"
         borderWidth="$1"
-        borderColor="$gray700"
+        borderColor="$trueGray200"
         borderRadius="$md"
         $focus={{
           borderColor: invalid ? '$error500' : '$red500',
@@ -38,11 +38,11 @@ export function Input({
         opacity={isReadOnly ? 0.5 : 1}
       >
         <InputField
-          bg="$gray700"
+          bg="$trueGray100"
           px="$4"
-          color="$white"
+          color="$trueGray700"
           fontFamily="$body"
-          placeholderTextColor="$gray300"
+          placeholderTextColor="$trueGray400"
           {...rest}
         />
       </GluestackInput>

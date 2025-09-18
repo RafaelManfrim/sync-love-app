@@ -30,7 +30,12 @@ export function ScreenHeader({
           <Icon as={ChevronLeft} color="$red600" size="xl" />
         </TouchableOpacity>
       )}
-      <Heading fontSize="$xl" color="$gray100" fontFamily="$heading" pb="$6">
+      <Heading
+        fontSize="$xl"
+        color="$trueGray100"
+        fontFamily="$heading"
+        pb="$6"
+      >
         {title}
       </Heading>
     </HStack>

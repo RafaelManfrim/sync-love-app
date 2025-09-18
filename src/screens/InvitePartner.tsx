@@ -13,6 +13,7 @@ import { useState } from 'react'
 import Logo from '@assets/sync_love_square-no-bg.png'
 import { Input } from '@components/Input'
 import { Button } from '@components/Button'
+import { api } from '@services/api'
 
 const invitePartnerSchema = z.object({
   email: z.string().email('E-mail inválido').nonempty('Informe o e-mail'),
@@ -27,7 +28,16 @@ export function InvitePartner() {
     resolver: zodResolver(invitePartnerSchema),
   })
 
-  async function handleInvite({ email }: FormDataProps) {}
+  async function handleInvite({ email }: FormDataProps) {
+    try {
+      setIsLoading(true)
+      await api.post('/couple-invitations/invite', { email })
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <ScrollView
@@ -35,16 +45,16 @@ export function InvitePartner() {
       showsVerticalScrollIndicator={false}
     >
       <VStack flex={1} px="$10" pb="$16">
-        <Center my="$24">
+        <Center my="$16">
           <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
 
-          <Text color="$gray100" fontSize="$sm">
-            Treine sua mente e seu corpo
+          <Text color="$trueGray700" fontSize="$sm" textAlign="center">
+            Tenha um relacionamento melhor com seu parceiro
           </Text>
         </Center>
 
         <Center gap="$2">
-          <Heading color="$gray100">Convide seu parceiro</Heading>
+          <Heading color="$trueGray700">Convide seu parceiro</Heading>
 
           <Controller
             name="email"
@@ -64,7 +74,7 @@ export function InvitePartner() {
 
         <Center flex={1} justifyContent="flex-end" mt="$4">
           <Button
-            title="Convidar"
+            title="Enviar Convite"
             onPress={handleSubmit(handleInvite)}
             isLoading={isLoading}
           />

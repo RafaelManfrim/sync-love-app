@@ -7,25 +7,22 @@ import { AuthRoutes } from './auth.routes'
 
 import { gluestackUIConfig } from '../../config/gluestack-ui.config'
 import { Loading } from '@components/Loading'
-import { SignUp } from '@screens/SignUp'
-import { InvitePartner } from '@screens/InvitePartner'
 
 export function Routes() {
   const { user, isLoadingUserStorageData } = useAuth()
 
   const theme = DefaultTheme
 
-  theme.colors.background = gluestackUIConfig.tokens.colors.gray700
+  theme.colors.background = gluestackUIConfig.tokens.colors.trueGray50
 
   if (isLoadingUserStorageData) {
     return <Loading />
   }
 
   return (
-    <Box flex={1} bg="$gray700">
+    <Box flex={1} bg="$trueGray50">
       <NavigationContainer theme={theme}>
-        {/* {user.id ? <AppRoutes /> : <AuthRoutes />} */}
-        <AppRoutes />
+        {user && user.id && user.couple_id ? <AppRoutes /> : <AuthRoutes />}
       </NavigationContainer>
     </Box>
   )

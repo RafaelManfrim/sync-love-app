@@ -8,8 +8,8 @@ export function UserPhoto({ ...rest }: UserPhotoProps) {
     <Image
       rounded="$full"
       borderWidth="$2"
-      borderColor="$gray400"
-      bg="$gray500"
+      borderColor="$trueGray400"
+      bg="$trueGray500"
       alt="Foto de perfil do usuário"
       {...rest}
     />

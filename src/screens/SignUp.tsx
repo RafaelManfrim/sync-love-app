@@ -18,15 +18,10 @@ import { AuthNavigationRoutesProps } from '@routes/auth.routes'
 import { api } from '@services/api'
 import { AppError } from '@utils/AppError'
 import { ToastMessage } from '@components/ToastMessage'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useAuth } from '@hooks/useAuth'
-
-type FormDataProps = {
-  name: string
-  email: string
-  password: string
-  password_confirm: string
-}
+import { Select } from '@components/Select'
+import { TextInput } from 'react-native'
 
 const signUpSchema = z.object({
   name: z.string().nonempty('Informe o nome'),
@@ -49,7 +44,11 @@ const signUpSchema = z.object({
       }
       return true
     }),
+  gender: z.enum(['MALE', 'FEMALE'], { required_error: 'Selecione o gênero' }),
 })
+
+type FormDataProps = z.infer<typeof signUpSchema>
+
 export function SignUp() {
   const [isLoading, setIsLoading] = useState(false)
 
@@ -57,11 +56,14 @@ export function SignUp() {
     resolver: zodResolver(signUpSchema),
   })
 
+  const emailInputRef = useRef<TextInput>(null)
+  const passwordConfirmInputRef = useRef<TextInput>(null)
+
   const toast = useToast()
 
   const navigator = useNavigation<AuthNavigationRoutesProps>()
 
-  const { signIn } = useAuth()
+  const { signIn, user } = useAuth()
 
   function handleNavigateToSignIn() {
     navigator.navigate('signIn')
@@ -94,22 +96,29 @@ export function SignUp() {
     }
   }
 
+  useEffect(() => {
+    if (user?.id && !user.couple_id) {
+      navigator.navigate('waitingPartner')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
+
   return (
     <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
     >
       <VStack flex={1} px="$10" pb="$16">
-        <Center my="$24">
+        <Center my="$16">
           <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
 
-          <Text color="$gray100" fontSize="$sm">
-            Treine sua mente e seu corpo
+          <Text color="$true100" fontSize="$sm" textAlign="center">
+            Tenha um relacionamento melhor com seu parceiro
           </Text>
         </Center>
 
         <Center gap="$2">
-          <Heading color="$gray100">Crie sua conta</Heading>
+          <Heading color="$true100">Crie sua conta</Heading>
 
           <Controller
             name="name"
@@ -120,6 +129,8 @@ export function SignUp() {
                 onChangeText={onChange}
                 value={value}
                 errorMessage={formState.errors?.name?.message}
+                returnKeyType="next"
+                onSubmitEditing={() => emailInputRef.current?.focus()}
               />
             )}
           />
@@ -129,6 +140,7 @@ export function SignUp() {
             control={control}
             render={({ field: { onChange, value } }) => (
               <Input
+                ref={emailInputRef}
                 placeholder="E-mail"
                 keyboardType="email-address"
                 autoCapitalize="none"
@@ -136,6 +148,14 @@ export function SignUp() {
                 value={value}
                 errorMessage={formState.errors?.email?.message}
               />
+            )}
+          />
+
+          <Controller
+            name="gender"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Select onValueChange={onChange} selectedValue={value} />
             )}
           />
 
@@ -149,6 +169,8 @@ export function SignUp() {
                 onChangeText={onChange}
                 value={value}
                 errorMessage={formState.errors?.password?.message}
+                returnKeyType="next"
+                onSubmitEditing={() => passwordConfirmInputRef.current?.focus()}
               />
             )}
           />
@@ -158,9 +180,12 @@ export function SignUp() {
             control={control}
             render={({ field: { onChange, value } }) => (
               <Input
+                ref={passwordConfirmInputRef}
                 placeholder="Confirme a Senha"
                 secureTextEntry
-                errorMessage={formState.errors?.password_confirm?.message}
+                errorMessage={
+                  formState.errors?.password_confirm?.message as string
+                }
                 onChangeText={onChange}
                 value={value}
                 onSubmitEditing={handleSubmit(handleSignUp)}
