@@ -7,8 +7,13 @@ import { Button } from '@components/Button'
 import { TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { SettingsNavigationRoutesProps } from '@routes/settings.routes'
+import { useAuth } from '@hooks/useAuth'
+import { api } from '@services/api'
+import DefaultUserPhoto from '@assets/userPhotoDefault.png'
 
 export function Settings() {
+  const { user } = useAuth()
+
   const navigation = useNavigation<SettingsNavigationRoutesProps>()
 
   function handleNavigateToProfile() {
@@ -50,10 +55,9 @@ export function Settings() {
           >
             <UserPhoto
               source={
-                // user.avatar
-                //   ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar}` }
-                //   : DefaultUserPhoto
-                { uri: `https://github.com/rafaelmanfrim.png` }
+                user.avatar_url
+                  ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar_url}` }
+                  : DefaultUserPhoto
               }
               w="$16"
               h="$16"
@@ -62,12 +66,12 @@ export function Settings() {
             />
 
             <VStack pl="$3" mr="auto">
-              <Text>Rafael Manfrim</Text>
+              <Text>{user.name}</Text>
               <Text fontSize="$sm" color="$trueGray500">
-                usuario@e-mail.com
+                {user.email}
               </Text>
             </VStack>
-            <Icon as={ChevronRight} color="$green600" size="xl" />
+            <Icon as={ChevronRight} color="$red500" size="xl" />
           </HStack>
         </TouchableOpacity>
 
@@ -80,7 +84,7 @@ export function Settings() {
             borderRadius="$md"
           >
             <Text mr="auto">Temas</Text>
-            <Icon as={ChevronRight} color="$green600" size="xl" />
+            <Icon as={ChevronRight} color="$red500" size="xl" />
           </HStack>
         </TouchableOpacity>
 
@@ -93,7 +97,7 @@ export function Settings() {
             borderRadius="$md"
           >
             <Text mr="auto">Idioma</Text>
-            <Icon as={ChevronRight} color="$green600" size="xl" />
+            <Icon as={ChevronRight} color="$red500" size="xl" />
           </HStack>
         </TouchableOpacity>
 
@@ -106,7 +110,7 @@ export function Settings() {
             borderRadius="$md"
           >
             <Text mr="auto">Datas Importantes</Text>
-            <Icon as={ChevronRight} color="$green600" size="xl" />
+            <Icon as={ChevronRight} color="$red500" size="xl" />
           </HStack>
         </TouchableOpacity>
       </VStack>

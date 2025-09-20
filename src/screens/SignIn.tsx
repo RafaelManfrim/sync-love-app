@@ -82,7 +82,7 @@ export function SignIn() {
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
     >
-      <VStack flex={1} px="$10" pb="$16">
+      <VStack flex={1} px="$8" pb="$16">
         <Center my="$16">
           <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
 

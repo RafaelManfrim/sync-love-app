@@ -23,29 +23,23 @@ import { useAuth } from '@hooks/useAuth'
 import { Select } from '@components/Select'
 import { TextInput } from 'react-native'
 
-const signUpSchema = z.object({
-  name: z.string().nonempty('Informe o nome'),
-  email: z.string().email('E-mail inválido').nonempty('Informe o e-mail'),
-  password: z
-    .string()
-    .min(6, 'A senha deve ter pelo menos 6 dígitos')
-    .nonempty('Informe a senha'),
-  password_confirm: z
-    .string()
-    .nonempty('Confirme a senha')
-    .refine((value, ctx) => {
-      if (value !== ctx.parent.password) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'As senhas não conferem',
-          path: ['password_confirm'],
-        })
-        return false
-      }
-      return true
+const signUpSchema = z
+  .object({
+    name: z.string().nonempty('Informe o nome'),
+    email: z.string().email('E-mail inválido').nonempty('Informe o e-mail'),
+    password: z
+      .string()
+      .min(6, 'A senha deve ter pelo menos 6 dígitos')
+      .nonempty('Informe a senha'),
+    password_confirm: z.string().nonempty('Confirme a senha'),
+    gender: z.enum(['MALE', 'FEMALE'], {
+      required_error: 'Selecione o gênero',
     }),
-  gender: z.enum(['MALE', 'FEMALE'], { required_error: 'Selecione o gênero' }),
-})
+  })
+  .refine((data) => data.password === data.password_confirm, {
+    path: ['password_confirm'],
+    message: 'As senhas não conferem',
+  })
 
 type FormDataProps = z.infer<typeof signUpSchema>
 
@@ -69,10 +63,15 @@ export function SignUp() {
     navigator.navigate('signIn')
   }
 
-  async function handleSignUp({ name, email, password }: FormDataProps) {
+  async function handleSignUp({
+    name,
+    email,
+    password,
+    gender,
+  }: FormDataProps) {
     try {
       setIsLoading(true)
-      await api.post('/users', { name, email, password })
+      await api.post('/users', { name, email, password, gender })
       await signIn(email, password)
     } catch (error) {
       const isAppError = error instanceof AppError
@@ -108,7 +107,7 @@ export function SignUp() {
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
     >
-      <VStack flex={1} px="$10" pb="$16">
+      <VStack flex={1} px="$8" pb="$16">
         <Center my="$16">
           <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
 
