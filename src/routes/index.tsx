@@ -7,6 +7,7 @@ import { AuthRoutes } from './auth.routes'
 
 import { gluestackUIConfig } from '../../config/gluestack-ui.config'
 import { Loading } from '@components/Loading'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 export function Routes() {
   const { user, isLoadingUserStorageData } = useAuth()
@@ -21,9 +22,11 @@ export function Routes() {
 
   return (
     <Box flex={1} bg="$trueGray50">
-      <NavigationContainer theme={theme}>
-        {user && user.id && user.couple_id ? <AppRoutes /> : <AuthRoutes />}
-      </NavigationContainer>
+      <SafeAreaProvider>
+        <NavigationContainer theme={theme}>
+          {user && user.id && user.couple_id ? <AppRoutes /> : <AuthRoutes />}
+        </NavigationContainer>
+      </SafeAreaProvider>
     </Box>
   )
 }
