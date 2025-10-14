@@ -1,9 +1,8 @@
-import { Center, HStack, Icon, Text, VStack } from '@gluestack-ui/themed'
+import { HStack, Icon, Text, VStack } from '@gluestack-ui/themed'
 
 import { UserPhoto } from '@components/UserPhoto'
 import { ScreenHeader } from '@components/ScreenHeader'
 import { ChevronRight } from 'lucide-react-native'
-import { Button } from '@components/Button'
 import { TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { SettingsNavigationRoutesProps } from '@routes/settings.routes'
@@ -26,10 +25,6 @@ export function Settings() {
 
   function handleNavigateToLanguage() {
     navigation.navigate('language')
-  }
-
-  function handleEndRelationship() {
-    console.log('Função terminar relacionamento')
   }
 
   return (
@@ -93,14 +88,6 @@ export function Settings() {
           </HStack>
         </TouchableOpacity>
       </VStack>
-
-      <Center w="$full" gap="$3" p="$6">
-        <Button
-          title="Terminar Relacionamento"
-          onPress={handleEndRelationship}
-          // isLoading={isSubmitting}
-        />
-      </Center>
     </VStack>
   )
 }

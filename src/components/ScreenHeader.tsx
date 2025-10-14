@@ -21,11 +21,11 @@ export function ScreenHeader({
   }
 
   return (
-    <HStack bg="$red400" pt="$12" alignItems="center" justifyContent="center">
+    <HStack bg="$red400" pt="$10" alignItems="center" justifyContent="center">
       {hasGoBackButton && (
         <TouchableOpacity
           onPress={handleGoBack}
-          style={{ position: 'absolute', left: 24, top: 52 }}
+          style={{ position: 'absolute', left: 24, top: 44 }}
         >
           <Icon as={ChevronLeft} color="$red600" size="xl" />
         </TouchableOpacity>
@@ -34,7 +34,7 @@ export function ScreenHeader({
         fontSize="$xl"
         color="$trueGray100"
         fontFamily="$heading"
-        pb="$6"
+        pb="$5"
       >
         {title}
       </Heading>
