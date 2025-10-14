@@ -7,14 +7,12 @@ import { Settings } from '@screens/Settings'
 import { Language } from '@screens/Language'
 import { Profile } from '@screens/Profile'
 import { Theme } from '@screens/Theme'
-import { ImportantDates } from '@screens/ImportantDates'
 
 type SettingsRoutesProps = {
   settings: undefined
   profile: undefined
   language: undefined
   theme: undefined
-  importantDates: undefined
 }
 
 export type SettingsNavigationRoutesProps =
@@ -29,7 +27,6 @@ export function SettingsRoutes() {
       <Screen name="profile" component={Profile} />
       <Screen name="theme" component={Theme} />
       <Screen name="language" component={Language} />
-      <Screen name="importantDates" component={ImportantDates} />
     </Navigator>
   )
 }

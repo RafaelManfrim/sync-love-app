@@ -22,7 +22,7 @@ export type HomeNavigationRoutesProps =
 
 const { Navigator, Screen } = createNativeStackNavigator<HomeRoutesProps>()
 
-export function HomeRoutes() {
+export function ListsRoutes() {
   return (
     <Navigator screenOptions={{ headerShown: false }}>
       <Screen name="home" component={Home} />

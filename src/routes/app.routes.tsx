@@ -2,26 +2,54 @@ import {
   createBottomTabNavigator,
   BottomTabNavigationProp,
 } from '@react-navigation/bottom-tabs'
-import { Platform } from 'react-native'
 
-import { Home } from '@screens/Home'
-
-import HomeSvg from '@assets/home.svg'
-import HistorySvg from '@assets/history.svg'
+import ShoppingCartSvg from '@assets/shopping-cart.svg'
+import ClipboardListSvg from '@assets/clipboard-list.svg'
+import CalendarSvg from '@assets/calendar.svg'
 import GearSvg from '@assets/gear.svg'
-import { gluestackUIConfig } from '../../config/gluestack-ui.config'
+
+import { ListsRoutes } from './lists.routes'
+import { TasksRoutes } from './tasks.routes'
+import { DatesRoutes } from './dates.routes'
 import { SettingsRoutes } from './settings.routes'
-import { HomeRoutes } from './home.routes'
+
+import { gluestackUIConfig } from '../../config/gluestack-ui.config'
+import { TouchableOpacity } from 'react-native'
+import { View } from '@gluestack-ui/themed'
 
 type AppRoutesProps = {
-  homeStack: undefined
-  history: undefined
+  listsStack: undefined
+  tasksStack: undefined
+  datesStack: undefined
   settingsStack: undefined
 }
 
 export type AppNavigationRoutesProps = BottomTabNavigationProp<AppRoutesProps>
 
 const { Navigator, Screen } = createBottomTabNavigator<AppRoutesProps>()
+
+const CustomTabBarButton = (props) => {
+  const { children, onPress, tokens } = props
+  const isFocused = props['aria-selected']
+
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={isFocused ? 1 : 0.7}
+      style={{ flex: 1 }}
+    >
+      <View
+        flex={1}
+        justifyContent="center"
+        alignItems="center"
+        borderBottomWidth={isFocused ? 2 : 0}
+        borderBottomColor={tokens.colors.red500}
+      >
+        {children}
+      </View>
+    </TouchableOpacity>
+  )
+}
 
 export function AppRoutes() {
   const { tokens } = gluestackUIConfig
@@ -31,34 +59,49 @@ export function AppRoutes() {
     <Navigator
       screenOptions={{
         headerShown: false,
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
         tabBarActiveTintColor: tokens.colors.red500,
         tabBarInactiveTintColor: tokens.colors.backgroundDark500,
-        tabBarStyle: {
-          backgroundColor: tokens.colors.backgroundDark200,
-          borderTopWidth: 0,
-          height: Platform.OS === 'android' ? 'auto' : 96,
-          paddingBottom: tokens.space['6'],
-          paddingTop: tokens.space['6'],
-        },
       }}
     >
       <Screen
-        name="history"
-        component={Home}
+        name="listsStack"
+        component={ListsRoutes}
         options={{
+          tabBarLabel: 'Listas',
           tabBarIcon: ({ color }) => (
-            <HistorySvg width={iconSize} height={iconSize} fill={color} />
+            <ShoppingCartSvg width={iconSize} height={iconSize} fill={color} />
+          ),
+          tabBarButton: (props) => (
+            <CustomTabBarButton {...props} tokens={tokens} />
           ),
         }}
       />
 
       <Screen
-        name="homeStack"
-        component={HomeRoutes}
+        name="tasksStack"
+        component={TasksRoutes}
         options={{
+          tabBarLabel: 'Tarefas',
           tabBarIcon: ({ color }) => (
-            <HomeSvg width={iconSize} height={iconSize} fill={color} />
+            <ClipboardListSvg width={iconSize} height={iconSize} fill={color} />
+          ),
+          tabBarButton: (props) => (
+            <CustomTabBarButton {...props} tokens={tokens} />
+          ),
+        }}
+      />
+
+      <Screen
+        name="datesStack"
+        component={DatesRoutes}
+        options={{
+          tabBarLabel: 'Datas',
+          tabBarIcon: ({ color }) => (
+            <CalendarSvg width={iconSize} height={iconSize} fill={color} />
+          ),
+          tabBarButton: (props) => (
+            <CustomTabBarButton {...props} tokens={tokens} />
           ),
         }}
       />
@@ -67,8 +110,12 @@ export function AppRoutes() {
         name="settingsStack"
         component={SettingsRoutes}
         options={{
+          tabBarLabel: 'Ajustes',
           tabBarIcon: ({ color }) => (
             <GearSvg width={iconSize} height={iconSize} fill={color} />
+          ),
+          tabBarButton: (props) => (
+            <CustomTabBarButton {...props} tokens={tokens} />
           ),
         }}
       />

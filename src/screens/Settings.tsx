@@ -28,10 +28,6 @@ export function Settings() {
     navigation.navigate('language')
   }
 
-  function handleNavigateToImportantDates() {
-    navigation.navigate('importantDates')
-  }
-
   function handleEndRelationship() {
     console.log('Função terminar relacionamento')
   }
@@ -97,19 +93,6 @@ export function Settings() {
             borderRadius="$md"
           >
             <Text mr="auto">Idioma</Text>
-            <Icon as={ChevronRight} color="$red500" size="xl" />
-          </HStack>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={handleNavigateToImportantDates}>
-          <HStack
-            w="$full"
-            bgColor="$trueGray200"
-            alignItems="center"
-            p="$3"
-            borderRadius="$md"
-          >
-            <Text mr="auto">Datas Importantes</Text>
             <Icon as={ChevronRight} color="$red500" size="xl" />
           </HStack>
         </TouchableOpacity>

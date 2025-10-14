@@ -1,7 +1,7 @@
 import { ScreenHeader } from '@components/ScreenHeader'
 import { VStack, Text, HStack, Icon } from '@gluestack-ui/themed'
 import { useNavigation } from '@react-navigation/native'
-import { HomeNavigationRoutesProps } from '@routes/home.routes'
+import { HomeNavigationRoutesProps } from '@routes/lists.routes'
 import { ChevronRight } from 'lucide-react-native'
 import { TouchableOpacity } from 'react-native'
 
