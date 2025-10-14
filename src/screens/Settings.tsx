@@ -32,10 +32,6 @@ export function Settings() {
     console.log('Função terminar relacionamento')
   }
 
-  function handleDeleteAccount() {
-    console.log('Função excluir conta')
-  }
-
   return (
     <VStack flex={1}>
       <ScreenHeader title="Configurações" />
@@ -101,14 +97,7 @@ export function Settings() {
       <Center w="$full" gap="$3" p="$6">
         <Button
           title="Terminar Relacionamento"
-          variant="outline"
           onPress={handleEndRelationship}
-          // isLoading={isSubmitting}
-        />
-
-        <Button
-          title="Excluir Conta"
-          onPress={handleDeleteAccount}
           // isLoading={isSubmitting}
         />
       </Center>

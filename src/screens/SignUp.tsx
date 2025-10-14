@@ -2,7 +2,6 @@ import {
   Center,
   Heading,
   Image,
-  ScrollView,
   Text,
   useToast,
   VStack,
@@ -22,6 +21,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useAuth } from '@hooks/useAuth'
 import { Select } from '@components/Select'
 import { TextInput } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const signUpSchema = z
   .object({
@@ -103,9 +103,12 @@ export function SignUp() {
   }, [user])
 
   return (
-    <ScrollView
+    <KeyboardAwareScrollView
+      enableOnAndroid={true}
+      extraHeight={400}
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
     >
       <VStack flex={1} px="$8" pb="$16">
         <Center my="$16">
@@ -208,6 +211,6 @@ export function SignUp() {
           />
         </Center>
       </VStack>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   )
 }

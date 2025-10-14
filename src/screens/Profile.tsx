@@ -199,6 +199,10 @@ export function Profile() {
     }
   }
 
+  function handleDeleteAccount() {
+    console.log('Função excluir conta')
+  }
+
   return (
     <VStack flex={1}>
       <ScreenHeader title="Perfil" hasGoBackButton />
@@ -209,6 +213,12 @@ export function Profile() {
           title="Atualizar"
           onPress={handleProfileUpdate}
           isLoading={isSubmitting}
+        />
+        <Button
+          title="Excluir Conta"
+          variant="outline"
+          onPress={handleDeleteAccount}
+          // isLoading={isSubmitting}
         />
       </Center>
     </VStack>

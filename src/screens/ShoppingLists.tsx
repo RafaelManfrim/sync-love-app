@@ -1,12 +1,24 @@
+import { Button } from '@components/Button'
 import { Loading } from '@components/Loading'
 import { ScreenHeader } from '@components/ScreenHeader'
 import { ToastMessage } from '@components/ToastMessage'
 import { ShoppingListDTO } from '@dtos/ShoppingListDTO'
-import { FlatList, useToast, VStack } from '@gluestack-ui/themed'
+import {
+  Center,
+  FlatList,
+  Heading,
+  HStack,
+  Icon,
+  Pressable,
+  Text,
+  useToast,
+  VStack,
+} from '@gluestack-ui/themed'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { HomeNavigationRoutesProps } from '@routes/lists.routes'
 import { api } from '@services/api'
 import { AppError } from '@utils/AppError'
+import { ChevronRight } from 'lucide-react-native'
 import { useCallback, useState } from 'react'
 
 export function ShoppingLists() {
@@ -30,6 +42,7 @@ export function ShoppingLists() {
       const { data } = await api.get<{ shoppingLists: ShoppingListDTO[] }>(
         '/shopping-lists',
       )
+
       setShoppingLists(data.shoppingLists)
     } catch (error) {
       const isAppError = error instanceof AppError
@@ -38,8 +51,13 @@ export function ShoppingLists() {
         : 'Não foi possível carregar as listas de compras.'
 
       toast.show({
-        render: () => (
-          <ToastMessage title={title} action="error" duration={4000} />
+        render: ({ id }) => (
+          <ToastMessage
+            id={id}
+            title={title}
+            action="error"
+            onClose={() => toast.close(id)}
+          />
         ),
         placement: 'top',
       })
@@ -56,37 +74,64 @@ export function ShoppingLists() {
 
   return (
     <VStack flex={1}>
-      <ScreenHeader title="Listas de Compras" hasGoBackButton />
+      <ScreenHeader title="Listas de Compras" />
       {isLoading ? (
         <Loading />
       ) : (
-        <FlatList
-          data={shoppingLists}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <Pressable
-              onPress={() => handleOpenShoppingList(item.id)}
-              bg="$gray500"
-              p="$4"
-              rounded="$md"
-              mx="$5"
-              mb="$3"
-            >
-              <Text color="$white" fontFamily="$body">
-                {item.title}
-              </Text>
-            </Pressable>
-          )}
-          ListEmptyComponent={() => (
-            <Text color="$gray100" textAlign="center" mt="$8">
-              Nenhuma lista de compras encontrada. {'\n'}
-              Vamos criar a primeira?
+        <VStack flex={1} px="$8" mt="$6">
+          <HStack justifyContent="space-between" alignItems="center" mb="$5">
+            <Heading color="$trueGray400" fontSize="$md" fontFamily="$heading">
+              Listas
+            </Heading>
+
+            <Text color="$trueGray500" fontSize="$sm" fontFamily="$body">
+              {shoppingLists.length}
             </Text>
-          )}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 20 }}
-        />
+          </HStack>
+          <FlatList
+            data={shoppingLists}
+            keyExtractor={(item) => {
+              const shoppingList = item as ShoppingListDTO
+              return shoppingList.id.toString()
+            }}
+            renderItem={({ item }) => {
+              const shoppingList = item as ShoppingListDTO
+              return (
+                <Pressable
+                  onPress={() => handleOpenShoppingList(shoppingList.id)}
+                  bg="$trueGray200"
+                  p="$4"
+                  rounded="$md"
+                  mb="$3"
+                >
+                  <Heading color="$trueGray600">{shoppingList.name}</Heading>
+                  <Text color="$trueGray500" fontFamily="$body">
+                    {shoppingList.ShoppingListItem.lenght} itens -{' '}
+                    {shoppingList.created_at}
+                  </Text>
+                  <Icon as={ChevronRight} />
+                </Pressable>
+              )
+            }}
+            ListEmptyComponent={() => (
+              <Text color="$gray100" textAlign="center" mt="$8">
+                Nenhuma lista de compras encontrada. {'\n'}
+                Vamos criar a primeira?
+              </Text>
+            )}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 20 }}
+          />
+        </VStack>
       )}
+
+      <Center w="$full" gap="$3" p="$6">
+        <Button
+          title="Nova Lista"
+          onPress={handleNewShoppingList}
+          isLoading={isLoading}
+        />
+      </Center>
     </VStack>
   )
 }

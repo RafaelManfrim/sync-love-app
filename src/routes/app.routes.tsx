@@ -8,6 +8,7 @@ import ClipboardListSvg from '@assets/clipboard-list.svg'
 import CalendarSvg from '@assets/calendar.svg'
 import GearSvg from '@assets/gear.svg'
 
+import HeartSvg from '@assets/heart.svg'
 import { ListsRoutes } from './lists.routes'
 import { TasksRoutes } from './tasks.routes'
 import { DatesRoutes } from './dates.routes'
@@ -17,11 +18,13 @@ import { gluestackUIConfig } from '../../config/gluestack-ui.config'
 import { TouchableOpacity } from 'react-native'
 import { View } from '@gluestack-ui/themed'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { PartnerRoutes } from './partner.routes'
 
 type AppRoutesProps = {
   listsStack: undefined
   tasksStack: undefined
   datesStack: undefined
+  relationshipStack: undefined
   settingsStack: undefined
 }
 
@@ -46,7 +49,8 @@ const CustomTabBarButton = (props: any) => {
         </View>
         <View
           height={6}
-          width="$16"
+          width="100%"
+          maxWidth="$16"
           borderTopLeftRadius={8}
           borderTopRightRadius={8}
           backgroundColor={tokens.colors.red500}
@@ -113,6 +117,20 @@ export function AppRoutes() {
           tabBarLabel: 'Datas',
           tabBarIcon: ({ color }) => (
             <CalendarSvg width={iconSize} height={iconSize} fill={color} />
+          ),
+          tabBarButton: (props) => (
+            <CustomTabBarButton {...props} tokens={tokens} />
+          ),
+        }}
+      />
+
+      <Screen
+        name="relationshipStack"
+        component={PartnerRoutes}
+        options={{
+          tabBarLabel: 'Parceiro',
+          tabBarIcon: ({ color }) => (
+            <HeartSvg width={iconSize} height={iconSize} fill={color} />
           ),
           tabBarButton: (props) => (
             <CustomTabBarButton {...props} tokens={tokens} />
