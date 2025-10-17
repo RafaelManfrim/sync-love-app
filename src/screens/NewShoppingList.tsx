@@ -7,7 +7,7 @@ import {
   VStack,
 } from '@gluestack-ui/themed'
 import { useNavigation } from '@react-navigation/native'
-import { HomeNavigationRoutesProps } from '@routes/lists.routes'
+import { ShoppingListNavigationRoutesProps } from '@routes/lists.routes'
 import { api } from '@services/api'
 import { AppError } from '@utils/AppError'
 
@@ -30,7 +30,7 @@ type NewShoppingListFormData = z.infer<typeof newShoppingListSchema>
 
 export function NewShoppingList() {
   const [isLoading, setIsLoading] = useState(false)
-  const navigation = useNavigation<HomeNavigationRoutesProps>()
+  const navigation = useNavigation<ShoppingListNavigationRoutesProps>()
   const toast = useToast()
 
   const { control, handleSubmit, formState } = useForm<NewShoppingListFormData>(

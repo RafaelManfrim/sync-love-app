@@ -46,8 +46,8 @@ export function Settings() {
                   ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar_url}` }
                   : DefaultUserPhoto
               }
-              w="$16"
-              h="$16"
+              w="$12"
+              h="$12"
               alt="Foto de perfil do usuário"
               size="xl"
             />

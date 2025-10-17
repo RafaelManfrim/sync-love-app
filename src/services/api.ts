@@ -29,10 +29,12 @@ api.registerInterceptTokenManager = (signOut) => {
   const iterceptTokenManager = api.interceptors.response.use(
     (response) => response,
     async (requestError) => {
+      console.log(requestError.response.data)
       if (requestError?.response?.status === 401) {
         if (
           requestError.response.data?.message === 'token.expired' ||
-          requestError.response.data?.message === 'token.invalid'
+          requestError.response.data?.message === 'token.invalid' ||
+          requestError.response.data?.message === 'Não autorizado'
         ) {
           const { refresh_token } = await storageAuthTokenGet()
 
@@ -66,7 +68,7 @@ api.registerInterceptTokenManager = (signOut) => {
                 refresh: refresh_token,
               })
               await storageAuthTokenSave({
-                token: data.access,
+                access_token: data.access,
                 refresh_token: data.refresh,
               })
 

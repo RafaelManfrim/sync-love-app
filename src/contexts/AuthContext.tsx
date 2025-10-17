@@ -104,9 +104,27 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   async function getUserData() {
     try {
       setIsLoadingUserStorageData(true)
+
       const response = await api.get('/users/data')
-      setUser(response.data.user)
+
       await storageUserSave(response.data.user)
+
+      const { refresh_token } = await storageAuthTokenGet()
+
+      const { data } = await api.post('/users/refresh-token', {
+        refresh: refresh_token,
+      })
+
+      await storageAuthTokenSave({
+        access_token: data.access,
+        refresh_token: data.refresh,
+      })
+
+      await userAndTokenUpdate({
+        user: response.data.user,
+        access_token: data.access,
+        refresh_token: data.refresh,
+      })
     } catch (error) {
       throw error
     } finally {

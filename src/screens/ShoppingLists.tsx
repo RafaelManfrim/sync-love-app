@@ -2,6 +2,7 @@ import { Button } from '@components/Button'
 import { Loading } from '@components/Loading'
 import { ScreenHeader } from '@components/ScreenHeader'
 import { ToastMessage } from '@components/ToastMessage'
+import { UserPhoto } from '@components/UserPhoto'
 import { ShoppingListDTO } from '@dtos/ShoppingListDTO'
 import {
   Center,
@@ -15,17 +16,19 @@ import {
   VStack,
 } from '@gluestack-ui/themed'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
-import { HomeNavigationRoutesProps } from '@routes/lists.routes'
+import { ShoppingListNavigationRoutesProps } from '@routes/lists.routes'
 import { api } from '@services/api'
 import { AppError } from '@utils/AppError'
+import { format } from 'date-fns'
 import { ChevronRight } from 'lucide-react-native'
 import { useCallback, useState } from 'react'
+import DefaultUserPhoto from '@assets/userPhotoDefault.png'
 
 export function ShoppingLists() {
   const [isLoading, setIsLoading] = useState(true)
   const [shoppingLists, setShoppingLists] = useState<ShoppingListDTO[]>([])
 
-  const navigation = useNavigation<HomeNavigationRoutesProps>()
+  const navigation = useNavigation<ShoppingListNavigationRoutesProps>()
   const toast = useToast()
 
   function handleOpenShoppingList(shoppingListId: number) {
@@ -104,12 +107,43 @@ export function ShoppingLists() {
                   rounded="$md"
                   mb="$3"
                 >
-                  <Heading color="$trueGray600">{shoppingList.name}</Heading>
-                  <Text color="$trueGray500" fontFamily="$body">
-                    {shoppingList.ShoppingListItem.lenght} itens -{' '}
-                    {shoppingList.created_at}
-                  </Text>
-                  <Icon as={ChevronRight} />
+                  <HStack justifyContent="space-between" alignItems="center">
+                    <VStack>
+                      <Heading color="$trueGray600">
+                        {shoppingList.name}
+                      </Heading>
+                      <Text color="$trueGray500" fontFamily="$body">
+                        {shoppingList.ShoppingListItem.length} itens -{' '}
+                        {format(
+                          new Date(shoppingList.created_at),
+                          'dd/MM/yyyy HH:mm',
+                        )}
+                      </Text>
+                      <HStack alignItems="center" mt="$1" gap="$1">
+                        <Text color="$trueGray500" fontFamily="$body">
+                          Criada por:
+                        </Text>
+                        <UserPhoto
+                          source={
+                            shoppingList.author.avatar_url
+                              ? {
+                                  uri: `${api.defaults.baseURL}/avatar/${shoppingList.author.avatar_url}`,
+                                }
+                              : DefaultUserPhoto
+                          }
+                          w="$5"
+                          h="$5"
+                          alt={`Foto de perfil do autor da lista: ${shoppingList.name}`}
+                          size="xl"
+                          ml="$1"
+                        />
+                        <Text color="$trueGray500" fontFamily="$body">
+                          {shoppingList.author.name}
+                        </Text>
+                      </HStack>
+                    </VStack>
+                    <Icon as={ChevronRight} />
+                  </HStack>
                 </Pressable>
               )
             }}

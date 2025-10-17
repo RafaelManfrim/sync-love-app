@@ -8,17 +8,26 @@ import { NewShoppingList } from '@screens/NewShoppingList'
 import { ShoppingList } from '@screens/ShoppingList'
 import { ShoppingLists } from '@screens/ShoppingLists'
 
-type HomeRoutesProps = {
-  shoppingLists: undefined
-  shoppingList: undefined
-  newShoppingList: undefined
-  closeShoppingList: undefined
+export type ShoppingListScreenProps = {
+  shoppingListId: number
 }
 
-export type HomeNavigationRoutesProps =
-  NativeStackNavigationProp<HomeRoutesProps>
+export type CloseShoppingListScreenProps = {
+  shoppingListId: number
+}
 
-const { Navigator, Screen } = createNativeStackNavigator<HomeRoutesProps>()
+type ShoppingListRoutesProps = {
+  shoppingLists: undefined
+  newShoppingList: undefined
+  shoppingList: ShoppingListScreenProps
+  closeShoppingList: CloseShoppingListScreenProps
+}
+
+export type ShoppingListNavigationRoutesProps =
+  NativeStackNavigationProp<ShoppingListRoutesProps>
+
+const { Navigator, Screen } =
+  createNativeStackNavigator<ShoppingListRoutesProps>()
 
 export function ListsRoutes() {
   return (

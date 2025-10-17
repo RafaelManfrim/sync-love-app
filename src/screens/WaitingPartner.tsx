@@ -5,8 +5,6 @@ import {
   Text,
   VStack,
   Image,
-  Card,
-  Box,
   HStack,
   Icon,
 } from '@gluestack-ui/themed'
@@ -17,7 +15,7 @@ import { useEffect, useState } from 'react'
 import { api } from '@services/api'
 import { useNavigation } from '@react-navigation/native'
 import { AuthNavigationRoutesProps } from '@routes/auth.routes'
-import { CheckCheckIcon, TrashIcon, XIcon } from 'lucide-react-native'
+import { TrashIcon } from 'lucide-react-native'
 import { TouchableOpacity } from 'react-native'
 
 interface Invite {
