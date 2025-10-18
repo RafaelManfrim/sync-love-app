@@ -1,112 +1,46 @@
 import { ScreenHeader } from '@components/ScreenHeader'
 import { ToastMessage } from '@components/ToastMessage'
-import { Center, VStack, useToast } from '@gluestack-ui/themed'
+import {
+  Center,
+  ScrollView,
+  VStack,
+  useToast,
+  Text,
+  HStack,
+  Icon,
+  AlertDialog,
+  AlertDialogBackdrop,
+  AlertDialogContent,
+  AlertDialogHeader,
+  Heading,
+  AlertDialogBody,
+  ButtonGroup,
+  AlertDialogFooter,
+  Pressable,
+} from '@gluestack-ui/themed'
 import { AppError } from '@utils/AppError'
-import { useState } from 'react'
 import * as FileSystem from 'expo-file-system'
 import * as ImagePicker from 'expo-image-picker'
-import { useForm } from 'react-hook-form'
 import { useAuth } from '@hooks/useAuth'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { api } from '@services/api'
-
-import * as zod from 'zod'
+import DefaultUserPhoto from '@assets/userPhotoDefault.png'
 import { Button } from '@components/Button'
-
-// const profileSchema = yup.object({
-//   name: yup.string().required('Informe seu nome.'),
-//   email: yup.string().required('Informe seu email.').email('Email inválido'),
-//   old_password: yup.string().when('password', {
-//     is: (Field: any) => Field,
-//     then: (schema) => schema.nullable().required('Informe a senha antiga.'),
-//   }),
-//   password: yup
-//     .string()
-//     .min(6, 'A senha deve ter pelo menos 6 dígitos.')
-//     .nullable()
-//     .transform((value) => value || null),
-//   confirm_password: yup
-//     .string()
-//     .nullable()
-//     .transform((value) => value || null)
-//     .oneOf([yup.ref('password'), null], 'As senhas devem ser iguais.')
-//     .when('password', {
-//       is: (Field: any) => Field,
-//       then: (schema) =>
-//         schema.nullable().required('Informe a confirmação da senha.'),
-//     }),
-// })
-
-// type FormDataProps = yup.InferType<typeof profileSchema>
-
-const profileSchema = zod.object({})
-
-type FormDataProps = zod.infer<typeof profileSchema>
+import { UserPhoto } from '@components/UserPhoto'
+import { TouchableOpacity } from 'react-native'
+import { ChevronRight } from 'lucide-react-native'
+import { useNavigation } from '@react-navigation/native'
+import { SettingsNavigationRoutesProps } from '@routes/settings.routes'
+import { useState } from 'react'
+import { useDeleteAccount } from '@hooks/api/useUserQueries'
 
 export function Profile() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
   const toast = useToast()
   const { user, updateUserProfile } = useAuth()
+  const navigation = useNavigation<SettingsNavigationRoutesProps>()
 
-  const { control, handleSubmit, formState, resetField } = useForm({
-    resolver: zodResolver(profileSchema),
-    defaultValues: {
-      name: user.name,
-      email: user.email,
-    },
-  })
-
-  async function handleProfileUpdate(data: FormDataProps) {
-    try {
-      setIsSubmitting(true)
-
-      const userUpdated = user
-
-      await api.put('/users', data)
-
-      toast.show({
-        placement: 'top',
-        render: ({ id }) => (
-          <ToastMessage
-            id={id}
-            action="success"
-            title="Perfil atualizado com sucesso!"
-            onClose={() => toast.close(id)}
-          />
-        ),
-      })
-
-      userUpdated.name = data.name
-
-      await updateUserProfile(userUpdated)
-
-      resetField('old_password')
-      resetField('password')
-      resetField('confirm_password')
-    } catch (error) {
-      console.log(error)
-
-      const isAppError = error instanceof AppError
-      const title = isAppError
-        ? error.message
-        : 'Não foi possível atualizar o perfil'
-
-      toast.show({
-        placement: 'top',
-        render: ({ id }) => (
-          <ToastMessage
-            id={id}
-            action="error"
-            title={title}
-            onClose={() => toast.close(id)}
-          />
-        ),
-      })
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
+  const { mutate: deleteAccount, isPending: isDeleting } = useDeleteAccount()
 
   async function handleUserPhotoSelect() {
     try {
@@ -149,6 +83,7 @@ export function Profile() {
           name: `${user.name}.${fileExtension}`.toLowerCase(),
           uri: photoUri,
           type: `${photoSelected.assets[0].type}/${fileExtension}`,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } as any
 
         const userPhotoUploadForm = new FormData()
@@ -173,7 +108,7 @@ export function Profile() {
         })
 
         const userUpdated = user
-        userUpdated.avatar = response.data.avatar
+        userUpdated.avatar_url = response.data.avatarUrl
 
         await updateUserProfile(userUpdated)
       }
@@ -199,28 +134,113 @@ export function Profile() {
     }
   }
 
-  function handleDeleteAccount() {
-    console.log('Função excluir conta')
+  function handleNavigateToChangePassword() {
+    navigation.navigate('changePassword')
+  }
+
+  function handleNavigateToChangeName() {
+    navigation.navigate('changeName')
   }
 
   return (
     <VStack flex={1}>
       <ScreenHeader title="Perfil" hasGoBackButton />
-      <VStack flex={1} p="$6" gap="$3"></VStack>
+      <VStack flex={1} p="$6" gap="$3">
+        <ScrollView contentContainerStyle={{ paddingBottom: 36 }}>
+          <Center>
+            <UserPhoto
+              source={
+                user.avatar_url
+                  ? {
+                      uri: `${api.defaults.baseURL}/tmp/uploads/avatar/${user.avatar_url}`,
+                    }
+                  : DefaultUserPhoto
+              }
+              alt="Foto de perfil do usuário"
+              size="xl"
+            />
+
+            <TouchableOpacity onPress={handleUserPhotoSelect}>
+              <Text
+                color="$amber500"
+                fontFamily="$heading"
+                fontSize="$md"
+                mt="$2"
+                mb="$8"
+              >
+                Alterar Foto
+              </Text>
+            </TouchableOpacity>
+
+            <Center w="$full" gap="$4">
+              <TouchableOpacity onPress={handleNavigateToChangeName}>
+                <HStack
+                  w="$full"
+                  bgColor="$trueGray200"
+                  alignItems="center"
+                  p="$4"
+                  borderRadius="$md"
+                >
+                  <Text mr="auto">Alterar Nome</Text>
+                  <Icon as={ChevronRight} color="$red500" size="xl" />
+                </HStack>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={handleNavigateToChangePassword}>
+                <HStack
+                  w="$full"
+                  bgColor="$trueGray200"
+                  alignItems="center"
+                  p="$4"
+                  borderRadius="$md"
+                >
+                  <Text mr="auto">Alterar Senha</Text>
+                  <Icon as={ChevronRight} color="$red500" size="xl" />
+                </HStack>
+              </TouchableOpacity>
+            </Center>
+          </Center>
+        </ScrollView>
+      </VStack>
 
       <Center w="$full" gap="$3" p="$6">
         <Button
-          title="Atualizar"
-          onPress={handleProfileUpdate}
-          isLoading={isSubmitting}
-        />
-        <Button
           title="Excluir Conta"
           variant="outline"
-          onPress={handleDeleteAccount}
+          onPress={() => setShowDeleteDialog(true)}
           // isLoading={isSubmitting}
         />
       </Center>
+
+      <AlertDialog
+        isOpen={showDeleteDialog}
+        onClose={() => setShowDeleteDialog(false)}
+      >
+        <AlertDialogBackdrop />
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <Heading>Excluir Conta</Heading>
+          </AlertDialogHeader>
+          <AlertDialogBody>
+            <Text>
+              Você tem certeza? Esta ação é permanente e todos os seus dados,
+              incluindo relacionamentos e listas, serão apagados para sempre.
+            </Text>
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <ButtonGroup space="lg">
+              <Pressable onPress={() => setShowDeleteDialog(false)}>
+                <Text>Cancelar</Text>
+              </Pressable>
+              <Pressable onPress={() => deleteAccount()} disabled={isDeleting}>
+                <Text color={isDeleting ? '$trueGray400' : '$red500'}>
+                  {isDeleting ? 'Excluindo...' : 'Sim, excluir'}
+                </Text>
+              </Pressable>
+            </ButtonGroup>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </VStack>
   )
 }

@@ -127,7 +127,7 @@ export function ShoppingLists() {
                           source={
                             shoppingList.author.avatar_url
                               ? {
-                                  uri: `${api.defaults.baseURL}/avatar/${shoppingList.author.avatar_url}`,
+                                  uri: `${api.defaults.baseURL}/tmp/uploads/avatar/${shoppingList.author.avatar_url}`,
                                 }
                               : DefaultUserPhoto
                           }

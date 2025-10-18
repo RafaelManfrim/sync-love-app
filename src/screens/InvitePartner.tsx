@@ -6,6 +6,7 @@ import {
   VStack,
   Image,
   useToast,
+  KeyboardAvoidingView,
 } from '@gluestack-ui/themed'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -18,6 +19,7 @@ import { api } from '@services/api'
 import { useNavigation } from '@react-navigation/native'
 import { AuthNavigationRoutesProps } from '@routes/auth.routes'
 import { ToastMessage } from '@components/ToastMessage'
+import { Platform } from 'react-native'
 
 const invitePartnerSchema = z.object({
   email: z.string().email('E-mail inválido').nonempty('Informe o e-mail'),
@@ -66,42 +68,49 @@ export function InvitePartner() {
       contentContainerStyle={{ flexGrow: 1 }}
       showsVerticalScrollIndicator={false}
     >
-      <VStack flex={1} px="$8" pb="$16">
-        <Center my="$16">
-          <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <VStack flex={1} px="$8" pb="$16">
+          <Center my="$16">
+            <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
 
-          <Text color="$trueGray700" fontSize="$sm" textAlign="center">
-            Tenha um relacionamento melhor com seu parceiro
-          </Text>
-        </Center>
+            <Text color="$trueGray700" fontSize="$sm" textAlign="center">
+              Tenha um relacionamento melhor com seu parceiro
+            </Text>
+          </Center>
 
-        <Center gap="$2">
-          <Heading color="$trueGray700">Convide seu parceiro</Heading>
+          <Center gap="$2">
+            <Heading color="$trueGray700">Convide seu parceiro</Heading>
 
-          <Controller
-            name="email"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <Input
-                placeholder="E-mail"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                onChangeText={onChange}
-                value={value}
-                errorMessage={formState.errors?.email?.message}
-              />
-            )}
-          />
-        </Center>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  placeholder="E-mail"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  onChangeText={onChange}
+                  value={value}
+                  errorMessage={formState.errors?.email?.message}
+                  returnKeyType="send"
+                  onSubmitEditing={handleSubmit(handleInvite)}
+                />
+              )}
+            />
+          </Center>
 
-        <Center flex={1} justifyContent="flex-end" mt="$4">
-          <Button
-            title="Enviar Convite"
-            onPress={handleSubmit(handleInvite)}
-            isLoading={isLoading}
-          />
-        </Center>
-      </VStack>
+          <Center flex={1} justifyContent="flex-end" mt="$4">
+            <Button
+              title="Enviar Convite"
+              onPress={handleSubmit(handleInvite)}
+              isLoading={isLoading}
+            />
+          </Center>
+        </VStack>
+      </KeyboardAvoidingView>
     </ScrollView>
   )
 }

@@ -1,4 +1,4 @@
-import { HStack, Icon, Text, VStack } from '@gluestack-ui/themed'
+import { HStack, Icon, Text, VStack, Center } from '@gluestack-ui/themed'
 
 import { UserPhoto } from '@components/UserPhoto'
 import { ScreenHeader } from '@components/ScreenHeader'
@@ -9,9 +9,10 @@ import { SettingsNavigationRoutesProps } from '@routes/settings.routes'
 import { useAuth } from '@hooks/useAuth'
 import { api } from '@services/api'
 import DefaultUserPhoto from '@assets/userPhotoDefault.png'
+import { Button } from '@components/Button'
 
 export function Settings() {
-  const { user } = useAuth()
+  const { user, signOut } = useAuth()
 
   const navigation = useNavigation<SettingsNavigationRoutesProps>()
 
@@ -43,7 +44,9 @@ export function Settings() {
             <UserPhoto
               source={
                 user.avatar_url
-                  ? { uri: `${api.defaults.baseURL}/avatar/${user.avatar_url}` }
+                  ? {
+                      uri: `${api.defaults.baseURL}/tmp/uploads/avatar/${user.avatar_url}`,
+                    }
                   : DefaultUserPhoto
               }
               w="$12"
@@ -67,7 +70,7 @@ export function Settings() {
             w="$full"
             bgColor="$trueGray200"
             alignItems="center"
-            p="$3"
+            p="$4"
             borderRadius="$md"
           >
             <Text mr="auto">Temas</Text>
@@ -80,7 +83,7 @@ export function Settings() {
             w="$full"
             bgColor="$trueGray200"
             alignItems="center"
-            p="$3"
+            p="$4"
             borderRadius="$md"
           >
             <Text mr="auto">Idioma</Text>
@@ -88,6 +91,13 @@ export function Settings() {
           </HStack>
         </TouchableOpacity>
       </VStack>
+      <Center w="$full" gap="$3" p="$6">
+        <Button
+          title="Sair do aplicativo"
+          onPress={signOut}
+          variant="outline"
+        />
+      </Center>
     </VStack>
   )
 }

@@ -7,122 +7,40 @@ import {
   Image,
   HStack,
   Icon,
+  Box,
 } from '@gluestack-ui/themed'
 import Logo from '@assets/sync_love_square-no-bg.png'
 import { Button } from '@components/Button'
-import { useAuth } from '@hooks/useAuth'
-import { useEffect, useState } from 'react'
-import { api } from '@services/api'
 import { useNavigation } from '@react-navigation/native'
 import { AuthNavigationRoutesProps } from '@routes/auth.routes'
 import { TrashIcon } from 'lucide-react-native'
 import { TouchableOpacity } from 'react-native'
-
-interface Invite {
-  id: number
-  inviter_id: number
-  invitee_email: string
-  invited_at: string
-  accepted_at: string | null
-  rejected_at: string | null
-  inviter: {
-    email: string
-    name: string
-    gender: string
-    avatar_url: string | null
-  }
-}
-
-interface Invitations {
-  recievedInvites: Invite[]
-  sentInvites: Invite[]
-}
+import { Loading } from '@components/Loading'
+import {
+  useAcceptInvite,
+  useDeleteInvite,
+  useInvitations,
+  useRejectInvite,
+} from '@hooks/api/useInvitationQueries'
+import { useEffect } from 'react'
+import { useAuth } from '@hooks/useAuth'
 
 export function WaitingPartner() {
-  const [invitations, setInvitations] = useState<Invitations>()
-  const [isLoading, setIsLoading] = useState(false)
+  const { data: invitations, isLoading } = useInvitations()
+  const { mutate: acceptInvite, isPending: isAccepting } = useAcceptInvite()
+  const { mutate: rejectInvite, isPending: isRejecting } = useRejectInvite()
+  const { mutate: deleteInvite, isPending: isDeleting } = useDeleteInvite()
 
-  const { user, getUserData } = useAuth()
   const navigation = useNavigation<AuthNavigationRoutesProps>()
+
+  const { getUserData } = useAuth()
+
+  const isLoadingSomething =
+    isLoading || isAccepting || isRejecting || isDeleting
 
   function handleInvite() {
     navigation.navigate('invitePartner')
   }
-
-  async function handleDeleteInvite(id: number) {
-    try {
-      setIsLoading(true)
-      await api.delete(`/couple-invitations/${id}`)
-      setInvitations((prevState) => ({
-        ...prevState,
-        sentInvites: prevState!.sentInvites.filter(
-          (invite) => invite.id !== id,
-        ),
-      }))
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  async function handleAcceptInvite(id: number) {
-    try {
-      setIsLoading(true)
-      await api.post(`/couple-invitations/${id}/accept`)
-      await getUserData()
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  async function handleRejectInvite(id: number) {
-    try {
-      setIsLoading(true)
-      await api.post(`/couple-invitations/${id}/reject`)
-      setInvitations((prevState) => ({
-        ...prevState,
-        recievedInvites: prevState!.recievedInvites.filter(
-          (invite) => invite.id !== id,
-        ),
-      }))
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    let intervalId: NodeJS.Timeout
-
-    async function fetchInvitations() {
-      try {
-        setIsLoading(true)
-        const response = await api.get('/couple-invitations')
-
-        setInvitations(response.data)
-      } catch (error) {
-        console.log(error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    if (!user.couple_id) {
-      fetchInvitations() // primeira chamada imediata
-
-      intervalId = setInterval(() => {
-        fetchInvitations()
-      }, 10000) // 15 segundos
-    }
-
-    return () => {
-      if (intervalId) clearInterval(intervalId)
-    }
-  }, [user])
 
   useEffect(() => {
     if (invitations?.sentInvites.some((invite) => invite.accepted_at)) {
@@ -199,7 +117,7 @@ export function WaitingPartner() {
                   w="auto"
                   title="Recusar"
                   variant="outline"
-                  onPress={() => handleRejectInvite(invite.id)}
+                  onPress={() => rejectInvite(invite.id)}
                   flex={1}
                   h="$10"
                 />
@@ -208,12 +126,14 @@ export function WaitingPartner() {
                   w="auto"
                   flex={1}
                   title="Aceitar"
-                  onPress={() => handleAcceptInvite(invite.id)}
+                  onPress={() => acceptInvite(invite.id)}
                   h="$10"
                 />
               </HStack>
             </VStack>
           ))}
+
+          <Box>{isLoadingSomething && <Loading />}</Box>
 
           <Text
             color="$trueGray700"
@@ -247,7 +167,7 @@ export function WaitingPartner() {
               >
                 <Text color="$trueGray600">{invite.invitee_email}</Text>
 
-                <TouchableOpacity onPress={() => handleDeleteInvite(invite.id)}>
+                <TouchableOpacity onPress={() => deleteInvite(invite.id)}>
                   <Icon as={TrashIcon} size="lg" color="$error500" />
                 </TouchableOpacity>
               </HStack>
@@ -268,6 +188,8 @@ export function WaitingPartner() {
               </HStack>
             </VStack>
           ))}
+
+          <Box>{isLoadingSomething && <Loading />}</Box>
         </Center>
 
         <Center flex={1} justifyContent="flex-end" mt="$4">

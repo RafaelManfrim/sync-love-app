@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useEffect, useState } from 'react'
 
 import { UserDTO } from '@dtos/UserDTO'
 import { api } from '@services/api'
@@ -26,6 +26,7 @@ export type AuthContextDataProps = {
   signOut: () => Promise<void>
   updateUserProfile: (userUpdated: UserDTO) => Promise<void>
   getUserData: () => Promise<void>
+  getUserDataAPICall: () => Promise<UserDTO>
 }
 
 export const AuthContext = createContext<AuthContextDataProps>(
@@ -86,28 +87,44 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     }
   }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  async function signOut() {
+  const signOut = useCallback(async () => {
     try {
-      await api.post('/users/logout')
       setIsLoadingUserStorageData(true)
       setUser({} as UserDTO)
       await storageUserRemove()
       await storageAuthTokenRemove()
+      try {
+        await api.post('/users/logout')
+      } catch (error) {
+        // do nothing
+      }
+      api.defaults.headers.common.Authorization = ''
     } catch (error) {
       throw error
     } finally {
       setIsLoadingUserStorageData(false)
     }
+  }, [])
+
+  const updateUserProfile = useCallback(async (userToUpdate: UserDTO) => {
+    try {
+      setUser(userToUpdate)
+      await storageUserSave(userToUpdate)
+    } catch (error) {
+      throw error
+    }
+  }, [])
+
+  async function getUserDataAPICall() {
+    const response = await api.get('/users/data')
+    return response.data.user
   }
 
   async function getUserData() {
     try {
       setIsLoadingUserStorageData(true)
 
-      const response = await api.get('/users/data')
-
-      await storageUserSave(response.data.user)
+      const fetchedUser = await getUserDataAPICall()
 
       const { refresh_token } = await storageAuthTokenGet()
 
@@ -115,13 +132,15 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         refresh: refresh_token,
       })
 
+      await storageUserSave(fetchedUser)
+
       await storageAuthTokenSave({
         access_token: data.access,
         refresh_token: data.refresh,
       })
 
       await userAndTokenUpdate({
-        user: response.data.user,
+        user: fetchedUser,
         access_token: data.access,
         refresh_token: data.refresh,
       })
@@ -129,15 +148,6 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       throw error
     } finally {
       setIsLoadingUserStorageData(false)
-    }
-  }
-
-  async function updateUserProfile(userUpdated: UserDTO) {
-    try {
-      setUser(userUpdated)
-      await storageUserSave(userUpdated)
-    } catch (error) {
-      throw error
     }
   }
 
@@ -173,6 +183,17 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     }
   }, [signOut])
 
+  useEffect(() => {
+    if (user && user.id && user.couple_id) {
+      const interval = setInterval(async () => {
+        const userFetched = await getUserDataAPICall()
+        updateUserProfile(userFetched)
+      }, 15000) // 15 segundos
+
+      return () => clearInterval(interval)
+    }
+  }, [user.couple_id])
+
   return (
     <AuthContext.Provider
       value={{
@@ -182,6 +203,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         updateUserProfile,
         isLoadingUserStorageData,
         getUserData,
+        getUserDataAPICall,
       }}
     >
       {children}

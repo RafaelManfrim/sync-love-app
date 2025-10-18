@@ -60,7 +60,7 @@ export function Partner() {
                 source={
                   partner?.avatar_url
                     ? {
-                        uri: `${api.defaults.baseURL}/avatar/${partner?.avatar_url}`,
+                        uri: `${api.defaults.baseURL}/tmp/uploads/avatar/${partner?.avatar_url}`,
                       }
                     : DefaultUserPhoto
                 }
@@ -116,7 +116,7 @@ export function Partner() {
                   5
                 </Text>
               </HStack>
-            </VStack>
+            </VStack> 
             <VStack w="$full" bgColor="$trueGray200" p="$4" borderRadius="$md">
               <HStack justifyContent="space-between" alignItems="center">
                 <Text>Datas importantes:</Text>

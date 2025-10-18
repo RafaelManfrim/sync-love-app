@@ -1,13 +1,14 @@
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
 import { Box } from '@gluestack-ui/themed'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+
+import { Loading } from '@components/Loading'
 
 import { useAuth } from '@hooks/useAuth'
 import { AppRoutes } from './app.routes'
 import { AuthRoutes } from './auth.routes'
 
 import { gluestackUIConfig } from '../../config/gluestack-ui.config'
-import { Loading } from '@components/Loading'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 export function Routes() {
   const { user, isLoadingUserStorageData } = useAuth()
