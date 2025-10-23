@@ -79,6 +79,7 @@ export function AppRoutes() {
           height: 70 + bottom,
           paddingBottom: bottom,
           backgroundColor: colors.background,
+          borderColor: colors.border,
         },
       }}
     >

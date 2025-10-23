@@ -10,9 +10,11 @@ import { useAuth } from '@hooks/useAuth'
 import { api } from '@services/api'
 import DefaultUserPhoto from '@assets/userPhotoDefault.png'
 import { Button } from '@components/Button'
+import { useTheme } from '@hooks/useTheme'
 
 export function Settings() {
   const { user, signOut } = useAuth()
+  const { colors } = useTheme()
 
   const navigation = useNavigation<SettingsNavigationRoutesProps>()
 
@@ -36,7 +38,7 @@ export function Settings() {
         <TouchableOpacity onPress={handleNavigateToProfile}>
           <HStack
             w="$full"
-            bgColor="$trueGray200"
+            bgColor={colors.card}
             alignItems="center"
             p="$3"
             borderRadius="$md"
@@ -56,38 +58,42 @@ export function Settings() {
             />
 
             <VStack pl="$3" mr="auto">
-              <Text>{user.name}</Text>
-              <Text fontSize="$sm" color="$trueGray500">
+              <Text color={colors.title}>{user.name}</Text>
+              <Text fontSize="$sm" color={colors.text}>
                 {user.email}
               </Text>
             </VStack>
-            <Icon as={ChevronRight} color="$red500" size="xl" />
+            <Icon as={ChevronRight} color={colors.primary500} size="xl" />
           </HStack>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={handleNavigateToTheme}>
           <HStack
             w="$full"
-            bgColor="$trueGray200"
+            bgColor={colors.card}
             alignItems="center"
             p="$4"
             borderRadius="$md"
           >
-            <Text mr="auto">Temas</Text>
-            <Icon as={ChevronRight} color="$red500" size="xl" />
+            <Text mr="auto" color={colors.text}>
+              Temas
+            </Text>
+            <Icon as={ChevronRight} color={colors.primary500} size="xl" />
           </HStack>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={handleNavigateToLanguage}>
           <HStack
             w="$full"
-            bgColor="$trueGray200"
+            bgColor={colors.card}
             alignItems="center"
             p="$4"
             borderRadius="$md"
           >
-            <Text mr="auto">Idioma</Text>
-            <Icon as={ChevronRight} color="$red500" size="xl" />
+            <Text mr="auto" color={colors.text}>
+              Idioma
+            </Text>
+            <Icon as={ChevronRight} color={colors.primary500} size="xl" />
           </HStack>
         </TouchableOpacity>
       </VStack>

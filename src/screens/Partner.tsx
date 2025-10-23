@@ -27,10 +27,13 @@ import {
   useCoupleDetails,
   useEndRelationship,
 } from '@hooks/api/useCoupleQueries'
+import { useTheme } from '@hooks/useTheme'
 
 export function Partner() {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const { user } = useAuth()
+
+  const { colors } = useTheme()
 
   const { data: coupleDetails, isLoading } = useCoupleDetails()
   const { mutate: endRelationship, isPending: isSubmitting } =
@@ -51,7 +54,7 @@ export function Partner() {
           <VStack flex={1} p="$6" gap="$3">
             <HStack
               w="$full"
-              bgColor="$trueGray200"
+              bgColor={colors.card}
               alignItems="center"
               p="$3"
               borderRadius="$md"
@@ -71,17 +74,19 @@ export function Partner() {
               />
 
               <VStack pl="$3" mr="auto">
-                <Text>{partner?.name}</Text>
-                <Text fontSize="$sm" color="$trueGray500">
+                <Text color={colors.title}>{partner?.name}</Text>
+                <Text color={colors.text} fontSize="$sm">
                   {partner?.email}
                 </Text>
               </VStack>
             </HStack>
 
-            <VStack w="$full" bgColor="$trueGray200" p="$4" borderRadius="$md">
+            <VStack w="$full" bgColor={colors.card} p="$4" borderRadius="$md">
               <HStack justifyContent="space-between" alignItems="center">
-                <Text>Juntos desde:</Text>
-                <Text fontWeight="bold" color="$red500">
+                <Text color={colors.text} fontSize="$sm">
+                  Juntos desde:
+                </Text>
+                <Text fontWeight="bold" color={colors.primary500}>
                   {format(
                     new Date(coupleDetails?.created_at || 0),
                     'dd/MM/yyyy',
@@ -89,15 +94,17 @@ export function Partner() {
                 </Text>
               </HStack>
             </VStack>
-            <VStack w="$full" bgColor="$trueGray200" p="$4" borderRadius="$md">
+            <VStack w="$full" bgColor={colors.card} p="$4" borderRadius="$md">
               <HStack justifyContent="space-between" alignItems="center">
-                <Text>Listas:</Text>
-                <Text fontWeight="bold" color="$red500">
+                <Text color={colors.text} fontSize="$sm">
+                  Listas:
+                </Text>
+                <Text fontWeight="bold" color={colors.primary500}>
                   {coupleDetails?._count.ShoppingLists ?? 0}
                 </Text>
               </HStack>
             </VStack>
-            {/* <VStack w="$full" bgColor="$trueGray200" p="$4" borderRadius="$md">
+            {/* <VStack w="$full" bgColor={colors.card} p="$4" borderRadius="$md">
               <HStack justifyContent="space-between" alignItems="center">
                 <Text>Tarefas Criadas:</Text>
                 <Text fontWeight="bold" color="$red500">
@@ -117,7 +124,7 @@ export function Partner() {
                 </Text>
               </HStack>
             </VStack> 
-            <VStack w="$full" bgColor="$trueGray200" p="$4" borderRadius="$md">
+            <VStack w="$full" bgColor={colors.card} p="$4" borderRadius="$md">
               <HStack justifyContent="space-between" alignItems="center">
                 <Text>Datas importantes:</Text>
                 <Text fontWeight="bold" color="$red500">

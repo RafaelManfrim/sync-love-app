@@ -3,6 +3,7 @@ import {
   Button as GluestackButton,
   Text,
 } from '@gluestack-ui/themed'
+import { useTheme } from '@hooks/useTheme'
 import { ComponentProps } from 'react'
 
 type ButtonProps = ComponentProps<typeof GluestackButton> & {
@@ -17,23 +18,30 @@ export function Button({
   isLoading = false,
   ...rest
 }: ButtonProps) {
+  const { colors } = useTheme()
+
   return (
     <GluestackButton
       w="$full"
       h="$12"
-      bg={variant === 'outline' ? 'transparent' : '$red700'}
+      bg={variant === 'outline' ? 'transparent' : colors.primary700}
       borderWidth={variant === 'outline' ? '$1' : '$0'}
-      borderColor="$red500"
+      borderColor={colors.primary500}
       rounded="$md"
-      $active-bg={variant === 'outline' ? '$trueGray100' : '$red500'}
+      $active-bg={variant === 'outline' ? colors.background : colors.primary500}
       disabled={isLoading}
       {...rest}
     >
       {isLoading ? (
-        <ButtonSpinner color="$white" accessibilityLabel="Carregando" />
+        <ButtonSpinner
+          color={colors.textContrast}
+          accessibilityLabel="Carregando"
+        />
       ) : (
         <Text
-          color={variant === 'outline' ? '$red500' : '$white'}
+          color={
+            variant === 'outline' ? colors.primary500 : colors.textContrast
+          }
           fontFamily="$heading"
           fontSize="$sm"
         >

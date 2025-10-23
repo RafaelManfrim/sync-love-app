@@ -17,6 +17,7 @@ type ChangeNameFormData = z.infer<typeof changeNameSchema>
 
 export function ChangeName() {
   const { user } = useAuth()
+
   const { mutate: updateName, isPending } = useUpdateUserName()
 
   const { control, handleSubmit, formState } = useForm<ChangeNameFormData>({
@@ -42,7 +43,6 @@ export function ChangeName() {
             render={({ field: { value, onChange } }) => (
               <Input
                 placeholder="Nome"
-                bg="$gray600"
                 value={value}
                 onChangeText={onChange}
                 errorMessage={formState.errors?.name?.message}

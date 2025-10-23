@@ -5,6 +5,7 @@ import {
   Input as GluestackInput,
   InputField,
 } from '@gluestack-ui/themed'
+import { useTheme } from '@hooks/useTheme'
 import { ComponentProps, forwardRef, useImperativeHandle, useRef } from 'react'
 import { TextInput } from 'react-native'
 
@@ -22,6 +23,7 @@ export const Input = forwardRef<TextInput, InputProps>(
     const invalid = !!errorMessage || isInvalid
 
     const innerRef = useRef<TextInput>(null)
+    const { colors } = useTheme()
 
     useImperativeHandle(ref, () => innerRef.current as TextInput)
 
@@ -30,10 +32,10 @@ export const Input = forwardRef<TextInput, InputProps>(
         <GluestackInput
           h="$12"
           borderWidth="$1"
-          borderColor="$trueGray200"
+          borderColor={colors.border}
           borderRadius="$md"
           $focus={{
-            borderColor: invalid ? '$error500' : '$red500',
+            borderColor: invalid ? '$error500' : colors.primary500,
           }}
           $invalid={{
             borderColor: '$error500',
@@ -43,11 +45,11 @@ export const Input = forwardRef<TextInput, InputProps>(
         >
           <InputField
             ref={innerRef as unknown as null}
-            bg="$trueGray100"
             px="$4"
-            color="$trueGray700"
+            bg={colors.card}
+            color={colors.text}
+            placeholderTextColor={colors.textInactive}
             fontFamily="$body"
-            placeholderTextColor="$trueGray400"
             {...rest}
           />
         </GluestackInput>

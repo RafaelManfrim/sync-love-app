@@ -32,10 +32,12 @@ import { useNavigation } from '@react-navigation/native'
 import { SettingsNavigationRoutesProps } from '@routes/settings.routes'
 import { useState } from 'react'
 import { useDeleteAccount } from '@hooks/api/useUserQueries'
+import { useTheme } from '@hooks/useTheme'
 
 export function Profile() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
+  const { colors } = useTheme()
   const toast = useToast()
   const { user, updateUserProfile } = useAuth()
   const navigation = useNavigation<SettingsNavigationRoutesProps>()
@@ -162,7 +164,7 @@ export function Profile() {
 
             <TouchableOpacity onPress={handleUserPhotoSelect}>
               <Text
-                color="$amber500"
+                color={colors.primary500}
                 fontFamily="$heading"
                 fontSize="$md"
                 mt="$2"
@@ -176,26 +178,30 @@ export function Profile() {
               <TouchableOpacity onPress={handleNavigateToChangeName}>
                 <HStack
                   w="$full"
-                  bgColor="$trueGray200"
+                  bgColor={colors.card}
                   alignItems="center"
                   p="$4"
                   borderRadius="$md"
                 >
-                  <Text mr="auto">Alterar Nome</Text>
-                  <Icon as={ChevronRight} color="$red500" size="xl" />
+                  <Text mr="auto" color={colors.text}>
+                    Alterar Nome
+                  </Text>
+                  <Icon as={ChevronRight} color={colors.primary500} size="xl" />
                 </HStack>
               </TouchableOpacity>
 
               <TouchableOpacity onPress={handleNavigateToChangePassword}>
                 <HStack
                   w="$full"
-                  bgColor="$trueGray200"
+                  bgColor={colors.card}
                   alignItems="center"
                   p="$4"
                   borderRadius="$md"
                 >
-                  <Text mr="auto">Alterar Senha</Text>
-                  <Icon as={ChevronRight} color="$red500" size="xl" />
+                  <Text mr="auto" color={colors.text}>
+                    Alterar Senha
+                  </Text>
+                  <Icon as={ChevronRight} color={colors.primary500} size="xl" />
                 </HStack>
               </TouchableOpacity>
             </Center>
