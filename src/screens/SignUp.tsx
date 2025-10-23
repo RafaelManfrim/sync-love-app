@@ -22,6 +22,7 @@ import { useAuth } from '@hooks/useAuth'
 import { Select } from '@components/Select'
 import { TextInput } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { useTheme } from '@hooks/useTheme'
 
 const signUpSchema = z
   .object({
@@ -45,6 +46,8 @@ type FormDataProps = z.infer<typeof signUpSchema>
 
 export function SignUp() {
   const [isLoading, setIsLoading] = useState(false)
+
+  const { colors } = useTheme()
 
   const { control, handleSubmit, formState } = useForm<FormDataProps>({
     resolver: zodResolver(signUpSchema),
@@ -114,13 +117,13 @@ export function SignUp() {
         <Center my="$16">
           <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
 
-          <Text color="$true100" fontSize="$sm" textAlign="center">
+          <Text color={colors.text} fontSize="$sm" textAlign="center">
             Tenha um relacionamento melhor com seu parceiro
           </Text>
         </Center>
 
         <Center gap="$2">
-          <Heading color="$true100">Crie sua conta</Heading>
+          <Heading color={colors.title}>Crie sua conta</Heading>
 
           <Controller
             name="name"

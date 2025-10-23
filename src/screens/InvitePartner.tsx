@@ -20,6 +20,7 @@ import { useNavigation } from '@react-navigation/native'
 import { AuthNavigationRoutesProps } from '@routes/auth.routes'
 import { ToastMessage } from '@components/ToastMessage'
 import { Platform } from 'react-native'
+import { useTheme } from '@hooks/useTheme'
 
 const invitePartnerSchema = z.object({
   email: z.string().email('E-mail inválido').nonempty('Informe o e-mail'),
@@ -28,6 +29,8 @@ const invitePartnerSchema = z.object({
 type FormDataProps = z.infer<typeof invitePartnerSchema>
 
 export function InvitePartner() {
+  const { colors } = useTheme()
+
   const [isLoading, setIsLoading] = useState(false)
 
   const { control, handleSubmit, formState } = useForm<FormDataProps>({
@@ -76,13 +79,13 @@ export function InvitePartner() {
           <Center my="$16">
             <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
 
-            <Text color="$trueGray700" fontSize="$sm" textAlign="center">
+            <Text color={colors.text} fontSize="$sm" textAlign="center">
               Tenha um relacionamento melhor com seu parceiro
             </Text>
           </Center>
 
           <Center gap="$2">
-            <Heading color="$trueGray700">Convide seu parceiro</Heading>
+            <Heading color={colors.title}>Convide seu parceiro</Heading>
 
             <Controller
               name="email"

@@ -13,7 +13,7 @@ async function acceptInvite(id: number) {
 }
 
 async function rejectInvite(id: number) {
-  await api.post(`/couple-invitations/${id}/reject`)
+  await api.post(`/couple-invitations/${id}/decline`)
 }
 
 async function deleteInvite(id: number) {

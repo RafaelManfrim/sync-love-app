@@ -24,8 +24,11 @@ import {
 } from '@hooks/api/useInvitationQueries'
 import { useEffect } from 'react'
 import { useAuth } from '@hooks/useAuth'
+import { useTheme } from '@hooks/useTheme'
 
 export function WaitingPartner() {
+  const { colors } = useTheme()
+
   const { data: invitations, isLoading } = useInvitations()
   const { mutate: acceptInvite, isPending: isAccepting } = useAcceptInvite()
   const { mutate: rejectInvite, isPending: isRejecting } = useRejectInvite()
@@ -57,16 +60,16 @@ export function WaitingPartner() {
         <Center my="$16">
           <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
 
-          <Text color="$trueGray700" fontSize="$sm" textAlign="center">
+          <Text color={colors.text} fontSize="$sm" textAlign="center">
             Tenha um relacionamento melhor com seu parceiro
           </Text>
         </Center>
 
         <Center gap="$2">
-          <Heading color="$trueGray700">Encontre seu parceiro</Heading>
+          <Heading color={colors.title}>Encontre seu parceiro</Heading>
 
           <Text
-            color="$trueGray700"
+            color={colors.text}
             textAlign="center"
             fontFamily="$heading"
             bold
@@ -76,7 +79,7 @@ export function WaitingPartner() {
 
           {/* Listagen de convites recebidos e enviados */}
           {invitations?.recievedInvites.length === 0 && (
-            <Text color="$trueGray700">Nenhum convite recebido</Text>
+            <Text color={colors.textInactive}>Nenhum convite recebido</Text>
           )}
 
           {invitations?.recievedInvites.map((invite) => (
@@ -85,14 +88,14 @@ export function WaitingPartner() {
               w="$full"
               px="$4"
               py="$2"
-              bg="$white"
+              bg={colors.card}
               borderWidth={1}
-              borderColor="$trueGray200"
+              borderColor={colors.border}
               borderRadius="$md"
             >
               <VStack>
-                <Text color="$trueGray600">De: {invite.inviter.name}</Text>
-                <Text color="$trueGray600" fontSize="$sm">
+                <Text color={colors.title}>De: {invite.inviter.name}</Text>
+                <Text color={colors.text} fontSize="$sm">
                   {invite.inviter.email}
                 </Text>
               </VStack>
@@ -103,10 +106,10 @@ export function WaitingPartner() {
                 mt="$1"
                 w="$full"
               >
-                <Text color="$trueGray500" fontSize="$sm">
+                <Text color={colors.textInactive} fontSize="$sm">
                   Recebido em:
                 </Text>
-                <Text color="$trueGray400" fontSize="$sm">
+                <Text color={colors.textInactive} fontSize="$sm">
                   {new Date(invite.invited_at).toLocaleDateString()}
                   {' - '}
                   {new Date(invite.invited_at).toLocaleTimeString()}
@@ -136,7 +139,7 @@ export function WaitingPartner() {
           <Box>{isLoadingSomething && <Loading />}</Box>
 
           <Text
-            color="$trueGray700"
+            color={colors.text}
             textAlign="center"
             mt="$4"
             fontFamily="$heading"
@@ -146,7 +149,7 @@ export function WaitingPartner() {
           </Text>
 
           {invitations?.sentInvites.length === 0 && (
-            <Text color="$trueGray700">Nenhum convite enviado</Text>
+            <Text color={colors.textInactive}>Nenhum convite enviado</Text>
           )}
 
           {invitations?.sentInvites.map((invite) => (
@@ -155,9 +158,9 @@ export function WaitingPartner() {
               w="$full"
               px="$4"
               py="$2"
-              bg="$white"
+              bg={colors.card}
               borderWidth={1}
-              borderColor="$trueGray200"
+              borderColor={colors.border}
               borderRadius="$md"
             >
               <HStack
@@ -165,7 +168,7 @@ export function WaitingPartner() {
                 alignItems="center"
                 w="$full"
               >
-                <Text color="$trueGray600">{invite.invitee_email}</Text>
+                <Text color={colors.title}>{invite.invitee_email}</Text>
 
                 <TouchableOpacity onPress={() => deleteInvite(invite.id)}>
                   <Icon as={TrashIcon} size="lg" color="$error500" />
@@ -177,10 +180,10 @@ export function WaitingPartner() {
                 mt="$1"
                 w="$full"
               >
-                <Text color="$trueGray500" fontSize="$sm">
+                <Text color={colors.text} fontSize="$sm">
                   Enviado em:
                 </Text>
-                <Text color="$trueGray400" fontSize="$sm">
+                <Text color={colors.textInactive} fontSize="$sm">
                   {new Date(invite.invited_at).toLocaleDateString()}
                   {' - '}
                   {new Date(invite.invited_at).toLocaleTimeString()}

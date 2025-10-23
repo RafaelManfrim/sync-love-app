@@ -22,6 +22,7 @@ import { ToastMessage } from '@components/ToastMessage'
 import { useEffect, useState } from 'react'
 import { z } from 'zod'
 import { Platform } from 'react-native'
+import { useTheme } from '@hooks/useTheme'
 
 const signInSchema = z.object({
   email: z.string().nonempty('Informe o e-mail').email('E-mail inválido'),
@@ -32,6 +33,8 @@ type FormDataProps = z.infer<typeof signInSchema>
 
 export function SignIn() {
   const [isLoading, setIsLoading] = useState(false)
+
+  const { colors } = useTheme()
 
   const { control, handleSubmit, formState } = useForm<FormDataProps>({
     resolver: zodResolver(signInSchema),
@@ -92,13 +95,13 @@ export function SignIn() {
           <Center my="$16">
             <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
 
-            <Text color="$trueGray700" fontSize="$sm" textAlign="center">
+            <Text color={colors.text} fontSize="$sm" textAlign="center">
               Tenha um relacionamento melhor com seu parceiro
             </Text>
           </Center>
 
           <Center gap="$2">
-            <Heading color="$trueGray700">Acesse a conta</Heading>
+            <Heading color={colors.title}>Acesse a conta</Heading>
 
             <Controller
               name="email"
@@ -139,12 +142,7 @@ export function SignIn() {
           </Center>
 
           <Center flex={1} justifyContent="flex-end" mt="$4">
-            <Text
-              color="$trueGray700"
-              fontSize="$sm"
-              mb="$3"
-              fontFamily="$body"
-            >
+            <Text color={colors.text} fontSize="$sm" mb="$3" fontFamily="$body">
               Ainda não tem acesso?
             </Text>
 
