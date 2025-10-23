@@ -1,14 +1,63 @@
-import { Button } from '@components/Button'
 import { ScreenHeader } from '@components/ScreenHeader'
-import { Box, Center, HStack, Text, VStack } from '@gluestack-ui/themed'
+import {
+  Box,
+  HStack,
+  Icon,
+  Pressable,
+  Text,
+  VStack,
+} from '@gluestack-ui/themed'
+import { useTheme } from '@hooks/useTheme'
+import { Check } from 'lucide-react-native'
+import { ThemeName } from '../theme'
 
 export function Theme() {
-  function handleChangeTheme() {}
+  const { currentTheme, changeTheme, colors, customTheme } = useTheme()
+
+  const themes: Record<ThemeName, { name: string }> = {
+    default: { name: 'Padrão Claro' },
+    defaultDark: { name: 'Padrão Escuro' },
+    oceanBlue: { name: 'Azul Oceano' },
+  }
+
   return (
     <VStack flex={1}>
       <ScreenHeader title="Temas" hasGoBackButton />
       <VStack flex={1} p="$6" gap="$3">
-        <HStack
+        {Object.entries(themes).map(([key, theme]) => (
+          <Pressable
+            key={key}
+            onPress={() => changeTheme(key as ThemeName)}
+            bg={colors.card}
+            p="$4"
+            rounded="$md"
+            borderWidth={2}
+            borderColor={
+              currentTheme === key ? colors.primary500 : 'transparent'
+            }
+          >
+            <HStack alignItems="center" justifyContent="space-between">
+              <HStack alignItems="center" space="md">
+                <Box
+                  w="$8"
+                  h="$8"
+                  rounded="$full"
+                  bgColor={
+                    customTheme.config.tokens.colors[key as ThemeName]
+                      .primary500
+                  }
+                />
+                <Text color={colors.text} fontSize="$md">
+                  {theme.name}
+                </Text>
+              </HStack>
+              {currentTheme === key && (
+                <Icon as={Check} color={colors.primary500} />
+              )}
+            </HStack>
+          </Pressable>
+        ))}
+        {/* <HStack
           bgColor="$trueGray200"
           p="$3"
           borderRadius="$md"
@@ -63,16 +112,16 @@ export function Theme() {
             <Box w="$8" h="$8" bgColor="$emerald500" rounded="$full"></Box>
             <Box w="$8" h="$8" bgColor="$amber500" rounded="$full"></Box>
           </HStack>
-        </HStack>
+        </HStack> */}
       </VStack>
 
-      <Center w="$full" gap="$3" p="$6">
+      {/* <Center w="$full" gap="$3" p="$6">
         <Button
           title="Atualizar"
           onPress={handleChangeTheme}
           // isLoading={isSubmitting}
         />
-      </Center>
+      </Center> */}
     </VStack>
   )
 }

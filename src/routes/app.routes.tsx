@@ -14,11 +14,11 @@ import { TasksRoutes } from './tasks.routes'
 import { DatesRoutes } from './dates.routes'
 import { SettingsRoutes } from './settings.routes'
 
-import { gluestackUIConfig } from '../../config/gluestack-ui.config'
 import { TouchableOpacity } from 'react-native'
 import { View } from '@gluestack-ui/themed'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { PartnerRoutes } from './partner.routes'
+import { useTheme } from '@hooks/useTheme'
 
 type AppRoutesProps = {
   listsStack: undefined
@@ -34,7 +34,7 @@ const { Navigator, Screen } = createBottomTabNavigator<AppRoutesProps>()
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CustomTabBarButton = (props: any) => {
-  const { children, onPress, tokens } = props
+  const { children, onPress, colors } = props
   const isFocused = props['aria-selected']
 
   return (
@@ -53,7 +53,7 @@ const CustomTabBarButton = (props: any) => {
           maxWidth="$16"
           borderTopLeftRadius={8}
           borderTopRightRadius={8}
-          backgroundColor={tokens.colors.red500}
+          backgroundColor={colors.primary500}
           opacity={isFocused ? 1 : 0}
         ></View>
       </View>
@@ -62,8 +62,8 @@ const CustomTabBarButton = (props: any) => {
 }
 
 export function AppRoutes() {
-  const { tokens } = gluestackUIConfig
-  const iconSize = tokens.space['6']
+  const { colors, customTheme } = useTheme()
+  const iconSize = customTheme.config.tokens.space['6']
 
   const { bottom } = useSafeAreaInsets()
 
@@ -72,13 +72,13 @@ export function AppRoutes() {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: true,
-        tabBarActiveTintColor: tokens.colors.red500,
-        tabBarInactiveTintColor: tokens.colors.backgroundDark500,
+        tabBarActiveTintColor: colors.primary500,
+        tabBarInactiveTintColor: colors.textInactive,
 
         tabBarStyle: {
           height: 70 + bottom,
           paddingBottom: bottom,
-          backgroundColor: tokens.colors.white,
+          backgroundColor: colors.background,
         },
       }}
     >
@@ -91,7 +91,7 @@ export function AppRoutes() {
             <ShoppingCartSvg width={iconSize} height={iconSize} fill={color} />
           ),
           tabBarButton: (props) => (
-            <CustomTabBarButton {...props} tokens={tokens} />
+            <CustomTabBarButton {...props} colors={colors} />
           ),
         }}
       />
@@ -105,7 +105,7 @@ export function AppRoutes() {
             <ClipboardListSvg width={iconSize} height={iconSize} fill={color} />
           ),
           tabBarButton: (props) => (
-            <CustomTabBarButton {...props} tokens={tokens} />
+            <CustomTabBarButton {...props} colors={colors} />
           ),
         }}
       />
@@ -119,7 +119,7 @@ export function AppRoutes() {
             <CalendarSvg width={iconSize} height={iconSize} fill={color} />
           ),
           tabBarButton: (props) => (
-            <CustomTabBarButton {...props} tokens={tokens} />
+            <CustomTabBarButton {...props} colors={colors} />
           ),
         }}
       />
@@ -133,7 +133,7 @@ export function AppRoutes() {
             <HeartSvg width={iconSize} height={iconSize} fill={color} />
           ),
           tabBarButton: (props) => (
-            <CustomTabBarButton {...props} tokens={tokens} />
+            <CustomTabBarButton {...props} colors={colors} />
           ),
         }}
       />
@@ -147,7 +147,7 @@ export function AppRoutes() {
             <GearSvg width={iconSize} height={iconSize} fill={color} />
           ),
           tabBarButton: (props) => (
-            <CustomTabBarButton {...props} tokens={tokens} />
+            <CustomTabBarButton {...props} colors={colors} />
           ),
         }}
       />

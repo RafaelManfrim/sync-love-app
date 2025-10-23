@@ -10,12 +10,11 @@ import {
   Montserrat_500Medium,
   Montserrat_700Bold,
 } from '@expo-google-fonts/montserrat'
-import { GluestackUIProvider } from '@gluestack-ui/themed'
-import { config } from './config/gluestack-ui.config'
 import { Loading } from '@components/Loading'
 import { Routes } from '@routes/index'
 import { AuthContextProvider } from '@contexts/AuthContext'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ThemeContextProvider } from '@contexts/ThemeContext'
 
 const queryClient = new QueryClient()
 // import './src/i18n'
@@ -28,9 +27,8 @@ export default function App() {
     Montserrat_500Medium,
     Montserrat_700Bold,
   })
-
   return (
-    <GluestackUIProvider config={config}>
+    <ThemeContextProvider>
       <QueryClientProvider client={queryClient}>
         <StatusBar
           barStyle="dark-content"
@@ -41,6 +39,6 @@ export default function App() {
           {fontsLoaded ? <Routes /> : <Loading />}
         </AuthContextProvider>
       </QueryClientProvider>
-    </GluestackUIProvider>
+    </ThemeContextProvider>
   )
 }

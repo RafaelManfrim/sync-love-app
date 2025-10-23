@@ -4,6 +4,7 @@ import { ChevronLeft } from 'lucide-react-native'
 import { TouchableOpacity } from 'react-native'
 
 import { AppNavigationRoutesProps } from '@routes/app.routes'
+import { useTheme } from '@hooks/useTheme'
 
 type ScreenHeaderProps = {
   title: string
@@ -16,23 +17,30 @@ export function ScreenHeader({
 }: ScreenHeaderProps) {
   const navigation = useNavigation<AppNavigationRoutesProps>()
 
+  const { colors } = useTheme()
+
   function handleGoBack() {
     navigation.goBack()
   }
 
   return (
-    <HStack bg="$red400" pt="$10" alignItems="center" justifyContent="center">
+    <HStack
+      bg={colors.primary400}
+      pt="$10"
+      alignItems="center"
+      justifyContent="center"
+    >
       {hasGoBackButton && (
         <TouchableOpacity
           onPress={handleGoBack}
           style={{ position: 'absolute', left: 24, top: 44 }}
         >
-          <Icon as={ChevronLeft} color="$red600" size="xl" />
+          <Icon as={ChevronLeft} color={colors.primary600} size="xl" />
         </TouchableOpacity>
       )}
       <Heading
         fontSize="$xl"
-        color="$trueGray100"
+        color={colors.textContrast}
         fontFamily="$heading"
         pb="$5"
       >
