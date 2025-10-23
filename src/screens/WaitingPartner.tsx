@@ -174,21 +174,39 @@ export function WaitingPartner() {
                   <Icon as={TrashIcon} size="lg" color="$error500" />
                 </TouchableOpacity>
               </HStack>
-              <HStack
-                alignItems="center"
-                justifyContent="space-between"
-                mt="$1"
-                w="$full"
-              >
-                <Text color={colors.text} fontSize="$sm">
-                  Enviado em:
-                </Text>
-                <Text color={colors.textInactive} fontSize="$sm">
-                  {new Date(invite.invited_at).toLocaleDateString()}
-                  {' - '}
-                  {new Date(invite.invited_at).toLocaleTimeString()}
-                </Text>
-              </HStack>
+              {invite.rejected_at ? (
+                <HStack
+                  alignItems="center"
+                  justifyContent="space-between"
+                  mt="$1"
+                  w="$full"
+                >
+                  <Text color="$error500" fontSize="$sm">
+                    Rejeitado em:
+                  </Text>
+                  <Text color={colors.textInactive} fontSize="$sm">
+                    {new Date(invite.rejected_at).toLocaleDateString()}
+                    {' - '}
+                    {new Date(invite.rejected_at).toLocaleTimeString()}
+                  </Text>
+                </HStack>
+              ) : (
+                <HStack
+                  alignItems="center"
+                  justifyContent="space-between"
+                  mt="$1"
+                  w="$full"
+                >
+                  <Text color={colors.text} fontSize="$sm">
+                    Enviado em:
+                  </Text>
+                  <Text color={colors.textInactive} fontSize="$sm">
+                    {new Date(invite.invited_at).toLocaleDateString()}
+                    {' - '}
+                    {new Date(invite.invited_at).toLocaleTimeString()}
+                  </Text>
+                </HStack>
+              )}
             </VStack>
           ))}
 
