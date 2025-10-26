@@ -17,7 +17,6 @@ import {
 import { UserPhoto } from '@components/UserPhoto'
 import { ScreenHeader } from '@components/ScreenHeader'
 import { Button } from '@components/Button'
-import { useAuth } from '@hooks/useAuth'
 import { api } from '@services/api'
 import DefaultUserPhoto from '@assets/userPhotoDefault.png'
 import { useState } from 'react'
@@ -31,15 +30,12 @@ import { useTheme } from '@hooks/useTheme'
 
 export function Partner() {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
-  const { user } = useAuth()
 
   const { colors } = useTheme()
 
   const { data: coupleDetails, isLoading } = useCoupleDetails()
   const { mutate: endRelationship, isPending: isSubmitting } =
     useEndRelationship()
-
-  const partner = coupleDetails?.User.find((u) => u.id !== user.id)
 
   async function handleEndRelationship() {
     endRelationship()
@@ -49,7 +45,7 @@ export function Partner() {
     <VStack flex={1}>
       <ScreenHeader title="Relacionamento" />
 
-      {!isLoading ? (
+      {!isLoading && coupleDetails ? (
         <>
           <VStack flex={1} p="$6" gap="$3">
             <HStack
@@ -61,9 +57,9 @@ export function Partner() {
             >
               <UserPhoto
                 source={
-                  partner?.avatar_url
+                  coupleDetails.partner.avatar_url
                     ? {
-                        uri: `${api.defaults.baseURL}/tmp/uploads/avatar/${partner?.avatar_url}`,
+                        uri: `${api.defaults.baseURL}/tmp/uploads/avatar/${coupleDetails.partner.avatar_url}`,
                       }
                     : DefaultUserPhoto
                 }
@@ -74,9 +70,9 @@ export function Partner() {
               />
 
               <VStack pl="$3" mr="auto">
-                <Text color={colors.title}>{partner?.name}</Text>
+                <Text color={colors.title}>{coupleDetails.partner.name}</Text>
                 <Text color={colors.text} fontSize="$sm">
-                  {partner?.email}
+                  {coupleDetails.partner.email}
                 </Text>
               </VStack>
             </HStack>
@@ -88,7 +84,7 @@ export function Partner() {
                 </Text>
                 <Text fontWeight="bold" color={colors.primary500}>
                   {format(
-                    new Date(coupleDetails?.created_at || 0),
+                    new Date(coupleDetails.togetherSince || 0),
                     'dd/MM/yyyy',
                   )}
                 </Text>
@@ -100,38 +96,46 @@ export function Partner() {
                   Listas:
                 </Text>
                 <Text fontWeight="bold" color={colors.primary500}>
-                  {coupleDetails?._count.ShoppingLists ?? 0}
+                  {coupleDetails.listsCreated ?? 0}
                 </Text>
               </HStack>
             </VStack>
-            {/* <VStack w="$full" bgColor={colors.card} p="$4" borderRadius="$md">
-              <HStack justifyContent="space-between" alignItems="center">
-                <Text>Tarefas Criadas:</Text>
-                <Text fontWeight="bold" color="$red500">
-                  15
-                </Text>
-              </HStack>
-              <HStack justifyContent="space-between" alignItems="center">
-                <Text>Concluídas por você:</Text>
-                <Text fontWeight="bold" color="$red500">
-                  10
-                </Text>
-              </HStack>
-              <HStack justifyContent="space-between" alignItems="center">
-                <Text>Concluídas por {partner?.name}:</Text>
-                <Text fontWeight="bold" color="$red500">
-                  5
-                </Text>
-              </HStack>
-            </VStack> 
             <VStack w="$full" bgColor={colors.card} p="$4" borderRadius="$md">
               <HStack justifyContent="space-between" alignItems="center">
-                <Text>Datas importantes:</Text>
-                <Text fontWeight="bold" color="$red500">
-                  3
+                <Text color={colors.text} fontSize="$sm">
+                  Tarefas Criadas:
+                </Text>
+                <Text fontWeight="bold" color={colors.primary500}>
+                  {coupleDetails.totalTasksCreated ?? 0}
                 </Text>
               </HStack>
-            </VStack> */}
+              <HStack justifyContent="space-between" alignItems="center">
+                <Text color={colors.text} fontSize="$sm">
+                  Concluídas por você:
+                </Text>
+                <Text fontWeight="bold" color={colors.primary500}>
+                  {coupleDetails.taskCompletionSummary?.me ?? 0}
+                </Text>
+              </HStack>
+              <HStack justifyContent="space-between" alignItems="center">
+                <Text color={colors.text} fontSize="$sm">
+                  Concluídas por {coupleDetails.partner.name}:
+                </Text>
+                <Text fontWeight="bold" color={colors.primary500}>
+                  {coupleDetails.taskCompletionSummary?.partner ?? 0}
+                </Text>
+              </HStack>
+            </VStack>
+            <VStack w="$full" bgColor={colors.card} p="$4" borderRadius="$md">
+              <HStack justifyContent="space-between" alignItems="center">
+                <Text color={colors.text} fontSize="$sm">
+                  Datas importantes:
+                </Text>
+                <Text fontWeight="bold" color={colors.primary500}>
+                  {coupleDetails.totalCalendarEventsCreated ?? 0}
+                </Text>
+              </HStack>
+            </VStack>
           </VStack>
           <Center w="$full" gap="$3" p="$6">
             <Button

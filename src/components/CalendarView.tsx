@@ -1,6 +1,7 @@
 import { Calendar, LocaleConfig } from 'react-native-calendars'
 import { DateData } from 'react-native-calendars/src/types'
 import { gluestackUIConfig } from '../../config/gluestack-ui.config'
+import { addYears } from 'date-fns'
 
 // Configuração para o idioma Português (Brasil)
 LocaleConfig.locales['pt-br'] = {
@@ -92,6 +93,7 @@ export function CalendarView({ dates, onDayPress, selectedDate }: Props) {
     <Calendar
       onDayPress={onDayPress}
       markedDates={markedDates}
+      maxDate={addYears(new Date(), 50).toDateString()} // hoje mais 50 anos com date fns
       theme={{
         backgroundColor: colors.trueGray200,
         calendarBackground: colors.trueGray200,

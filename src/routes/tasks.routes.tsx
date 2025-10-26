@@ -2,11 +2,18 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack'
+import { TaskCreate } from '@screens/TaskCreate'
 
-import { Missions } from '@screens/Missions'
+import { Tasks } from '@screens/Tasks'
+
+export type TaskDetailsRouteParams = {
+  taskId: number
+}
 
 type TasksRoutesProps = {
-  missions: undefined
+  tasks: undefined
+  taskCreate: undefined
+  taskDetails: TaskDetailsRouteParams
 }
 
 export type TasksNavigationRoutesProps =
@@ -17,7 +24,9 @@ const { Navigator, Screen } = createNativeStackNavigator<TasksRoutesProps>()
 export function TasksRoutes() {
   return (
     <Navigator screenOptions={{ headerShown: false }}>
-      <Screen name="missions" component={Missions} />
+      <Screen name="tasks" component={Tasks} />
+      <Screen name="taskCreate" component={TaskCreate} />
+      {/* <Screen name="taskDetails" component={TaskDetails} /> */}
     </Navigator>
   )
 }

@@ -1,0 +1,248 @@
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { api } from '@services/api'
+import {
+  TaskForDayDTO,
+  HouseholdTaskDTO,
+  TaskSummaryDTO,
+} from '@dtos/HouseholdTaskDTO'
+
+// === Tipos para as Mutations ===
+type CreateTaskPayload = {
+  title: string
+  description?: string | null
+  start_date: Date
+  recurrence_rule?: string | null
+}
+
+type UpdateTaskPayload = {
+  taskId: number
+  data: Partial<CreateTaskPayload> // Permite atualização parcial
+}
+
+type CompleteTaskPayload = {
+  taskId: number
+  task_due_date: Date // O dia (YYYY-MM-DD)
+}
+
+type CreateExceptionPayload = {
+  taskId: number
+  exception_date: Date // O dia (YYYY-MM-DD)
+}
+
+// === Constantes das Query Keys ===
+const TASK_QUERY_KEYS = {
+  tasksByDay: (date: string) => ['householdTasks', 'byDay', date],
+  taskDetails: (taskId: number) => ['householdTasks', 'details', taskId],
+  tasksSummary: (year: number, month: number) => [
+    'householdTasks',
+    'summary',
+    year,
+    month,
+  ],
+}
+
+// === HOOKS ===
+
+export function useHouseholdTaskQueries() {
+  const queryClient = useQueryClient()
+
+  // --- QUERIES (Busca de dados) ---
+
+  /**
+   * (GET /tasks/by-day)
+   * Busca as tarefas filtradas por um dia específico.
+   * A data DEVE estar no formato "YYYY-MM-DD".
+   */
+  const useFetchTasksByDay = (dateYYYYMMDD: string) => {
+    return useQuery({
+      queryKey: TASK_QUERY_KEYS.tasksByDay(dateYYYYMMDD),
+      queryFn: async () => {
+        const response = await api.get<{ tasks: TaskForDayDTO[] }>(
+          '/tasks/by-day',
+          {
+            params: {
+              date: dateYYYYMMDD, // ex: "2025-10-25"
+            },
+          },
+        )
+        return response.data.tasks
+      },
+    })
+  }
+
+  /**
+   * (GET /tasks/:taskId)
+   * Busca os detalhes de uma única tarefa (para a tela de edição).
+   */
+  const useFetchTaskDetails = (taskId: number, enabled: boolean = true) => {
+    return useQuery({
+      queryKey: TASK_QUERY_KEYS.taskDetails(taskId),
+      queryFn: async () => {
+        const response = await api.get<{ task: HouseholdTaskDTO }>(
+          `/tasks/${taskId}`,
+        )
+        return response.data.task
+      },
+      enabled: !!taskId && enabled, // Só executa se taskId for válido
+    })
+  }
+
+  /**
+   * (GET /tasks/summary)
+   * Busca o sumário do mês (para o dashboard).
+   */
+  const useFetchTasksSummary = (year: number, month: number) => {
+    return useQuery({
+      queryKey: TASK_QUERY_KEYS.tasksSummary(year, month),
+      queryFn: async () => {
+        const response = await api.get<TaskSummaryDTO>('/tasks/summary', {
+          params: { year, month },
+        })
+        return response.data
+      },
+    })
+  }
+
+  // --- Funções de Invalidação ---
+  // Invalida a lista do dia e o sumário
+  const invalidateTasksQueries = (dayDate: Date) => {
+    const dateStr = dayDate.toISOString().split('T')[0]
+    const year = dayDate.getFullYear()
+    const month = dayDate.getMonth() + 1
+
+    queryClient.invalidateQueries({
+      queryKey: TASK_QUERY_KEYS.tasksByDay(dateStr),
+    })
+    queryClient.invalidateQueries({
+      queryKey: TASK_QUERY_KEYS.tasksSummary(year, month),
+    })
+  }
+
+  // --- MUTATIONS (Criação, Edição, Deleção) ---
+
+  /**
+   * (POST /tasks)
+   * Cria uma nova tarefa.
+   */
+  const useCreateTask = () => {
+    return useMutation({
+      mutationFn: async (payload: CreateTaskPayload) => {
+        return api.post('/tasks', payload)
+      },
+      onSuccess: (_, variables) => {
+        // Invalida as queries do dia de início e do sumário
+        invalidateTasksQueries(variables.start_date)
+      },
+    })
+  }
+
+  /**
+   * (PUT /tasks/:taskId)
+   * Atualiza uma tarefa.
+   */
+  const useUpdateTask = () => {
+    return useMutation({
+      mutationFn: async ({ taskId, data }: UpdateTaskPayload) => {
+        return api.put(`/tasks/${taskId}`, data)
+      },
+      onSuccess: (_, variables) => {
+        // Invalida o cache dos detalhes
+        queryClient.invalidateQueries({
+          queryKey: TASK_QUERY_KEYS.taskDetails(variables.taskId),
+        })
+        // Invalida todas as queries de tarefas
+        queryClient.invalidateQueries({ queryKey: ['householdTasks'] })
+      },
+    })
+  }
+
+  /**
+   * (DELETE /tasks/:taskId)
+   * Deleta (soft delete) uma tarefa.
+   */
+  const useDeleteTask = () => {
+    return useMutation({
+      mutationFn: async (taskId: number) => {
+        return api.delete(`/tasks/${taskId}`)
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['householdTasks'] })
+      },
+    })
+  }
+
+  /**
+   * (POST /tasks/:taskId/complete)
+   * Marca uma tarefa como concluída.
+   */
+  const useCompleteTask = () => {
+    return useMutation({
+      mutationFn: async ({ taskId, task_due_date }: CompleteTaskPayload) => {
+        return api.post(`/tasks/${taskId}/complete`, { task_due_date })
+      },
+      onSuccess: (_, variables) => {
+        invalidateTasksQueries(variables.task_due_date)
+      },
+    })
+  }
+
+  /**
+   * (DELETE /tasks/completions/:completionId)
+   * "Desfaz" uma conclusão.
+   */
+  const useUncompleteTask = () => {
+    return useMutation({
+      mutationFn: async (completionId: number) => {
+        return api.delete(`/tasks/completions/${completionId}`)
+      },
+      // Invalidação é tratada no componente (onSuccess)
+      // pois precisamos saber a 'task_due_date'
+    })
+  }
+
+  /**
+   * (POST /tasks/:taskId/exceptions)
+   * Cancela uma tarefa para um dia.
+   */
+  const useCreateTaskException = () => {
+    return useMutation({
+      mutationFn: async ({
+        taskId,
+        exception_date,
+      }: CreateExceptionPayload) => {
+        return api.post(`/tasks/${taskId}/exceptions`, { exception_date })
+      },
+      onSuccess: (_, variables) => {
+        invalidateTasksQueries(variables.exception_date)
+      },
+    })
+  }
+
+  /**
+   * (DELETE /tasks/exceptions/:exceptionId)
+   * "Desfaz" um cancelamento.
+   */
+  const useDeleteTaskException = () => {
+    return useMutation({
+      mutationFn: async (exceptionId: number) => {
+        return api.delete(`/tasks/exceptions/${exceptionId}`)
+      },
+      // Invalidação é tratada no componente (onSuccess)
+    })
+  }
+
+  return {
+    useFetchTasksByDay,
+    useFetchTaskDetails,
+    useFetchTasksSummary,
+    useCreateTask,
+    useUpdateTask,
+    useDeleteTask,
+    useCompleteTask,
+    useUncompleteTask,
+    useCreateTaskException,
+    useDeleteTaskException,
+    // Exportamos a função de invalidação para uso customizado
+    invalidateTasksQueries,
+  }
+}
