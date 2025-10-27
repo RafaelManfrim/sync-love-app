@@ -29,12 +29,12 @@ export function ToastMessage({
     <Toast
       nativeID={`toast-${id}`}
       action={action}
-      bgColor={action === 'success' ? '$green500' : '$red500'}
+      bgColor={action === 'success' ? '$success500' : '$error500'}
       mt="$10"
     >
       <VStack space="xs" w="$full">
         <HStack w="$full" justifyContent="space-between" alignItems="center">
-          <ToastTitle color="$white" fontFamily="$heading">
+          <ToastTitle color="$white" fontFamily="$heading" size="sm">
             {title}
           </ToastTitle>
           <Pressable onPress={onClose}>

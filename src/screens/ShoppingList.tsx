@@ -1,15 +1,11 @@
 import { Button } from '@components/Button'
 import { Loading } from '@components/Loading'
 import { ScreenHeader } from '@components/ScreenHeader'
+import { ShoppingListItem } from '@components/ShoppingListItem'
 import { ToastMessage } from '@components/ToastMessage'
 import { ProductDTO } from '@dtos/ProductDTO'
 import { ShoppingItemDTO } from '@dtos/ShoppingItemDTO'
-import { ShoppingListDTO } from '@dtos/ShoppingListDTO'
 import {
-  Checkbox,
-  CheckboxIcon,
-  CheckboxIndicator,
-  CheckIcon,
   FlatList,
   HStack,
   Input,
@@ -19,6 +15,8 @@ import {
   useToast,
   VStack,
 } from '@gluestack-ui/themed'
+import { useShoppingListQueries } from '@hooks/api/useShoppingListQueries'
+import { useTheme } from '@hooks/useTheme'
 import {
   useFocusEffect,
   useNavigation,
@@ -28,87 +26,58 @@ import {
   ShoppingListNavigationRoutesProps,
   ShoppingListScreenProps,
 } from '@routes/lists.routes'
-import { api } from '@services/api'
 import { AppError } from '@utils/AppError'
 import { useCallback, useState } from 'react'
 
 export function ShoppingList() {
-  const [isLoading, setIsLoading] = useState(true)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [listDetails, setListDetails] = useState<ShoppingListDTO | null>(null)
+  // const [isLoading, setIsLoading] = useState(true)
+  // const [isSubmitting, setIsSubmitting] = useState(false)
+  // const [listDetails, setListDetails] = useState<ShoppingListDTO | null>(null)
 
   // Estados para o formulário de adicionar item
-  const [products, setProducts] = useState<ProductDTO[]>([])
+  // const [products, setProducts] = useState<ProductDTO[]>([])
   const [newItemName, setNewItemName] = useState('')
   const [suggestions, setSuggestions] = useState<ProductDTO[]>([])
+
+  const { colors } = useTheme()
 
   const navigation = useNavigation<ShoppingListNavigationRoutesProps>()
   const route = useRoute()
   const toast = useToast()
   const { shoppingListId } = route.params as ShoppingListScreenProps
 
-  async function getProducts() {
-    const { data } = await api.get<{ products: ProductDTO[] }>(
-      '/shopping-lists/products',
-    )
-    return data.products
-  }
+  const {
+    useFetchShoppingListDetails,
+    useToggleItemCheck,
+    useFetchProducts,
+    useAddItemToList,
+    invalidateListDetails,
+  } = useShoppingListQueries()
 
-  async function getShoppingListDetails(listId: number) {
-    const { data } = await api.get<{ shoppingList: ShoppingListDTO }>(
-      `/shopping-lists/${listId}`,
-    )
+  const { data: products } = useFetchProducts()
 
-    return data.shoppingList
-  }
+  const {
+    data: shoppingList,
+    isLoading,
+    // isRefetching,
+    refetch,
+    // error,
+  } = useFetchShoppingListDetails(shoppingListId)
 
-  async function addItemToList(
-    listId: number,
-    itemName: string,
-    quantity: number,
-  ) {
-    await api.post(`/shopping-lists/${listId}/items`, { itemName, quantity })
-  }
+  const { mutate: toggleItem } = useToggleItemCheck()
 
-  async function toggleItemCheck(listId: number, itemId: number) {
-    await api.patch(`/shopping-lists/${listId}/items/${itemId}/toggle`)
-  }
-
-  async function fetchListDetails() {
-    try {
-      setIsLoading(true)
-      const [details, allProducts] = await Promise.all([
-        getShoppingListDetails(shoppingListId),
-        getProducts(),
-      ])
-      setListDetails(details)
-      setProducts(allProducts)
-    } catch (error) {
-      const isAppError = error instanceof AppError
-      const title = isAppError
-        ? error.message
-        : 'Não foi possível carregar os detalhes da lista.'
-      toast.show({
-        render: ({ id }) => (
-          <ToastMessage
-            id={id}
-            onClose={() => toast.close(id)}
-            title={title}
-            action="error"
-          />
-        ),
-      })
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  const { mutateAsync: addItemToList, isPending: isAddingItem } =
+    useAddItemToList()
 
   async function handleAddItem() {
     if (!newItemName.trim()) return
 
     try {
-      setIsSubmitting(true)
-      await addItemToList(shoppingListId, newItemName, 1) // Quantidade fixa em 1 por enquanto
+      await addItemToList({
+        listId: shoppingListId,
+        itemName: newItemName,
+        quantity: 1,
+      })
       setNewItemName('')
       setSuggestions([])
       toast.show({
@@ -120,8 +89,10 @@ export function ShoppingList() {
             action="success"
           />
         ),
+        placement: 'top',
       })
-      await fetchListDetails() // Refresca a lista
+
+      invalidateListDetails(shoppingListId)
     } catch (error) {
       const isAppError = error instanceof AppError
       const title = isAppError
@@ -137,28 +108,13 @@ export function ShoppingList() {
           />
         ),
       })
-    } finally {
-      setIsSubmitting(false)
     }
   }
 
   async function handleToggleItem(itemId: number) {
     try {
-      // Optimistic Update: Atualiza a UI antes da resposta da API
-      const updatedItems = listDetails!.ShoppingListItem.map((item) =>
-        item.id === itemId
-          ? {
-              ...item,
-              is_checked: !item.is_checked,
-            }
-          : item,
-      )
-      setListDetails({ ...listDetails!, ShoppingListItem: updatedItems })
-
-      await toggleItemCheck(shoppingListId, itemId)
+      toggleItem({ listId: shoppingListId, itemId })
     } catch (error) {
-      // Reverte em caso de erro
-      fetchListDetails()
       const isAppError = error instanceof AppError
       const title = isAppError
         ? error.message
@@ -177,6 +133,8 @@ export function ShoppingList() {
   }
 
   function handleSearchTermChange(text: string) {
+    if (!products) return
+
     setNewItemName(text)
     if (text.length > 1) {
       const filteredProducts = products.filter((product) =>
@@ -199,8 +157,8 @@ export function ShoppingList() {
 
   useFocusEffect(
     useCallback(() => {
-      fetchListDetails()
-    }, [shoppingListId]),
+      refetch()
+    }, [refetch]),
   )
 
   return (
@@ -220,24 +178,37 @@ export function ShoppingList() {
                   value={newItemName}
                   onChangeText={handleSearchTermChange}
                   onSubmitEditing={handleAddItem}
+                  color={colors.text}
+                  placeholderTextColor={colors.textInactive}
+                  selectionColor={colors.primary500}
                 />
               </Input>
               <Button
-                title="Add"
+                title="+"
                 onPress={handleAddItem}
-                isLoading={isSubmitting}
-                w="$20"
+                isLoading={isAddingItem}
+                w="$12"
+                h="$10"
               />
             </HStack>
             {suggestions.length > 0 && (
-              <VStack mt="$2" bg="$trueGray200" rounded="$md">
+              <VStack
+                mt="$2"
+                bg={colors.card}
+                rounded="$md"
+                p="$3"
+                gap="$2"
+                borderWidth={1}
+                borderColor={colors.border}
+              >
                 {suggestions.map((item) => (
                   <Pressable
                     key={item.id}
                     p="$3"
+                    bg={colors.background}
                     onPress={() => handleSelectSuggestion(item)}
                   >
-                    <Text color="$black">{item.name}</Text>
+                    <Text color={colors.text}>{item.name}</Text>
                   </Pressable>
                 ))}
               </VStack>
@@ -246,49 +217,21 @@ export function ShoppingList() {
 
           {/* Lista de Itens */}
           <FlatList
-            data={listDetails?.ShoppingListItem}
+            data={shoppingList?.ShoppingListItem}
             keyExtractor={(item: unknown) =>
               (item as ShoppingItemDTO).id.toString()
             }
             renderItem={({ item }) => {
               const itemTyped = item as ShoppingItemDTO
               return (
-                <HStack
-                  bg="$gray600"
-                  p="$3"
-                  rounded="$md"
-                  mb="$3"
-                  alignItems="center"
-                  opacity={itemTyped.is_checked ? 0.5 : 1}
-                >
-                  <Checkbox
-                    size="md"
-                    isChecked={itemTyped.is_checked}
-                    onChange={() => handleToggleItem(itemTyped.id)}
-                    aria-label={itemTyped.product.name}
-                    value={itemTyped.product.name}
-                  >
-                    <CheckboxIndicator mr="$3">
-                      <CheckboxIcon as={CheckIcon} />
-                    </CheckboxIndicator>
-                  </Checkbox>
-                  <Text
-                    color="$trueGray400"
-                    flex={1}
-                    textDecorationLine={
-                      itemTyped.is_checked ? 'line-through' : 'none'
-                    }
-                  >
-                    {itemTyped.product.name}
-                  </Text>
-                  <Text color="$trueGray300" fontSize="$xs">
-                    (x{itemTyped.quantity})
-                  </Text>
-                </HStack>
+                <ShoppingListItem
+                  item={itemTyped}
+                  handleToggleItem={handleToggleItem}
+                />
               )
             }}
             ListEmptyComponent={() => (
-              <Text color="$trueGray300" textAlign="center" mt="$8">
+              <Text color={colors.textInactive} textAlign="center" mt="$8">
                 Nenhum item na lista ainda.
               </Text>
             )}
@@ -298,6 +241,11 @@ export function ShoppingList() {
             title="Finalizar Compra"
             mt="$5"
             onPress={handleCloseShoppingList}
+            disabled={
+              !shoppingList ||
+              shoppingList.ShoppingListItem.filter((item) => item.is_checked)
+                .length === 0
+            }
           />
         </VStack>
       )}

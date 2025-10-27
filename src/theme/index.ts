@@ -41,7 +41,7 @@ const defaultDarkColors: ThemeColors = {
   primary400: '#f87171',
   primary500: '#ef4444',
   primary600: '#dc2626',
-  primary700: '#b91c1c',
+  primary700: '#c92c2c',
 }
 
 const pinkColors: ThemeColors = {

@@ -1,13 +1,5 @@
 import { useState } from 'react'
-import {
-  Box,
-  FlatList,
-  VStack,
-  Text,
-  Fab,
-  FabIcon,
-  AddIcon,
-} from '@gluestack-ui/themed'
+import { Box, FlatList, VStack, Text } from '@gluestack-ui/themed'
 import { useTheme } from '@hooks/useTheme'
 import { ScreenHeader } from '@components/ScreenHeader'
 import { Loading } from '@components/Loading'
@@ -17,6 +9,7 @@ import { useHouseholdTaskQueries } from '@hooks/api/useHouseholdTaskQueries'
 import { useNavigation } from '@react-navigation/native'
 import { TasksNavigationRoutesProps } from '@routes/tasks.routes'
 import { TaskSummary } from '@components/TaskSummary'
+import { AddRoundedButton } from '@components/AddRoundedButton'
 
 export function Tasks() {
   const { colors } = useTheme()
@@ -91,16 +84,7 @@ export function Tasks() {
         />
       )}
 
-      {/* Botão para Adicionar Nova Tarefa */}
-      <Fab
-        size="lg"
-        placement="bottom right"
-        onPress={handleNavigateToNewTask}
-        bg={colors.primary500}
-        // $active-bg={colors.primaryDark}
-      >
-        <FabIcon as={AddIcon} />
-      </Fab>
+      <AddRoundedButton onPress={handleNavigateToNewTask} />
     </VStack>
   )
 }

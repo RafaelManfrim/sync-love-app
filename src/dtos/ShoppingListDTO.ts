@@ -6,6 +6,7 @@ export type ShoppingListDTO = {
   created_at: string
   author_id: number
   couple_id: number
+  closed_at: string | null
   ShoppingListItem: ShoppingItemDTO[]
   author: {
     name: string
