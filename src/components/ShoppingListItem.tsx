@@ -8,15 +8,18 @@ import {
   HStack,
 } from '@gluestack-ui/themed'
 import { useTheme } from '@hooks/useTheme'
+import { currencyFormatter } from '@utils/currencyFormatter'
 
 interface ShoppingListItemProps {
   item: ShoppingItemDTO
   handleToggleItem: (itemId: number) => void
+  isReadOnly?: boolean
 }
 
 export function ShoppingListItem({
   item,
   handleToggleItem,
+  isReadOnly = false,
 }: ShoppingListItemProps) {
   const { colors } = useTheme()
 
@@ -26,6 +29,7 @@ export function ShoppingListItem({
       mb="$3"
       borderBottomWidth={1}
       borderBottomColor={colors.border}
+      alignItems="center"
     >
       <Checkbox
         size="md"
@@ -33,6 +37,7 @@ export function ShoppingListItem({
         onChange={() => handleToggleItem(item.id)}
         aria-label={item.product.name}
         value={item.product.name}
+        isDisabled={isReadOnly}
       >
         <CheckboxIndicator
           mr="$3"
@@ -53,7 +58,12 @@ export function ShoppingListItem({
         color={item.is_checked ? colors.textInactive : colors.text}
         fontSize="$xs"
       >
-        (x{item.quantity})
+        {/* (x{item.quantity}) */}
+        {item.unit_price
+          ? currencyFormatter(item.unit_price, 'pt-BR', 'BRL')
+          : item.average_price && !isReadOnly
+            ? currencyFormatter(item.average_price, 'pt-BR', 'BRL')
+            : 'N/A'}
       </Text>
     </HStack>
   )

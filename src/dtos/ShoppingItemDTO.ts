@@ -7,6 +7,7 @@ export type ShoppingItemDTO = {
   quantity: number
   shopping_list_id: number
   unit_price: number | null
+  average_price?: number | null
   updated_at: string
 
   product: {

@@ -1,11 +1,18 @@
 import { Loading } from '@components/Loading'
 import { ScreenHeader } from '@components/ScreenHeader'
 import { ShoppingListDTO } from '@dtos/ShoppingListDTO'
-import { FlatList, Heading, HStack, Text, VStack } from '@gluestack-ui/themed'
+import {
+  FlatList,
+  Heading,
+  HStack,
+  Pressable,
+  Text,
+  VStack,
+} from '@gluestack-ui/themed'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { ShoppingListNavigationRoutesProps } from '@routes/lists.routes'
 
-import { useCallback } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { AddRoundedButton } from '@components/AddRoundedButton'
 import { useShoppingListQueries } from '@hooks/api/useShoppingListQueries'
@@ -15,21 +22,23 @@ import { ShoppingListCard } from '@components/ShoppingListCard'
 export function ShoppingLists() {
   const { useFetchShoppingLists } = useShoppingListQueries()
 
-  const {
-    data: shoppingLists,
-    isLoading,
-    // isRefetching, // Para o RefreshControl
-    refetch, // Função para rebuscar os dados
-    // error, // [NOVO] Para tratar erros
-  } = useFetchShoppingLists()
+  const { data: shoppingLists, isLoading, refetch } = useFetchShoppingLists()
 
   const { colors } = useTheme()
 
-  // const [isLoading, setIsLoading] = useState(true)
-  // const [shoppingLists, setShoppingLists] = useState<ShoppingListDTO[]>([])
+  const [activeTab, setActiveTab] = useState<'open' | 'closed'>('open')
 
   const navigation = useNavigation<ShoppingListNavigationRoutesProps>()
-  // const toast = useToast()
+
+  const openLists = useMemo(() => {
+    return shoppingLists?.filter((list) => !list.closed_at) || []
+  }, [shoppingLists])
+
+  const closedLists = useMemo(() => {
+    return shoppingLists?.filter((list) => list.closed_at) || []
+  }, [shoppingLists])
+
+  const currentLists = activeTab === 'open' ? openLists : closedLists
 
   function handleOpenShoppingList(shoppingListId: number) {
     navigation.navigate('shoppingList', { shoppingListId })
@@ -39,61 +48,11 @@ export function ShoppingLists() {
     navigation.navigate('newShoppingList')
   }
 
-  // async function fetchShoppingLists() {
-  //   try {
-  //     setIsLoading(true)
-  //     const { data } = await api.get<{ shoppingLists: ShoppingListDTO[] }>(
-  //       '/shopping-lists',
-  //     )
-
-  //     setShoppingLists(data.shoppingLists)
-  //   } catch (error) {
-  //     const isAppError = error instanceof AppError
-  //     const title = isAppError
-  //       ? error.message
-  //       : 'Não foi possível carregar as listas de compras.'
-
-  //     toast.show({
-  //       render: ({ id }) => (
-  //         <ToastMessage
-  //           id={id}
-  //           title={title}
-  //           action="error"
-  //           onClose={() => toast.close(id)}
-  //         />
-  //       ),
-  //       placement: 'top',
-  //     })
-  //   } finally {
-  //     setIsLoading(false)
-  //   }
-  // }
-
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     fetchShoppingLists()
-  //   }, []),
-  // )
-
   useFocusEffect(
     useCallback(() => {
       refetch()
     }, [refetch]),
   )
-
-  // if (error) {
-  //   return (
-  //     <VStack flex={1} bg={colors.background} justifyContent="center" alignItems="center">
-  //       <ScreenHeader title="Listas de Compras" />
-  //       <Box flex={1} justifyContent="center" alignItems="center">
-  //         <Text color={colors.text}>Erro ao carregar as listas.</Text>
-  //         <Pressable onPress={() => refetch()} mt="$4">
-  //           <Text color={colors.primary}>Tentar Novamente</Text>
-  //         </Pressable>
-  //       </Box>
-  //     </VStack>
-  //   )
-  // }
 
   return (
     <VStack flex={1}>
@@ -101,6 +60,55 @@ export function ShoppingLists() {
       {!isLoading && shoppingLists ? (
         <>
           <VStack flex={1} p="$6" gap="$3">
+            {/* Tabs */}
+            <HStack gap="$2">
+              <Pressable
+                flex={1}
+                py="$3"
+                borderBottomWidth={2}
+                borderBottomColor={
+                  activeTab === 'open' ? colors.primary500 : 'transparent'
+                }
+                onPress={() => setActiveTab('open')}
+              >
+                <Text
+                  color={
+                    activeTab === 'open'
+                      ? colors.primary500
+                      : colors.textInactive
+                  }
+                  fontSize="$sm"
+                  fontFamily="$heading"
+                  textAlign="center"
+                >
+                  Abertas ({openLists.length})
+                </Text>
+              </Pressable>
+
+              <Pressable
+                flex={1}
+                py="$3"
+                borderBottomWidth={2}
+                borderBottomColor={
+                  activeTab === 'closed' ? colors.primary500 : 'transparent'
+                }
+                onPress={() => setActiveTab('closed')}
+              >
+                <Text
+                  color={
+                    activeTab === 'closed'
+                      ? colors.primary500
+                      : colors.textInactive
+                  }
+                  fontSize="$sm"
+                  fontFamily="$heading"
+                  textAlign="center"
+                >
+                  Concluídas ({closedLists.length})
+                </Text>
+              </Pressable>
+            </HStack>
+
             <HStack justifyContent="space-between" alignItems="center">
               <Heading
                 color={colors.textInactive}
@@ -111,11 +119,11 @@ export function ShoppingLists() {
               </Heading>
 
               <Text color={colors.title} fontSize="$sm" fontFamily="$body">
-                {shoppingLists.length}
+                {currentLists.length}
               </Text>
             </HStack>
             <FlatList
-              data={shoppingLists}
+              data={currentLists}
               keyExtractor={(item) => {
                 const shoppingList = item as ShoppingListDTO
                 return shoppingList.id.toString()
@@ -131,8 +139,9 @@ export function ShoppingLists() {
               }}
               ListEmptyComponent={() => (
                 <Text color={colors.textInactive} textAlign="center" mt="$8">
-                  Nenhuma lista de compras encontrada. {'\n'}
-                  Vamos criar a primeira?
+                  {activeTab === 'open'
+                    ? 'Nenhuma lista de compras aberta. \nVamos criar a primeira?'
+                    : 'Nenhuma lista de compras concluída.'}
                 </Text>
               )}
               showsVerticalScrollIndicator={false}

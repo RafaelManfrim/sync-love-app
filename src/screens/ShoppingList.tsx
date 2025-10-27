@@ -30,12 +30,6 @@ import { AppError } from '@utils/AppError'
 import { useCallback, useState } from 'react'
 
 export function ShoppingList() {
-  // const [isLoading, setIsLoading] = useState(true)
-  // const [isSubmitting, setIsSubmitting] = useState(false)
-  // const [listDetails, setListDetails] = useState<ShoppingListDTO | null>(null)
-
-  // Estados para o formulário de adicionar item
-  // const [products, setProducts] = useState<ProductDTO[]>([])
   const [newItemName, setNewItemName] = useState('')
   const [suggestions, setSuggestions] = useState<ProductDTO[]>([])
 
@@ -59,9 +53,7 @@ export function ShoppingList() {
   const {
     data: shoppingList,
     isLoading,
-    // isRefetching,
     refetch,
-    // error,
   } = useFetchShoppingListDetails(shoppingListId)
 
   const { mutate: toggleItem } = useToggleItemCheck()
@@ -161,6 +153,8 @@ export function ShoppingList() {
     }, [refetch]),
   )
 
+  const isListClosed = !!shoppingList?.closed_at
+
   return (
     <VStack flex={1}>
       <ScreenHeader title="Lista de Compras" hasGoBackButton />
@@ -169,51 +163,76 @@ export function ShoppingList() {
         <Loading />
       ) : (
         <VStack flex={1} p="$5">
-          {/* Formulário de Adicionar Item com Autocomplete */}
-          <VStack mb="$5">
-            <HStack space="sm">
-              <Input flex={1}>
-                <InputField
-                  placeholder="Digite o nome do item"
-                  value={newItemName}
-                  onChangeText={handleSearchTermChange}
-                  onSubmitEditing={handleAddItem}
-                  color={colors.text}
-                  placeholderTextColor={colors.textInactive}
-                  selectionColor={colors.primary500}
+          <Text
+            color={colors.title}
+            textAlign="center"
+            fontFamily="$heading"
+            bold
+            fontSize="$lg"
+            mb={isListClosed ? '$2' : '$4'}
+          >
+            {shoppingList?.name}
+          </Text>
+          {isListClosed && (
+            <Text
+              color={colors.primary500}
+              textAlign="center"
+              fontFamily="$heading"
+              bold
+              fontSize="$lg"
+              mb="$4"
+            >
+              Lista Concluída
+            </Text>
+          )}
+
+          {/* Formulário de Adicionar Item com Autocomplete - Oculto se a lista estiver fechada */}
+          {!isListClosed && (
+            <VStack mb="$5">
+              <HStack space="sm">
+                <Input flex={1}>
+                  <InputField
+                    placeholder="Digite o nome do item"
+                    value={newItemName}
+                    onChangeText={handleSearchTermChange}
+                    onSubmitEditing={handleAddItem}
+                    color={colors.text}
+                    placeholderTextColor={colors.textInactive}
+                    selectionColor={colors.primary500}
+                  />
+                </Input>
+                <Button
+                  title="+"
+                  onPress={handleAddItem}
+                  isLoading={isAddingItem}
+                  w="$12"
+                  h="$10"
                 />
-              </Input>
-              <Button
-                title="+"
-                onPress={handleAddItem}
-                isLoading={isAddingItem}
-                w="$12"
-                h="$10"
-              />
-            </HStack>
-            {suggestions.length > 0 && (
-              <VStack
-                mt="$2"
-                bg={colors.card}
-                rounded="$md"
-                p="$3"
-                gap="$2"
-                borderWidth={1}
-                borderColor={colors.border}
-              >
-                {suggestions.map((item) => (
-                  <Pressable
-                    key={item.id}
-                    p="$3"
-                    bg={colors.background}
-                    onPress={() => handleSelectSuggestion(item)}
-                  >
-                    <Text color={colors.text}>{item.name}</Text>
-                  </Pressable>
-                ))}
-              </VStack>
-            )}
-          </VStack>
+              </HStack>
+              {suggestions.length > 0 && (
+                <VStack
+                  mt="$2"
+                  bg={colors.card}
+                  rounded="$md"
+                  p="$3"
+                  gap="$2"
+                  borderWidth={1}
+                  borderColor={colors.border}
+                >
+                  {suggestions.map((item) => (
+                    <Pressable
+                      key={item.id}
+                      p="$3"
+                      bg={colors.background}
+                      onPress={() => handleSelectSuggestion(item)}
+                    >
+                      <Text color={colors.text}>{item.name}</Text>
+                    </Pressable>
+                  ))}
+                </VStack>
+              )}
+            </VStack>
+          )}
 
           {/* Lista de Itens */}
           <FlatList
@@ -227,9 +246,25 @@ export function ShoppingList() {
                 <ShoppingListItem
                   item={itemTyped}
                   handleToggleItem={handleToggleItem}
+                  isReadOnly={isListClosed}
                 />
               )
             }}
+            ListHeaderComponent={() => (
+              <HStack
+                px="$2"
+                borderBottomWidth={1}
+                borderBottomColor={colors.border}
+                pb="$2"
+              >
+                <Text flex={1} color={colors.textInactive} fontSize="$sm">
+                  Item
+                </Text>
+                <Text color={colors.textInactive} fontSize="$sm">
+                  {isListClosed ? 'Preço Pago' : 'Preço Médio'}
+                </Text>
+              </HStack>
+            )}
             ListEmptyComponent={() => (
               <Text color={colors.textInactive} textAlign="center" mt="$8">
                 Nenhum item na lista ainda.
@@ -237,16 +272,18 @@ export function ShoppingList() {
             )}
             showsVerticalScrollIndicator={false}
           />
-          <Button
-            title="Finalizar Compra"
-            mt="$5"
-            onPress={handleCloseShoppingList}
-            disabled={
-              !shoppingList ||
-              shoppingList.ShoppingListItem.filter((item) => item.is_checked)
-                .length === 0
-            }
-          />
+          {!isListClosed && (
+            <Button
+              title="Finalizar Compra"
+              mt="$5"
+              onPress={handleCloseShoppingList}
+              disabled={
+                !shoppingList ||
+                shoppingList.ShoppingListItem.filter((item) => item.is_checked)
+                  .length === 0
+              }
+            />
+          )}
         </VStack>
       )}
     </VStack>

@@ -76,6 +76,7 @@ export function useShoppingListQueries() {
           )
         })
       },
+      refetchInterval: 15000, // Rebusca os dados a cada 15 segundos
     })
   }
 
@@ -96,6 +97,7 @@ export function useShoppingListQueries() {
         return response.data.shoppingList
       },
       enabled: !!listId && enabled, // Só executa se listId for válido
+      refetchInterval: 15000, // Rebusca os dados a cada 15 segundos
     })
   }
 

@@ -63,6 +63,17 @@ export function ShoppingListCard({
               {shoppingList.author.name}
             </Text>
           </HStack>
+          {shoppingList.closed_at && (
+            <HStack alignItems="center" mt="$1" gap="$1">
+              <Text color={colors.textInactive} fontFamily="$body">
+                Concluída em:
+              </Text>
+
+              <Text color={colors.textInactive} fontFamily="$body">
+                {format(new Date(shoppingList.closed_at), 'dd/MM/yyyy HH:mm')}
+              </Text>
+            </HStack>
+          )}
         </VStack>
         <Icon as={ChevronRight} color={colors.text} />
       </HStack>
