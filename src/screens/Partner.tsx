@@ -80,7 +80,7 @@ export function Partner() {
             <VStack w="$full" bgColor={colors.card} p="$4" borderRadius="$md">
               <HStack justifyContent="space-between" alignItems="center">
                 <Text color={colors.text} fontSize="$sm">
-                  Juntos desde:
+                  Juntos no app desde:
                 </Text>
                 <Text fontWeight="bold" color={colors.primary500}>
                   {format(
