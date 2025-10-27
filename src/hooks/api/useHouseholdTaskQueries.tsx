@@ -10,8 +10,8 @@ import {
 type CreateTaskPayload = {
   title: string
   description?: string | null
-  start_date: Date
-  recurrence_rule?: string | null
+  startDate: Date
+  recurrenceRule?: string | null
 }
 
 type UpdateTaskPayload = {
@@ -131,7 +131,7 @@ export function useHouseholdTaskQueries() {
       },
       onSuccess: (_, variables) => {
         // Invalida as queries do dia de início e do sumário
-        invalidateTasksQueries(variables.start_date)
+        invalidateTasksQueries(variables.startDate)
       },
     })
   }
