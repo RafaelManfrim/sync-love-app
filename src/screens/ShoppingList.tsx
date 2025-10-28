@@ -6,6 +6,7 @@ import { ToastMessage } from '@components/ToastMessage'
 import { ProductDTO } from '@dtos/ProductDTO'
 import { ShoppingItemDTO } from '@dtos/ShoppingItemDTO'
 import {
+  KeyboardAvoidingView,
   FlatList,
   HStack,
   Input,
@@ -28,6 +29,7 @@ import {
 } from '@routes/lists.routes'
 import { AppError } from '@utils/AppError'
 import { useCallback, useState } from 'react'
+import { Platform } from 'react-native'
 
 export function ShoppingList() {
   const [newItemName, setNewItemName] = useState('')
@@ -162,129 +164,135 @@ export function ShoppingList() {
       {isLoading ? (
         <Loading />
       ) : (
-        <VStack flex={1} p="$5">
-          <Text
-            color={colors.title}
-            textAlign="center"
-            fontFamily="$heading"
-            bold
-            fontSize="$lg"
-            mb={isListClosed ? '$2' : '$4'}
-          >
-            {shoppingList?.name}
-          </Text>
-          {isListClosed && (
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
+          <VStack flex={1} p="$5">
             <Text
-              color={colors.primary500}
+              color={colors.title}
               textAlign="center"
               fontFamily="$heading"
               bold
               fontSize="$lg"
-              mb="$4"
+              mb={isListClosed ? '$2' : '$4'}
             >
-              Lista Concluída
+              {shoppingList?.name}
             </Text>
-          )}
-
-          {/* Formulário de Adicionar Item com Autocomplete - Oculto se a lista estiver fechada */}
-          {!isListClosed && (
-            <VStack mb="$5">
-              <HStack space="sm">
-                <Input flex={1}>
-                  <InputField
-                    placeholder="Digite o nome do item"
-                    value={newItemName}
-                    onChangeText={handleSearchTermChange}
-                    onSubmitEditing={handleAddItem}
-                    color={colors.text}
-                    placeholderTextColor={colors.textInactive}
-                    selectionColor={colors.primary500}
-                  />
-                </Input>
-                <Button
-                  title="+"
-                  onPress={handleAddItem}
-                  isLoading={isAddingItem}
-                  w="$12"
-                  h="$10"
-                />
-              </HStack>
-              {suggestions.length > 0 && (
-                <VStack
-                  mt="$2"
-                  bg={colors.card}
-                  rounded="$md"
-                  p="$3"
-                  gap="$2"
-                  borderWidth={1}
-                  borderColor={colors.border}
-                >
-                  {suggestions.map((item) => (
-                    <Pressable
-                      key={item.id}
-                      p="$3"
-                      bg={colors.background}
-                      onPress={() => handleSelectSuggestion(item)}
-                    >
-                      <Text color={colors.text}>{item.name}</Text>
-                    </Pressable>
-                  ))}
-                </VStack>
-              )}
-            </VStack>
-          )}
-
-          {/* Lista de Itens */}
-          <FlatList
-            data={shoppingList?.ShoppingListItem}
-            keyExtractor={(item: unknown) =>
-              (item as ShoppingItemDTO).id.toString()
-            }
-            renderItem={({ item }) => {
-              const itemTyped = item as ShoppingItemDTO
-              return (
-                <ShoppingListItem
-                  item={itemTyped}
-                  handleToggleItem={handleToggleItem}
-                  isReadOnly={isListClosed}
-                />
-              )
-            }}
-            ListHeaderComponent={() => (
-              <HStack
-                px="$2"
-                borderBottomWidth={1}
-                borderBottomColor={colors.border}
-                pb="$2"
+            {isListClosed && (
+              <Text
+                color={colors.primary500}
+                textAlign="center"
+                fontFamily="$heading"
+                bold
+                fontSize="$lg"
+                mb="$4"
               >
-                <Text flex={1} color={colors.textInactive} fontSize="$sm">
-                  Item
-                </Text>
-                <Text color={colors.textInactive} fontSize="$sm">
-                  {isListClosed ? 'Preço Pago' : 'Preço Médio'}
-                </Text>
-              </HStack>
-            )}
-            ListEmptyComponent={() => (
-              <Text color={colors.textInactive} textAlign="center" mt="$8">
-                Nenhum item na lista ainda.
+                Lista Concluída
               </Text>
             )}
-            showsVerticalScrollIndicator={false}
-          />
-          {!isListClosed && (
-            <Button
-              title="Finalizar Compra"
-              mt="$5"
-              onPress={handleCloseShoppingList}
-              disabled={
-                !shoppingList ||
-                shoppingList.ShoppingListItem.filter((item) => item.is_checked)
-                  .length === 0
+
+            {/* Formulário de Adicionar Item com Autocomplete - Oculto se a lista estiver fechada */}
+            {!isListClosed && (
+              <VStack mb="$5">
+                <HStack space="sm">
+                  <Input flex={1}>
+                    <InputField
+                      placeholder="Digite o nome do item"
+                      value={newItemName}
+                      onChangeText={handleSearchTermChange}
+                      onSubmitEditing={handleAddItem}
+                      color={colors.text}
+                      placeholderTextColor={colors.textInactive}
+                      selectionColor={colors.primary500}
+                    />
+                  </Input>
+                  <Button
+                    title="+"
+                    onPress={handleAddItem}
+                    isLoading={isAddingItem}
+                    w="$12"
+                    h="$10"
+                  />
+                </HStack>
+                {suggestions.length > 0 && (
+                  <VStack
+                    mt="$2"
+                    bg={colors.card}
+                    rounded="$md"
+                    p="$3"
+                    gap="$2"
+                    borderWidth={1}
+                    borderColor={colors.border}
+                  >
+                    {suggestions.map((item) => (
+                      <Pressable
+                        key={item.id}
+                        p="$3"
+                        bg={colors.background}
+                        onPress={() => handleSelectSuggestion(item)}
+                      >
+                        <Text color={colors.text}>{item.name}</Text>
+                      </Pressable>
+                    ))}
+                  </VStack>
+                )}
+              </VStack>
+            )}
+
+            {/* Lista de Itens */}
+            <FlatList
+              data={shoppingList?.ShoppingListItem}
+              keyExtractor={(item: unknown) =>
+                (item as ShoppingItemDTO).id.toString()
               }
+              renderItem={({ item }) => {
+                const itemTyped = item as ShoppingItemDTO
+                return (
+                  <ShoppingListItem
+                    item={itemTyped}
+                    handleToggleItem={handleToggleItem}
+                    isReadOnly={isListClosed}
+                  />
+                )
+              }}
+              ListHeaderComponent={() => (
+                <HStack
+                  px="$2"
+                  borderBottomWidth={1}
+                  borderBottomColor={colors.border}
+                  pb="$2"
+                >
+                  <Text flex={1} color={colors.textInactive} fontSize="$sm">
+                    Item
+                  </Text>
+                  <Text color={colors.textInactive} fontSize="$sm">
+                    {isListClosed ? 'Preço Pago' : 'Preço Médio'}
+                  </Text>
+                </HStack>
+              )}
+              ListEmptyComponent={() => (
+                <Text color={colors.textInactive} textAlign="center" mt="$8">
+                  Nenhum item na lista ainda.
+                </Text>
+              )}
+              showsVerticalScrollIndicator={false}
             />
-          )}
-        </VStack>
+            {!isListClosed && (
+              <Button
+                title="Finalizar Compra"
+                mt="$5"
+                onPress={handleCloseShoppingList}
+                disabled={
+                  !shoppingList ||
+                  shoppingList.ShoppingListItem.filter(
+                    (item) => item.is_checked,
+                  ).length === 0
+                }
+              />
+            )}
+          </VStack>
+        </KeyboardAvoidingView>
       )}
     </VStack>
   )

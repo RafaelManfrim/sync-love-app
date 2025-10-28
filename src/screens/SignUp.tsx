@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import Logo from '@assets/sync_love_square-no-bg.png'
 import { Input } from '@components/Input'
+import { PasswordInput } from '@components/PasswordInput'
 import { Button } from '@components/Button'
 import { AuthNavigationRoutesProps } from '@routes/auth.routes'
 import { api } from '@services/api'
@@ -168,9 +169,8 @@ export function SignUp() {
             name="password"
             control={control}
             render={({ field: { onChange, value } }) => (
-              <Input
+              <PasswordInput
                 placeholder="Senha"
-                secureTextEntry
                 onChangeText={onChange}
                 value={value}
                 errorMessage={formState.errors?.password?.message}
@@ -184,10 +184,9 @@ export function SignUp() {
             name="password_confirm"
             control={control}
             render={({ field: { onChange, value } }) => (
-              <Input
+              <PasswordInput
                 ref={passwordConfirmInputRef}
                 placeholder="Confirme a Senha"
-                secureTextEntry
                 errorMessage={
                   formState.errors?.password_confirm?.message as string
                 }

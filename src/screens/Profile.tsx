@@ -19,7 +19,7 @@ import {
   Pressable,
 } from '@gluestack-ui/themed'
 import { AppError } from '@utils/AppError'
-import * as FileSystem from 'expo-file-system'
+import * as FileSystem from 'expo-file-system/legacy'
 import * as ImagePicker from 'expo-image-picker'
 import { useAuth } from '@hooks/useAuth'
 import { api } from '@services/api'
@@ -150,17 +150,19 @@ export function Profile() {
       <VStack flex={1} p="$6" gap="$3">
         <ScrollView contentContainerStyle={{ paddingBottom: 36 }}>
           <Center>
-            <UserPhoto
-              source={
-                user.avatar_url
-                  ? {
-                      uri: `${api.defaults.baseURL}/tmp/uploads/avatar/${user.avatar_url}`,
-                    }
-                  : DefaultUserPhoto
-              }
-              alt="Foto de perfil do usuário"
-              size="xl"
-            />
+            <TouchableOpacity onPress={handleUserPhotoSelect}>
+              <UserPhoto
+                source={
+                  user.avatar_url
+                    ? {
+                        uri: `${api.defaults.baseURL}/tmp/uploads/avatar/${user.avatar_url}`,
+                      }
+                    : DefaultUserPhoto
+                }
+                alt="Foto de perfil do usuário"
+                size="xl"
+              />
+            </TouchableOpacity>
 
             <TouchableOpacity onPress={handleUserPhotoSelect}>
               <Text
@@ -168,13 +170,16 @@ export function Profile() {
                 fontFamily="$heading"
                 fontSize="$md"
                 mt="$2"
-                mb="$8"
+                bold
               >
                 Alterar Foto
               </Text>
             </TouchableOpacity>
 
-            <Center w="$full" gap="$4">
+            <Center w="$full" gap="$4" mt="$4">
+              <Text color={colors.text} mb="$2">
+                {user.name}
+              </Text>
               <TouchableOpacity onPress={handleNavigateToChangeName}>
                 <HStack
                   w="$full"

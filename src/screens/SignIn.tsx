@@ -14,6 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 
 import Logo from '@assets/sync_love_square-no-bg.png'
 import { Input } from '@components/Input'
+import { PasswordInput } from '@components/PasswordInput'
 import { Button } from '@components/Button'
 import { AuthNavigationRoutesProps } from '@routes/auth.routes'
 import { useAuth } from '@hooks/useAuth'
@@ -122,9 +123,8 @@ export function SignIn() {
               name="password"
               control={control}
               render={({ field: { onChange, value } }) => (
-                <Input
+                <PasswordInput
                   placeholder="Senha"
-                  secureTextEntry
                   onChangeText={onChange}
                   value={value}
                   errorMessage={formState.errors?.password?.message}
