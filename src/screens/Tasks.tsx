@@ -1,5 +1,12 @@
 import { useState } from 'react'
-import { Box, FlatList, VStack, Text, Pressable } from '@gluestack-ui/themed'
+import {
+  Box,
+  FlatList,
+  VStack,
+  Text,
+  Pressable,
+  Icon,
+} from '@gluestack-ui/themed'
 import { useTheme } from '@hooks/useTheme'
 import { ScreenHeader } from '@components/ScreenHeader'
 import { Loading } from '@components/Loading'
@@ -10,7 +17,7 @@ import { useNavigation } from '@react-navigation/native'
 import { TasksNavigationRoutesProps } from '@routes/tasks.routes'
 import { TaskSummary } from '@components/TaskSummary'
 import { AddRoundedButton } from '@components/AddRoundedButton'
-import { Settings } from 'lucide-react-native'
+import { Tags } from 'lucide-react-native'
 
 export function Tasks() {
   const { colors } = useTheme()
@@ -42,8 +49,8 @@ export function Tasks() {
       <ScreenHeader
         title="Tarefas"
         rightComponent={
-          <Pressable onPress={handleNavigateToManagement} p="$2">
-            <Settings size={24} color={colors.text} />
+          <Pressable onPress={handleNavigateToManagement}>
+            <Icon as={Tags} color={colors.primary600} size="xl" />
           </Pressable>
         }
       />

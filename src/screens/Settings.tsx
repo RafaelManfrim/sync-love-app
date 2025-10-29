@@ -2,7 +2,7 @@ import { HStack, Icon, Text, VStack, Center } from '@gluestack-ui/themed'
 
 import { UserPhoto } from '@components/UserPhoto'
 import { ScreenHeader } from '@components/ScreenHeader'
-import { ChevronRight } from 'lucide-react-native'
+import { BookType, ChevronRight, Palette } from 'lucide-react-native'
 import { TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { SettingsNavigationRoutesProps } from '@routes/settings.routes'
@@ -75,6 +75,7 @@ export function Settings() {
             p="$4"
             borderRadius="$md"
           >
+            <Icon as={Palette} color={colors.text} size="md" mr="$2" />
             <Text mr="auto" color={colors.text}>
               Temas
             </Text>
@@ -90,6 +91,7 @@ export function Settings() {
             p="$4"
             borderRadius="$md"
           >
+            <Icon as={BookType} color={colors.text} size="md" mr="$2" />
             <Text mr="auto" color={colors.text}>
               Idioma
             </Text>

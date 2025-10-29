@@ -50,7 +50,7 @@ export function ScreenHeader({
         {title}
       </Heading>
       {rightComponent && (
-        <HStack position="absolute" right="$6" top={44}>
+        <HStack position="absolute" right={24} top={44}>
           {rightComponent}
         </HStack>
       )}
