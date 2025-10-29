@@ -2,6 +2,7 @@ import { Heading, HStack, Icon } from '@gluestack-ui/themed'
 import { useNavigation } from '@react-navigation/native'
 import { ChevronLeft } from 'lucide-react-native'
 import { TouchableOpacity } from 'react-native'
+import { ReactNode } from 'react'
 
 import { AppNavigationRoutesProps } from '@routes/app.routes'
 import { useTheme } from '@hooks/useTheme'
@@ -9,11 +10,13 @@ import { useTheme } from '@hooks/useTheme'
 type ScreenHeaderProps = {
   title: string
   hasGoBackButton?: boolean
+  rightComponent?: ReactNode
 }
 
 export function ScreenHeader({
   title,
   hasGoBackButton = false,
+  rightComponent,
 }: ScreenHeaderProps) {
   const navigation = useNavigation<AppNavigationRoutesProps>()
 
@@ -46,6 +49,11 @@ export function ScreenHeader({
       >
         {title}
       </Heading>
+      {rightComponent && (
+        <HStack position="absolute" right="$6" top={44}>
+          {rightComponent}
+        </HStack>
+      )}
     </HStack>
   )
 }

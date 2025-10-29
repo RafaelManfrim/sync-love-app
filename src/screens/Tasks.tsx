@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Box, FlatList, VStack, Text } from '@gluestack-ui/themed'
+import { Box, FlatList, VStack, Text, Pressable } from '@gluestack-ui/themed'
 import { useTheme } from '@hooks/useTheme'
 import { ScreenHeader } from '@components/ScreenHeader'
 import { Loading } from '@components/Loading'
@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native'
 import { TasksNavigationRoutesProps } from '@routes/tasks.routes'
 import { TaskSummary } from '@components/TaskSummary'
 import { AddRoundedButton } from '@components/AddRoundedButton'
+import { Settings } from 'lucide-react-native'
 
 export function Tasks() {
   const { colors } = useTheme()
@@ -32,16 +33,27 @@ export function Tasks() {
     navigation.navigate('taskCreate')
   }
 
+  const handleNavigateToManagement = () => {
+    navigation.navigate('taskManagement')
+  }
+
   return (
     <VStack flex={1} bg={colors.background}>
-      <ScreenHeader title="Tarefas" />
+      <ScreenHeader
+        title="Tarefas"
+        rightComponent={
+          <Pressable onPress={handleNavigateToManagement} p="$2">
+            <Settings size={24} color={colors.text} />
+          </Pressable>
+        }
+      />
 
       {isLoading ? (
         <Loading />
       ) : (
         <FlatList
           data={tasks}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => String(item.id)}
           renderItem={({ item }) => (
             <TaskCard task={item} currentDate={selectedDate} />
           )}

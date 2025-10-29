@@ -31,14 +31,12 @@ type CreateExceptionPayload = {
 
 // === Constantes das Query Keys ===
 const TASK_QUERY_KEYS = {
-  tasksByDay: (date: string) => ['householdTasks', 'byDay', date],
-  taskDetails: (taskId: number) => ['householdTasks', 'details', taskId],
-  tasksSummary: (year: number, month: number) => [
-    'householdTasks',
-    'summary',
-    year,
-    month,
-  ],
+  all: ['householdTasks'] as const,
+  tasksByDay: (date: string) => ['householdTasks', 'byDay', date] as const,
+  taskDetails: (taskId: number) =>
+    ['householdTasks', 'details', taskId] as const,
+  tasksSummary: (year: number, month: number) =>
+    ['householdTasks', 'summary', year, month] as const,
 }
 
 // === HOOKS ===
@@ -47,6 +45,20 @@ export function useHouseholdTaskQueries() {
   const queryClient = useQueryClient()
 
   // --- QUERIES (Busca de dados) ---
+
+  /**
+   * (GET /tasks)
+   * Busca todas as tarefas ativas do casal (para gerenciamento).
+   */
+  const useFetchAllTasks = () => {
+    return useQuery({
+      queryKey: TASK_QUERY_KEYS.all,
+      queryFn: async () => {
+        const response = await api.get<{ tasks: HouseholdTaskDTO[] }>('/tasks')
+        return response.data.tasks
+      },
+    })
+  }
 
   /**
    * (GET /tasks/by-day)
@@ -232,6 +244,7 @@ export function useHouseholdTaskQueries() {
   }
 
   return {
+    useFetchAllTasks,
     useFetchTasksByDay,
     useFetchTaskDetails,
     useFetchTasksSummary,
