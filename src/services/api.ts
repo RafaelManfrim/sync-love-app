@@ -13,7 +13,7 @@ type APIInstanceProps = AxiosInstance & {
 }
 
 const api = axios.create({
-  baseURL: 'http://192.168.80.60:3000',
+  baseURL: process.env.EXPO_PUBLIC_API_URL,
   timeout: 1000 * 5,
 }) as APIInstanceProps
 
