@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { Box, HStack, VStack, Text, Pressable } from '@gluestack-ui/themed'
+import { HStack, VStack, Text, Pressable } from '@gluestack-ui/themed'
 import { useTheme } from '@hooks/useTheme'
 import { useAuth } from '@hooks/useAuth'
 import { useHouseholdTaskQueries } from '@hooks/api/useHouseholdTaskQueries'
@@ -48,8 +48,7 @@ export function TaskSummary() {
   const partner = summary?.members.find((m) => m.id !== user.id)
 
   return (
-    <VStack w="100%" bg={colors.background} px="$4" pt="$4" pb="$2">
-      {/* 1. Navegador de Mês */}
+    <VStack w="$full" bg={colors.background}>
       <HStack
         w="100%"
         alignItems="center"
@@ -81,7 +80,6 @@ export function TaskSummary() {
         </Pressable>
       </HStack>
 
-      {/* 2. Conteúdo do Sumário */}
       {isLoading ? (
         <Loading />
       ) : (
@@ -100,9 +98,6 @@ export function TaskSummary() {
           }}
         />
       )}
-
-      {/* Divisor antes da lista diária */}
-      <Box h={1} w="100%" bg={colors.border} mt="$4" mb="$2" opacity={0.5} />
     </VStack>
   )
 }

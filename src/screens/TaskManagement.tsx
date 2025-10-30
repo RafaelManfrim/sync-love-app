@@ -14,6 +14,7 @@ import { TaskManagementCard } from '@components/TaskManagementCard'
 import { useHouseholdTaskQueries } from '@hooks/api/useHouseholdTaskQueries'
 import { useNavigation } from '@react-navigation/native'
 import { TasksNavigationRoutesProps } from '@routes/tasks.routes'
+import { HouseholdTaskDTO } from '@dtos/HouseholdTaskDTO'
 
 type Tab = 'unique' | 'recurrent'
 
@@ -45,7 +46,7 @@ export function TaskManagement() {
       <ScreenHeader title="Gerenciar Tarefas" hasGoBackButton />
 
       {/* Tabs */}
-      <HStack w="100%" px="$4" mt="$4" mb="$2">
+      <HStack w="100%" px="$6" mt="$4" mb="$2">
         <Pressable
           flex={1}
           onPress={() => setSelectedTab('recurrent')}
@@ -93,12 +94,15 @@ export function TaskManagement() {
       ) : (
         <FlatList
           data={tasksToShow}
-          keyExtractor={(item) => String(item.id)}
+          keyExtractor={(item) => String((item as HouseholdTaskDTO).id)}
           renderItem={({ item }) => (
-            <TaskManagementCard task={item} onEdit={handleEdit} />
+            <TaskManagementCard
+              task={item as HouseholdTaskDTO}
+              onEdit={handleEdit}
+            />
           )}
           contentContainerStyle={{ paddingBottom: 32 }}
-          px="$4"
+          px="$6"
           pt="$4"
           ListEmptyComponent={() => (
             <Box h="$40" justifyContent="center" alignItems="center">

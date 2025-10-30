@@ -3,7 +3,6 @@ import {
   Box,
   VStack,
   Text,
-  ScrollView,
   useToast,
   FormControl,
   FormControlLabel,
@@ -44,6 +43,12 @@ import {
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import {
+  RecurrenceType,
+  recurrenceOptions,
+  getRecurrenceRule,
+} from '@utils/recurrenceTypes'
 
 // Esquema de validação Zod
 const createTaskFormSchema = z.object({
@@ -56,18 +61,6 @@ const createTaskFormSchema = z.object({
 })
 
 type FormData = z.infer<typeof createTaskFormSchema>
-
-// Tipos de Recorrência
-type RecurrenceType = 'none' | 'daily' | 'weekly' | 'custom' | 'monthly'
-
-// Opções de Recorrência
-const recurrenceOptions = [
-  { label: 'Não se repete', value: 'none' },
-  { label: 'Diariamente', value: 'daily' },
-  { label: 'Semanalmente', value: 'weekly' },
-  { label: 'Personalizado (dias da semana)', value: 'custom' },
-  { label: 'Mensalmente', value: 'monthly' },
-]
 
 export function TaskCreate() {
   const { colors } = useTheme()
@@ -93,7 +86,7 @@ export function TaskCreate() {
       title: '',
       description: null,
       startDate: new Date(),
-      recurrenceRule: null,
+      recurrenceRule: 'none',
     },
   })
 
@@ -113,42 +106,15 @@ export function TaskCreate() {
     const type = value as RecurrenceType
     setRecurrenceType(type)
 
-    // Mapeia o tipo de recorrência para a regra RRULE
-    switch (type) {
-      case 'none':
-        setValue('recurrenceRule', null)
-        break
-      case 'daily':
-        setValue('recurrenceRule', 'FREQ=DAILY')
-        break
-      case 'weekly':
-        setValue('recurrenceRule', 'FREQ=WEEKLY')
-        break
-      case 'monthly':
-        setValue('recurrenceRule', 'FREQ=MONTHLY')
-        break
-      case 'custom':
-        // Será definido quando os dias forem selecionados
-        if (selectedWeekDays.length > 0) {
-          const byday = selectedWeekDays.join(',')
-          setValue('recurrenceRule', `FREQ=WEEKLY;BYDAY=${byday}`)
-        } else {
-          setValue('recurrenceRule', null)
-        }
-        break
-      default:
-        setValue('recurrenceRule', null)
-    }
+    // Mapeia o tipo de recorrência para a regra RRULE usando a função compartilhada
+    const rule = getRecurrenceRule(type, selectedWeekDays)
+    setValue('recurrenceRule', rule)
   }
 
   const handleWeekDaysChange = (days: WeekDay[]) => {
     setSelectedWeekDays(days)
-    if (days.length > 0) {
-      const byday = days.join(',')
-      setValue('recurrenceRule', `FREQ=WEEKLY;BYDAY=${byday}`)
-    } else {
-      setValue('recurrenceRule', null)
-    }
+    const rule = getRecurrenceRule('custom', days)
+    setValue('recurrenceRule', rule)
   }
 
   const handleCreateTask = (data: FormData) => {
@@ -186,9 +152,12 @@ export function TaskCreate() {
     <VStack flex={1} bg={colors.background}>
       <ScreenHeader title="Criar Nova Tarefa" hasGoBackButton />
 
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 32 }}
+      <KeyboardAwareScrollView
+        enableOnAndroid={true}
+        extraHeight={200}
+        contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
       >
         <VStack flex={1} px="$6" mt="$6">
           {/* Título */}
@@ -235,6 +204,7 @@ export function TaskCreate() {
                 >
                   <TextareaInput
                     placeholder="Ex: Tirar o lixo também"
+                    placeholderTextColor={colors.textInactive}
                     value={value || ''}
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -321,6 +291,11 @@ export function TaskCreate() {
                   placeholder="Escolha a repetição"
                   placeholderTextColor={colors.textInactive}
                   color={colors.text}
+                  value={
+                    recurrenceOptions.find(
+                      (opt) => opt.value === recurrenceType,
+                    )?.label || 'Não se repete'
+                  }
                 />
                 <SelectIcon
                   as={ChevronDownIcon}
@@ -370,7 +345,7 @@ export function TaskCreate() {
             />
           </Box>
         </VStack>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </VStack>
   )
 }

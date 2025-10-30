@@ -46,6 +46,13 @@ import DateTimePicker, {
 } from '@react-native-community/datetimepicker'
 import { TaskDetailsRouteParams } from '@routes/tasks.routes'
 import { Loading } from '@components/Loading'
+import {
+  RecurrenceType,
+  recurrenceOptions,
+  getRecurrenceRule,
+  getRecurrenceTypeFromRule,
+  getWeekDaysFromRule,
+} from '@utils/recurrenceTypes'
 
 // Esquema de validação Zod
 const editTaskFormSchema = z.object({
@@ -58,18 +65,6 @@ const editTaskFormSchema = z.object({
 })
 
 type FormData = z.infer<typeof editTaskFormSchema>
-
-// Tipos de Recorrência
-type RecurrenceType = 'none' | 'daily' | 'weekly' | 'custom' | 'monthly'
-
-// Opções de Recorrência
-const recurrenceOptions = [
-  { label: 'Não se repete', value: 'none' },
-  { label: 'Diariamente', value: 'daily' },
-  { label: 'Semanalmente', value: 'weekly' },
-  { label: 'Personalizado (dias da semana)', value: 'custom' },
-  { label: 'Mensalmente', value: 'monthly' },
-]
 
 export function TaskEdit() {
   const { colors } = useTheme()
@@ -116,26 +111,14 @@ export function TaskEdit() {
         recurrence_rule: task.recurrence_rule,
       })
 
-      // Determina o tipo de recorrência
-      if (!task.recurrence_rule) {
-        setRecurrenceType('none')
-      } else if (task.recurrence_rule.includes('FREQ=DAILY')) {
-        setRecurrenceType('daily')
-      } else if (
-        task.recurrence_rule.includes('FREQ=WEEKLY') &&
-        task.recurrence_rule.includes('BYDAY')
-      ) {
-        setRecurrenceType('custom')
-        // Extrai os dias da semana
-        const match = task.recurrence_rule.match(/BYDAY=([^;]+)/)
-        if (match) {
-          const days = match[1].split(',') as WeekDay[]
-          setSelectedWeekDays(days)
-        }
-      } else if (task.recurrence_rule.includes('FREQ=WEEKLY')) {
-        setRecurrenceType('weekly')
-      } else if (task.recurrence_rule.includes('FREQ=MONTHLY')) {
-        setRecurrenceType('monthly')
+      // Determina o tipo de recorrência usando a função compartilhada
+      const type = getRecurrenceTypeFromRule(task.recurrence_rule)
+      setRecurrenceType(type)
+
+      // Se for custom, extrai os dias da semana
+      if (type === 'custom') {
+        const days = getWeekDaysFromRule(task.recurrence_rule) as WeekDay[]
+        setSelectedWeekDays(days)
       }
     }
   }, [task, reset])
@@ -154,42 +137,15 @@ export function TaskEdit() {
     const type = value as RecurrenceType
     setRecurrenceType(type)
 
-    // Mapeia o tipo de recorrência para a regra RRULE
-    switch (type) {
-      case 'none':
-        setValue('recurrence_rule', null)
-        break
-      case 'daily':
-        setValue('recurrence_rule', 'FREQ=DAILY')
-        break
-      case 'weekly':
-        setValue('recurrence_rule', 'FREQ=WEEKLY')
-        break
-      case 'monthly':
-        setValue('recurrence_rule', 'FREQ=MONTHLY')
-        break
-      case 'custom':
-        // Será definido quando os dias forem selecionados
-        if (selectedWeekDays.length > 0) {
-          const byday = selectedWeekDays.join(',')
-          setValue('recurrence_rule', `FREQ=WEEKLY;BYDAY=${byday}`)
-        } else {
-          setValue('recurrence_rule', null)
-        }
-        break
-      default:
-        setValue('recurrence_rule', null)
-    }
+    // Mapeia o tipo de recorrência para a regra RRULE usando a função compartilhada
+    const rule = getRecurrenceRule(type, selectedWeekDays)
+    setValue('recurrence_rule', rule)
   }
 
   const handleWeekDaysChange = (days: WeekDay[]) => {
     setSelectedWeekDays(days)
-    if (days.length > 0) {
-      const byday = days.join(',')
-      setValue('recurrence_rule', `FREQ=WEEKLY;BYDAY=${byday}`)
-    } else {
-      setValue('recurrence_rule', null)
-    }
+    const rule = getRecurrenceRule('custom', days)
+    setValue('recurrence_rule', rule)
   }
 
   const handleUpdateTask = (data: FormData) => {
@@ -245,19 +201,26 @@ export function TaskEdit() {
       >
         <VStack flex={1} px="$6" mt="$6">
           {/* Título */}
-          <Controller
-            control={control}
-            name="title"
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                placeholder="Ex: Lavar a louça"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-                errorMessage={errors.title?.message}
-              />
-            )}
-          />
+          <FormControl>
+            <FormControlLabel>
+              <FormControlLabelText color={colors.text}>
+                Título da Tarefa
+              </FormControlLabelText>
+            </FormControlLabel>
+            <Controller
+              control={control}
+              name="title"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  placeholder="Ex: Lavar a louça"
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  errorMessage={errors.title?.message}
+                />
+              )}
+            />
+          </FormControl>
 
           {/* Descrição */}
           <Controller
@@ -367,6 +330,11 @@ export function TaskEdit() {
                   placeholder="Escolha a repetição"
                   placeholderTextColor={colors.textInactive}
                   color={colors.text}
+                  value={
+                    recurrenceOptions.find(
+                      (opt) => opt.value === recurrenceType,
+                    )?.label || 'Não se repete'
+                  }
                 />
                 <SelectIcon
                   as={ChevronDownIcon}

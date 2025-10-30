@@ -18,6 +18,7 @@ import { TasksNavigationRoutesProps } from '@routes/tasks.routes'
 import { TaskSummary } from '@components/TaskSummary'
 import { AddRoundedButton } from '@components/AddRoundedButton'
 import { Tags } from 'lucide-react-native'
+import { TaskForDayDTO } from '@dtos/HouseholdTaskDTO'
 
 export function Tasks() {
   const { colors } = useTheme()
@@ -60,33 +61,28 @@ export function Tasks() {
       ) : (
         <FlatList
           data={tasks}
-          keyExtractor={(item) => String(item.id)}
+          keyExtractor={(item) => String((item as TaskForDayDTO).id)}
           renderItem={({ item }) => (
-            <TaskCard task={item} currentDate={selectedDate} />
+            <TaskCard task={item as TaskForDayDTO} currentDate={selectedDate} />
           )}
           contentContainerStyle={{ paddingBottom: 100 }}
-          px="$4"
+          px="$6"
+          pt="$4"
           ListHeaderComponent={
             <>
-              {/* O sumário mensal que acabamos de criar */}
               <TaskSummary />
-
-              {/* O navegador diário, agora dentro da área de rolagem */}
+              <Box
+                h={1}
+                w="100%"
+                bg={colors.border}
+                mt="$4"
+                mb="$2"
+                opacity={0.5}
+              />
               <DateNavigator
                 selectedDate={selectedDate}
                 onChangeDate={setSelectedDate}
               />
-
-              {/* Título para a seção de tarefas do dia */}
-              <Text
-                px="$4"
-                mb="$3"
-                fontFamily="$heading"
-                fontSize="$lg"
-                color={colors.text}
-              >
-                Tarefas do Dia
-              </Text>
             </>
           }
           ListFooterComponent={<Box h={100} />}
