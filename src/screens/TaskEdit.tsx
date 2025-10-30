@@ -14,21 +14,12 @@ import {
   Textarea,
   TextareaInput,
   Pressable,
-  Select,
-  SelectTrigger,
-  SelectInput,
-  SelectIcon,
-  SelectPortal,
-  SelectBackdrop,
-  SelectContent,
-  SelectDragIndicatorWrapper,
-  SelectDragIndicator,
-  SelectItem,
 } from '@gluestack-ui/themed'
 import { useTheme } from '@hooks/useTheme'
 import { ScreenHeader } from '@components/ScreenHeader'
 import { Input } from '@components/Input'
 import { Button } from '@components/Button'
+import { Select } from '@components/Select'
 import { ToastMessage } from '@components/ToastMessage'
 import { WeekDaySelector, WeekDay } from '@components/WeekDaySelector'
 import { useHouseholdTaskQueries } from '@hooks/api/useHouseholdTaskQueries'
@@ -36,11 +27,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import {
-  AlertTriangle,
-  CalendarDays,
-  ChevronDownIcon,
-} from 'lucide-react-native'
+import { AlertTriangle, CalendarDays } from 'lucide-react-native'
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker'
@@ -307,58 +294,18 @@ export function TaskEdit() {
           )}
 
           {/* Recorrência */}
-          <FormControl mt="$4">
-            <FormControlLabel>
-              <FormControlLabelText color={colors.text}>
-                Repetir
-              </FormControlLabelText>
-            </FormControlLabel>
-            <Select
-              w="100%"
-              h="$12"
-              selectedValue={recurrenceType}
-              onValueChange={handleRecurrenceChange}
-            >
-              <SelectTrigger
-                variant="outline"
-                h="$12"
-                w="$full"
-                bg={colors.card}
-                borderColor={colors.border}
-              >
-                <SelectInput
-                  placeholder="Escolha a repetição"
-                  placeholderTextColor={colors.textInactive}
-                  color={colors.text}
-                  value={
-                    recurrenceOptions.find(
-                      (opt) => opt.value === recurrenceType,
-                    )?.label || 'Não se repete'
-                  }
-                />
-                <SelectIcon
-                  as={ChevronDownIcon}
-                  mr="$3"
-                  color={colors.textInactive}
-                />
-              </SelectTrigger>
-              <SelectPortal>
-                <SelectBackdrop />
-                <SelectContent pb="$16" bg={colors.card}>
-                  <SelectDragIndicatorWrapper py="$4">
-                    <SelectDragIndicator />
-                  </SelectDragIndicatorWrapper>
-                  {recurrenceOptions.map((option) => (
-                    <SelectItem
-                      key={option.value}
-                      label={option.label}
-                      value={option.value}
-                    />
-                  ))}
-                </SelectContent>
-              </SelectPortal>
-            </Select>
-          </FormControl>
+          <Select
+            label="Repetir"
+            items={recurrenceOptions}
+            placeholder="Escolha a repetição"
+            selectedValue={recurrenceType}
+            value={
+              recurrenceOptions.find((opt) => opt.value === recurrenceType)
+                ?.label || 'Não se repete'
+            }
+            onValueChange={handleRecurrenceChange}
+            mt="$4"
+          />
 
           {/* Seletor de dias da semana - mostrar apenas se recorrência for 'custom' */}
           {recurrenceType === 'custom' && (

@@ -1,6 +1,6 @@
 import { Calendar, LocaleConfig } from 'react-native-calendars'
 import { DateData } from 'react-native-calendars/src/types'
-import { gluestackUIConfig } from '../../config/gluestack-ui.config'
+import { useTheme } from '@hooks/useTheme'
 import { addYears } from 'date-fns'
 
 // Configuração para o idioma Português (Brasil)
@@ -59,11 +59,17 @@ type MarkedDatesType = {
 type Props = {
   dates: Array<{ date: string; type: 'anniversary' | 'birthday' | 'event' }>
   onDayPress: (date: DateData) => void
+  onMonthChange?: (date: DateData) => void
   selectedDate: string
 }
 
-export function CalendarView({ dates, onDayPress, selectedDate }: Props) {
-  const colors = gluestackUIConfig.tokens.colors
+export function CalendarView({
+  dates,
+  onDayPress,
+  selectedDate,
+  onMonthChange,
+}: Props) {
+  const { colors, currentTheme } = useTheme()
 
   const markedDates: MarkedDatesType = {}
 
@@ -71,7 +77,8 @@ export function CalendarView({ dates, onDayPress, selectedDate }: Props) {
   dates.forEach((item) => {
     markedDates[item.date] = {
       marked: true,
-      dotColor: item.type === 'anniversary' ? colors.red500 : colors.blue500,
+      dotColor:
+        item.type === 'anniversary' ? colors.primary700 : colors.primary500,
     }
   })
 
@@ -80,35 +87,37 @@ export function CalendarView({ dates, onDayPress, selectedDate }: Props) {
     markedDates[selectedDate] = {
       ...markedDates[selectedDate],
       selected: true,
-      selectedColor: colors.red700,
+      selectedColor: colors.primary600,
     }
   } else {
     markedDates[selectedDate] = {
       selected: true,
-      selectedColor: colors.red700,
+      selectedColor: colors.primary600,
     }
   }
 
   return (
     <Calendar
+      key={currentTheme} // Força re-renderização quando o tema muda
       onDayPress={onDayPress}
       markedDates={markedDates}
+      onMonthChange={onMonthChange}
       maxDate={addYears(new Date(), 50).toDateString()} // hoje mais 50 anos com date fns
       theme={{
-        backgroundColor: colors.trueGray200,
-        calendarBackground: colors.trueGray200,
-        textSectionTitleColor: colors.trueGray600,
-        selectedDayBackgroundColor: colors.red500,
-        selectedDayTextColor: '#ffffff',
-        todayTextColor: colors.red500,
-        dayTextColor: colors.trueGray500,
-        textDisabledColor: colors.trueGray400,
-        dotColor: colors.red500,
-        selectedDotColor: '#ffffff',
-        arrowColor: colors.red500,
-        disabledArrowColor: colors.trueGray400,
-        monthTextColor: colors.trueGray900,
-        indicatorColor: 'blue',
+        backgroundColor: colors.card,
+        calendarBackground: colors.card,
+        textSectionTitleColor: colors.text,
+        selectedDayBackgroundColor: colors.primary500,
+        selectedDayTextColor: colors.textContrast,
+        todayTextColor: colors.primary500,
+        dayTextColor: colors.text,
+        textDisabledColor: colors.textInactive,
+        dotColor: colors.primary500,
+        selectedDotColor: colors.textContrast,
+        arrowColor: colors.primary500,
+        disabledArrowColor: colors.textInactive,
+        monthTextColor: colors.title,
+        indicatorColor: colors.primary500,
         textDayFontFamily: 'Roboto_400Regular',
         textMonthFontFamily: 'Roboto_700Bold',
         textDayHeaderFontFamily: 'Roboto_700Bold',

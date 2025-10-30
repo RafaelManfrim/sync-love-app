@@ -161,7 +161,17 @@ export function SignUp() {
             name="gender"
             control={control}
             render={({ field: { onChange, value } }) => (
-              <Select onValueChange={onChange} selectedValue={value} />
+              <Select
+                label="Gênero"
+                items={[
+                  { label: 'Masculino', value: 'MALE' },
+                  { label: 'Feminino', value: 'FEMALE' },
+                ]}
+                placeholder="Selecione seu gênero"
+                onValueChange={onChange}
+                selectedValue={value}
+                errorMessage={formState.errors?.gender?.message}
+              />
             )}
           />
 

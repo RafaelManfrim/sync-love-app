@@ -2,6 +2,7 @@ import { HStack, Heading, Text, VStack, Icon } from '@gluestack-ui/themed'
 import { differenceInDays, format, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { Calendar, Gift, Heart } from 'lucide-react-native'
+import { useTheme } from '@hooks/useTheme'
 
 type Props = {
   title: string
@@ -10,6 +11,7 @@ type Props = {
 }
 
 export function DateCard({ title, date, type }: Props) {
+  const { colors } = useTheme()
   const eventDate = parseISO(date)
   const today = new Date()
 
@@ -34,7 +36,7 @@ export function DateCard({ title, date, type }: Props) {
       case 'birthday':
         return <Icon as={Gift} color="$green500" size="lg" />
       default:
-        return <Icon as={Calendar} color="$gray300" size="lg" />
+        return <Icon as={Calendar} color={colors.text} size="lg" />
     }
   }
 
@@ -46,7 +48,7 @@ export function DateCard({ title, date, type }: Props) {
 
   return (
     <HStack
-      bg="$trueGray200"
+      bg={colors.card}
       p="$4"
       rounded="$md"
       alignItems="center"
@@ -56,10 +58,10 @@ export function DateCard({ title, date, type }: Props) {
       <HStack alignItems="center" space="md">
         {getIcon()}
         <VStack>
-          <Heading color="$trueGray600" fontSize="$md" fontFamily="$heading">
+          <Heading color={colors.title} fontSize="$md" fontFamily="$heading">
             {title}
           </Heading>
-          <Text color="$trueGray400" fontSize="$sm">
+          <Text color={colors.text} fontSize="$sm">
             {formattedDate}
           </Text>
         </VStack>
@@ -68,7 +70,7 @@ export function DateCard({ title, date, type }: Props) {
       <VStack
         alignItems="center"
         justifyContent="center"
-        bg="$trueGray400"
+        bg={colors.primary500}
         p="$2"
         px="$3"
         rounded="$full"

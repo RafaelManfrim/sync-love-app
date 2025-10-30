@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Box,
   VStack,
@@ -21,7 +21,7 @@ import { Button } from '@components/Button'
 import { Select } from '@components/Select'
 import { ToastMessage } from '@components/ToastMessage'
 import { useCalendarQueries } from '@hooks/api/useCalendarQueries'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -29,9 +29,10 @@ import { CalendarDays } from 'lucide-react-native'
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker'
+import { Loading } from '@components/Loading'
 
 // Esquema de validação Zod
-const createEventFormSchema = z
+const editEventFormSchema = z
   .object({
     title: z.string().min(1, 'O título é obrigatório.'),
     description: z.string().nullable().optional(),
@@ -56,7 +57,7 @@ type FormData = {
   category_id?: number | null
 }
 
-// Opções de Recorrência (do iCalendar)
+// Opções de Recorrência
 const recurrenceOptions = [
   { label: 'Não se repete', value: null },
   { label: 'Diariamente', value: 'FREQ=DAILY' },
@@ -70,14 +71,32 @@ const recurrenceOptions = [
 // Modo do seletor de data/hora
 type DateTimePickerMode = 'date' | 'time'
 
-export function EventCreate() {
+// Tipo dos parâmetros da rota
+type EventEditRouteParams = {
+  eventId: number
+}
+
+export function EventEdit() {
   const { colors } = useTheme()
   const navigation = useNavigation()
+  const route = useRoute()
   const toast = useToast()
 
-  const { useCreateCalendarEvent, useFetchCalendarCategories } =
-    useCalendarQueries()
-  const { mutate: createEvent, isPending } = useCreateCalendarEvent()
+  const { eventId } = route.params as EventEditRouteParams
+
+  const {
+    useFetchCalendarEvents,
+    useFetchCalendarCategories,
+    useUpdateCalendarEvent,
+  } = useCalendarQueries()
+
+  // Busca o evento específico
+  // Note: A API retorna ocorrências por range, então precisamos buscar um range que inclua o evento
+  const { data: events = [], isLoading: isLoadingEvent } =
+    useFetchCalendarEvents('2020-01-01', '2030-12-31', true)
+  const event = events.find((e) => e.id === eventId)
+
+  const { mutate: updateEvent, isPending } = useUpdateCalendarEvent()
 
   // Busca as categorias
   const { data: categories, isLoading: isLoadingCategories } =
@@ -100,15 +119,16 @@ export function EventCreate() {
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     // @ts-expect-error - Zod default value type inference issue
-    resolver: zodResolver(createEventFormSchema),
+    resolver: zodResolver(editEventFormSchema),
     defaultValues: {
       title: '',
       description: null,
       start_time: new Date(),
-      end_time: new Date(new Date().getTime() + 60 * 60 * 1000), // +1 hora
+      end_time: new Date(new Date().getTime() + 60 * 60 * 1000),
       is_all_day: false,
       recurrence_rule: null,
       category_id: null,
@@ -116,6 +136,21 @@ export function EventCreate() {
   })
 
   const { start_time, end_time, is_all_day } = watch()
+
+  // Carrega os dados do evento quando disponível
+  useEffect(() => {
+    if (event) {
+      reset({
+        title: event.title,
+        description: event.description,
+        start_time: new Date(event.start_time),
+        end_time: new Date(event.end_time),
+        is_all_day: event.is_all_day,
+        recurrence_rule: event.recurrence_rule,
+        category_id: event.category_id,
+      })
+    }
+  }, [event, reset])
 
   // --- Handlers do Seletor de Data/Hora ---
   const showDateTimePicker = (
@@ -158,30 +193,21 @@ export function EventCreate() {
   const handleToggleAllDay = (allDay: boolean) => {
     setValue('is_all_day', allDay, { shouldValidate: true })
     if (allDay) {
-      // Se "Dia Inteiro", força o end_time a ser igual ao start_time
       setValue('end_time', watch('start_time'), { shouldValidate: true })
     }
   }
 
   // --- Handler de Submit ---
-  const handleCreateEvent = (data: FormData) => {
-    createEvent(
-      {
-        title: data.title,
-        description: data.description,
-        startTime: data.start_time,
-        endTime: data.end_time,
-        isAllDay: data.is_all_day,
-        recurrenceRule: data.recurrence_rule,
-        categoryId: data.category_id,
-      },
+  const handleUpdateEvent = (data: FormData) => {
+    updateEvent(
+      { eventId, data },
       {
         onSuccess: () => {
           toast.show({
             render: ({ id }) => (
               <ToastMessage
                 id={id}
-                title="Evento criado com sucesso!"
+                title="Evento atualizado com sucesso!"
                 action="success"
                 onClose={() => toast.close(id)}
               />
@@ -194,7 +220,7 @@ export function EventCreate() {
             render: ({ id }) => (
               <ToastMessage
                 id={id}
-                title="Erro ao criar evento"
+                title="Erro ao atualizar evento"
                 description={error.message}
                 action="error"
                 onClose={() => toast.close(id)}
@@ -221,9 +247,14 @@ export function EventCreate() {
     })
   }
 
+  // Estados de carregamento
+  if (isLoadingEvent || !event) {
+    return <Loading />
+  }
+
   return (
     <VStack flex={1} bg={colors.background}>
-      <ScreenHeader title="Novo Evento" hasGoBackButton />
+      <ScreenHeader title="Editar Evento" hasGoBackButton />
 
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 32 }}
@@ -453,8 +484,8 @@ export function EventCreate() {
           {/* Botão Salvar */}
           <Box mt="$8">
             <Button
-              title="Salvar Evento"
-              onPress={handleSubmit(handleCreateEvent as never)}
+              title="Atualizar Evento"
+              onPress={handleSubmit(handleUpdateEvent as never)}
               isLoading={isPending}
             />
           </Box>
@@ -466,7 +497,7 @@ export function EventCreate() {
         <DateTimePicker
           value={watch(pickerTarget) as Date}
           mode={pickerMode}
-          display="spinner" // ou "default" para nativo
+          display="spinner"
           onChange={onPickerChange}
         />
       )}

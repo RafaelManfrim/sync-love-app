@@ -1,90 +1,127 @@
-import { Button } from '@components/Button'
 import { CalendarView } from '@components/CalendarView'
-import { DateCard } from '@components/DateCard'
+import { EventManagementCard } from '@components/EventManagementCard'
 import { ScreenHeader } from '@components/ScreenHeader'
-import { Box, Center, FlatList, Text, VStack } from '@gluestack-ui/themed'
+import {
+  Box,
+  Center,
+  FlatList,
+  Text,
+  VStack,
+  Spinner,
+} from '@gluestack-ui/themed'
 import { useNavigation } from '@react-navigation/native'
 import { useState } from 'react'
-
-const MOCK_DATES = [
-  {
-    id: '1',
-    title: 'Aniversário de Namoro',
-    date: '2025-11-20',
-    type: 'anniversary' as const,
-  },
-  {
-    id: '2',
-    title: 'Aniversário da Maria',
-    date: '2026-01-15',
-    type: 'birthday' as const,
-  },
-  {
-    id: '3',
-    title: 'Viagem para a praia',
-    date: '2025-12-22',
-    type: 'event' as const,
-  },
-  {
-    id: '4',
-    title: 'Aniversário do João',
-    date: '2025-10-28',
-    type: 'birthday' as const,
-  },
-  {
-    id: '5',
-    title: 'Show do Coldplay',
-    date: '2026-03-10',
-    type: 'event' as const,
-  },
-].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()) // Ordena por data
+import { useTheme } from '@hooks/useTheme'
+import { useCalendarQueries } from '@hooks/api/useCalendarQueries'
+import { format, startOfMonth, endOfMonth, parseISO } from 'date-fns'
+import { DatesNavigationRoutesProps } from '@routes/dates.routes'
+import { CalendarEventOccurrenceDTO } from '@dtos/CalendarEventDTO'
+import { AddRoundedButton } from '@components/AddRoundedButton'
 
 export function ImportantDates() {
-  const [selectedDate, setSelectedDate] = useState(
-    new Date().toISOString().split('T')[0],
-  )
+  const { colors } = useTheme()
+  const navigation = useNavigation<DatesNavigationRoutesProps>()
+  const [selectedDate, setSelectedDate] = useState(new Date())
 
-  const navigation = useNavigation()
+  // Busca eventos do mês selecionado
+  const startDate = format(startOfMonth(selectedDate), 'yyyy-MM-dd')
+  const endDate = format(endOfMonth(selectedDate), 'yyyy-MM-dd')
 
-  function handleAddNewDate() {
-    // Ação para adicionar nova data (futuramente navegará para outra tela)
-    console.log('Abrir tela para adicionar nova data importante.')
+  const { useFetchCalendarEvents } = useCalendarQueries()
+  const {
+    data: events = [],
+    isLoading,
+    isError,
+  } = useFetchCalendarEvents(startDate, endDate)
+
+  const handleAddNewDate = () => {
+    navigation.navigate('eventCreate')
   }
 
+  const handleEditEvent = (eventId: number) => {
+    navigation.navigate('eventEdit', { eventId })
+  }
+
+  const renderEmptyState = () => (
+    <Center flex={1} px="$6">
+      <Text color={colors.text} fontSize="$md" textAlign="center">
+        Nenhum evento cadastrado neste mês.
+      </Text>
+      <Text
+        color={colors.text}
+        fontSize="$sm"
+        textAlign="center"
+        mt="$2"
+        opacity={0.7}
+      >
+        Adicione datas importantes como aniversários, comemorações e
+        compromissos.
+      </Text>
+    </Center>
+  )
+
   return (
-    <VStack flex={1}>
+    <VStack flex={1} bg={colors.background}>
       <ScreenHeader title="Datas Importantes" />
 
       <Box w="$full" gap="$3" p="$6">
         <CalendarView
-          dates={MOCK_DATES}
-          selectedDate={selectedDate}
-          onDayPress={(day) => setSelectedDate(day.dateString)}
+          dates={events.map((event) => ({
+            id: String(event.id),
+            title: event.title,
+            date: format(parseISO(event.occurrence_start_time), 'yyyy-MM-dd'),
+            type: 'event' as const,
+          }))}
+          selectedDate={format(selectedDate, 'yyyy-MM-dd')}
+          onDayPress={(day) => setSelectedDate(parseISO(day.dateString))}
+          onMonthChange={(month) =>
+            setSelectedDate(
+              parseISO(
+                `${month.year}-${String(month.month).padStart(2, '0')}-01`,
+              ),
+            )
+          }
         />
       </Box>
 
-      <FlatList
-        data={MOCK_DATES}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <DateCard title={item.title} date={item.date} type={item.type} />
-        )}
-        contentContainerStyle={{ padding: 20 }}
-        ListEmptyComponent={() => (
-          <Text color="$gray300" textAlign="center" mt="$8">
-            Nenhuma data importante cadastrada.
+      {isLoading ? (
+        <Center flex={1}>
+          <Spinner size="large" color={colors.primary500} />
+        </Center>
+      ) : isError ? (
+        <Center flex={1} px="$6">
+          <Text color={colors.text} fontSize="$md" textAlign="center">
+            Erro ao carregar eventos.
           </Text>
-        )}
-        showsVerticalScrollIndicator={false}
-      />
-
-      <Center w="$full" gap="$3" p="$6">
-        <Button
-          title="Adicionar Nova Data"
-          onPress={handleAddNewDate}
-          // isLoading={isSubmitting}
+          <Text
+            color={colors.text}
+            fontSize="$sm"
+            textAlign="center"
+            mt="$2"
+            opacity={0.7}
+          >
+            Tente novamente mais tarde.
+          </Text>
+        </Center>
+      ) : (
+        <FlatList
+          data={events}
+          keyExtractor={(item) =>
+            String((item as CalendarEventOccurrenceDTO).id)
+          }
+          renderItem={({ item }) => (
+            <EventManagementCard
+              event={item as CalendarEventOccurrenceDTO}
+              onEdit={handleEditEvent}
+            />
+          )}
+          contentContainerStyle={{ padding: 20 }}
+          ListEmptyComponent={renderEmptyState}
+          showsVerticalScrollIndicator={false}
         />
-      </Center>
+      )}
+
+      <AddRoundedButton onPress={handleAddNewDate} />
     </VStack>
   )
 }

@@ -9,11 +9,11 @@ import {
 type CreateEventPayload = {
   title: string
   description?: string | null
-  start_time: Date
-  end_time: Date
-  is_all_day?: boolean
-  recurrence_rule?: string | null
-  category_id?: number | null
+  startTime: Date
+  endTime: Date
+  isAllDay?: boolean
+  recurrenceRule?: string | null
+  categoryId?: number | null
 }
 
 type UpdateEventPayload = {
@@ -23,7 +23,7 @@ type UpdateEventPayload = {
 
 type CreateExceptionPayload = {
   eventId: number
-  exception_date: Date // A data/hora UTC da ocorrência a cancelar
+  exceptionDate: Date // A data/hora UTC da ocorrência a cancelar
 }
 
 // === Constantes das Query Keys ===
@@ -150,10 +150,10 @@ export function useCalendarQueries() {
     return useMutation({
       mutationFn: async ({
         eventId,
-        exception_date,
+        exceptionDate,
       }: CreateExceptionPayload) => {
         return api.post(`/calendar-events/${eventId}/exceptions`, {
-          exception_date,
+          exceptionDate,
         })
       },
       onSuccess: () => {

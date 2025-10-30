@@ -3,12 +3,13 @@ import {
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack'
 import { EventCreate } from '@screens/EventCreate'
-
+import { EventEdit } from '@screens/EventEdit'
 import { ImportantDates } from '@screens/ImportantDates'
 
 type DatesRoutesProps = {
   importantDates: undefined
   eventCreate: undefined
+  eventEdit: { eventId: number }
 }
 
 export type DatesNavigationRoutesProps =
@@ -21,6 +22,7 @@ export function DatesRoutes() {
     <Navigator screenOptions={{ headerShown: false }}>
       <Screen name="importantDates" component={ImportantDates} />
       <Screen name="eventCreate" component={EventCreate} />
+      <Screen name="eventEdit" component={EventEdit} />
     </Navigator>
   )
 }
