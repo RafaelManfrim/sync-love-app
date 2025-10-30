@@ -2,9 +2,12 @@ import { ScreenHeader } from '@components/ScreenHeader'
 import { ToastMessage } from '@components/ToastMessage'
 import {
   Center,
+  FormControlLabel,
+  FormControlLabelText,
   KeyboardAvoidingView,
   useToast,
   VStack,
+  FormControl,
 } from '@gluestack-ui/themed'
 import { useNavigation } from '@react-navigation/native'
 import { ShoppingListNavigationRoutesProps } from '@routes/lists.routes'
@@ -18,6 +21,7 @@ import { Input } from '@components/Input'
 import { Button } from '@components/Button'
 import { useState } from 'react'
 import { Platform } from 'react-native'
+import { useTheme } from '@hooks/useTheme'
 
 const newShoppingListSchema = z.object({
   title: z
@@ -32,6 +36,8 @@ export function NewShoppingList() {
   const [isLoading, setIsLoading] = useState(false)
   const navigation = useNavigation<ShoppingListNavigationRoutesProps>()
   const toast = useToast()
+
+  const { colors } = useTheme()
 
   const { control, handleSubmit, formState } = useForm<NewShoppingListFormData>(
     {
@@ -86,21 +92,28 @@ export function NewShoppingList() {
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <VStack p="$6" mt="$5" flex={1} justifyContent="space-between">
-          <Controller
-            name="title"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <Input
-                placeholder="Título da lista"
-                onChangeText={onChange}
-                value={value}
-                errorMessage={formState.errors?.title?.message}
-                returnKeyType="send"
-                onSubmitEditing={handleSubmit(handleCreate)}
-              />
-            )}
-          />
+        <VStack p="$6" flex={1} justifyContent="space-between">
+          <FormControl>
+            <FormControlLabel>
+              <FormControlLabelText color={colors.text}>
+                Nome
+              </FormControlLabelText>
+            </FormControlLabel>
+            <Controller
+              name="title"
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <Input
+                  placeholder="Título da lista"
+                  onChangeText={onChange}
+                  value={value}
+                  errorMessage={formState.errors?.title?.message}
+                  returnKeyType="send"
+                  onSubmitEditing={handleSubmit(handleCreate)}
+                />
+              )}
+            />
+          </FormControl>
         </VStack>
         <Center w="$full" gap="$3" p="$6">
           <Button

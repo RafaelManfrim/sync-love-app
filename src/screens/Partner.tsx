@@ -4,29 +4,29 @@ import {
   AlertDialogBody,
   AlertDialogContent,
   AlertDialogFooter,
+  AlertDialogHeader,
   ButtonGroup,
   Center,
   Heading,
   HStack,
+  Pressable,
   Text,
   VStack,
-  AlertDialogHeader,
-  Pressable,
 } from '@gluestack-ui/themed'
-
-import { UserPhoto } from '@components/UserPhoto'
-import { ScreenHeader } from '@components/ScreenHeader'
-import { Button } from '@components/Button'
-import { api } from '@services/api'
-import DefaultUserPhoto from '@assets/userPhotoDefault.png'
-import { useState } from 'react'
-import { Loading } from '@components/Loading'
 import { format } from 'date-fns'
+import { useState } from 'react'
+
+import DefaultUserPhoto from '@assets/userPhotoDefault.png'
+import { Button } from '@components/Button'
+import { Loading } from '@components/Loading'
+import { ScreenHeader } from '@components/ScreenHeader'
+import { UserPhoto } from '@components/UserPhoto'
 import {
   useCoupleDetails,
   useEndRelationship,
 } from '@hooks/api/useCoupleQueries'
 import { useTheme } from '@hooks/useTheme'
+import { api } from '@services/api'
 
 export function Partner() {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
@@ -149,27 +149,40 @@ export function Partner() {
             onClose={() => setShowConfirmDialog(false)}
           >
             <AlertDialogBackdrop />
-            <AlertDialogContent>
+            <AlertDialogContent bg={colors.card}>
               <AlertDialogHeader>
-                <Heading>Terminar Relacionamento</Heading>
+                <Heading color={colors.title}>Terminar Relacionamento</Heading>
               </AlertDialogHeader>
               <AlertDialogBody>
-                <Text>
+                <Text color={colors.text}>
                   Você tem certeza? Esta ação é irreversível e irá desvincular
                   vocês dois no aplicativo.
                 </Text>
               </AlertDialogBody>
               <AlertDialogFooter>
                 <ButtonGroup space="lg">
-                  <Pressable onPress={() => setShowConfirmDialog(false)}>
-                    <Text>Cancelar</Text>
+                  <Pressable
+                    onPress={() => setShowConfirmDialog(false)}
+                    p="$2"
+                    borderRadius="$md"
+                  >
+                    <Text color={colors.textInactive} fontWeight="$medium">
+                      Cancelar
+                    </Text>
                   </Pressable>
                   <Pressable
                     onPress={handleEndRelationship}
                     disabled={isSubmitting}
+                    p="$2"
+                    borderRadius="$md"
+                    bg={isSubmitting ? '$trueGray200' : '$red50'}
+                    $hover-bg="$red100"
                   >
-                    <Text color={isSubmitting ? '$trueGray400' : '$red500'}>
-                      {isSubmitting ? 'Encerando...' : 'Sim, terminar'}
+                    <Text
+                      color={isSubmitting ? '$trueGray500' : '$error500'}
+                      fontWeight="$semibold"
+                    >
+                      {isSubmitting ? 'Encerrando...' : 'Sim, terminar'}
                     </Text>
                   </Pressable>
                 </ButtonGroup>

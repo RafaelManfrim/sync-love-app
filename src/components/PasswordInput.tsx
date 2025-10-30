@@ -67,8 +67,12 @@ export const PasswordInput = forwardRef<TextInput, PasswordInputProps>(
             secureTextEntry={!showPassword}
             {...rest}
           />
-          <InputSlot pr="$3" onPress={togglePasswordVisibility}>
-            <Pressable onPress={togglePasswordVisibility}>
+          <InputSlot
+            pr="$3"
+            onPress={togglePasswordVisibility}
+            bg={colors.card}
+          >
+            <Pressable onPress={togglePasswordVisibility} bg={colors.card}>
               {showPassword ? (
                 <EyeOff size={20} color={colors.textInactive} />
               ) : (

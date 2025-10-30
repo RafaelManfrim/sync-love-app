@@ -9,10 +9,9 @@ import {
   AlertDialogHeader,
   AlertDialogBody,
   AlertDialogFooter,
-  Button,
-  ButtonText,
   Heading,
   useToast,
+  ButtonGroup,
 } from '@gluestack-ui/themed'
 import { useTheme } from '@hooks/useTheme'
 import { HouseholdTaskDTO } from '@dtos/HouseholdTaskDTO'
@@ -148,7 +147,7 @@ export function TaskManagementCard({ task, onEdit }: Props) {
         <AlertDialogBackdrop />
         <AlertDialogContent bg={colors.card}>
           <AlertDialogHeader>
-            <Heading size="lg" color={colors.text}>
+            <Heading size="lg" color={colors.title}>
               Excluir Tarefa
             </Heading>
           </AlertDialogHeader>
@@ -160,22 +159,32 @@ export function TaskManagementCard({ task, onEdit }: Props) {
             </Text>
           </AlertDialogBody>
           <AlertDialogFooter>
-            <Button
-              variant="outline"
-              action="secondary"
-              onPress={() => setShowDeleteDialog(false)}
-              ref={cancelRef}
-              mr="$2"
-            >
-              <ButtonText color={colors.text}>Cancelar</ButtonText>
-            </Button>
-            <Button
-              bg="$error500"
-              onPress={handleDelete}
-              isDisabled={isPending}
-            >
-              <ButtonText>Excluir</ButtonText>
-            </Button>
+            <ButtonGroup space="lg">
+              <Pressable
+                onPress={() => setShowDeleteDialog(false)}
+                p="$2"
+                borderRadius="$md"
+              >
+                <Text color={colors.textInactive} fontWeight="$medium">
+                  Cancelar
+                </Text>
+              </Pressable>
+              <Pressable
+                onPress={handleDelete}
+                disabled={isPending}
+                p="$2"
+                borderRadius="$md"
+                bg={isPending ? '$trueGray200' : '$red50'}
+                $hover-bg="$red100"
+              >
+                <Text
+                  color={isPending ? '$trueGray500' : '$error500'}
+                  fontWeight="$semibold"
+                >
+                  {isPending ? 'Excluindo...' : 'Sim, excluir'}
+                </Text>
+              </Pressable>
+            </ButtonGroup>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

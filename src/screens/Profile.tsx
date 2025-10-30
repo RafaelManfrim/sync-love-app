@@ -228,23 +228,39 @@ export function Profile() {
         onClose={() => setShowDeleteDialog(false)}
       >
         <AlertDialogBackdrop />
-        <AlertDialogContent>
+        <AlertDialogContent bg={colors.card}>
           <AlertDialogHeader>
-            <Heading>Excluir Conta</Heading>
+            <Heading color={colors.title}>Excluir Conta</Heading>
           </AlertDialogHeader>
           <AlertDialogBody>
-            <Text>
+            <Text color={colors.text}>
               Você tem certeza? Esta ação é permanente e todos os seus dados,
               incluindo relacionamentos e listas, serão apagados para sempre.
             </Text>
           </AlertDialogBody>
           <AlertDialogFooter>
             <ButtonGroup space="lg">
-              <Pressable onPress={() => setShowDeleteDialog(false)}>
-                <Text>Cancelar</Text>
+              <Pressable
+                onPress={() => setShowDeleteDialog(false)}
+                p="$2"
+                borderRadius="$md"
+              >
+                <Text color={colors.textInactive} fontWeight="$medium">
+                  Cancelar
+                </Text>
               </Pressable>
-              <Pressable onPress={() => deleteAccount()} disabled={isDeleting}>
-                <Text color={isDeleting ? '$trueGray400' : '$red500'}>
+              <Pressable
+                onPress={() => deleteAccount()}
+                disabled={isDeleting}
+                p="$2"
+                borderRadius="$md"
+                bg={isDeleting ? '$trueGray200' : '$red50'}
+                $hover-bg="$red100"
+              >
+                <Text
+                  color={isDeleting ? '$trueGray500' : '$error500'}
+                  fontWeight="$semibold"
+                >
                   {isDeleting ? 'Excluindo...' : 'Sim, excluir'}
                 </Text>
               </Pressable>

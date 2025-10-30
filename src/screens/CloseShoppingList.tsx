@@ -211,6 +211,16 @@ export function CloseShoppingList() {
                   </HStack>
                 )
               }}
+              ListHeaderComponent={
+                <HStack px="$2" pb="$2">
+                  <Text flex={1} color={colors.textInactive} fontSize="$sm">
+                    Item
+                  </Text>
+                  <Text color={colors.textInactive} fontSize="$sm">
+                    Valor Unitário
+                  </Text>
+                </HStack>
+              }
               ListEmptyComponent={() => (
                 <Text color={colors.textInactive} textAlign="center" mt="$8">
                   Nenhum item na lista ainda.
