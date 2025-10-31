@@ -148,6 +148,7 @@ export function TaskEdit() {
       {
         onSuccess: () => {
           toast.show({
+            placement: 'top',
             render: ({ id }) => (
               <ToastMessage
                 id={id}
@@ -161,6 +162,7 @@ export function TaskEdit() {
         },
         onError: (error) => {
           toast.show({
+            placement: 'top',
             render: ({ id }) => (
               <ToastMessage
                 id={id}

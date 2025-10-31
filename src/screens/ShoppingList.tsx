@@ -93,6 +93,7 @@ export function ShoppingList() {
         ? error.message
         : 'Não foi possível adicionar o item.'
       toast.show({
+        placement: 'top',
         render: ({ id }) => (
           <ToastMessage
             id={id}
@@ -114,6 +115,7 @@ export function ShoppingList() {
         ? error.message
         : 'Não foi possível atualizar o item.'
       toast.show({
+        placement: 'top',
         render: ({ id }) => (
           <ToastMessage
             id={id}

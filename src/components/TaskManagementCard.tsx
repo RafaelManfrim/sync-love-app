@@ -40,6 +40,7 @@ export function TaskManagementCard({ task, onEdit }: Props) {
     deleteTask(task.id, {
       onSuccess: () => {
         toast.show({
+          placement: 'top',
           render: ({ id }) => (
             <ToastMessage
               id={id}
@@ -53,6 +54,7 @@ export function TaskManagementCard({ task, onEdit }: Props) {
       },
       onError: (error) => {
         toast.show({
+          placement: 'top',
           render: ({ id }) => (
             <ToastMessage
               id={id}

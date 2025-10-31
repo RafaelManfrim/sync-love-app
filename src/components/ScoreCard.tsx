@@ -1,7 +1,4 @@
 import {
-  Avatar,
-  AvatarFallbackText,
-  AvatarImage,
   HStack,
   Heading,
   Progress,
@@ -10,6 +7,9 @@ import {
   VStack,
 } from '@gluestack-ui/themed'
 import { useTheme } from '@hooks/useTheme'
+import { UserPhoto } from './UserPhoto'
+import DefaultUserPhoto from '@assets/userPhotoDefault.png'
+import { api } from '@services/api'
 
 type Props = {
   currentPoints: number
@@ -41,12 +41,17 @@ export function ScoreCard({ currentPoints, goalPoints, me, partner }: Props) {
 
       <HStack justifyContent="space-between" pt="$4">
         <HStack alignItems="center" space="sm">
-          <Avatar size="sm">
-            <AvatarFallbackText>{me.name}</AvatarFallbackText>
-            {me.avatarUrl && (
-              <AvatarImage source={{ uri: me.avatarUrl }} alt={me.name} />
-            )}
-          </Avatar>
+          <UserPhoto
+            w="$8"
+            h="$8"
+            source={
+              me.avatarUrl
+                ? {
+                    uri: `${api.defaults.baseURL}/tmp/uploads/avatar/${me.avatarUrl}`,
+                  }
+                : DefaultUserPhoto
+            }
+          />
           <VStack>
             <Text color={colors.primary500} fontWeight="$bold" fontSize="$sm">
               {me.name}
@@ -70,15 +75,17 @@ export function ScoreCard({ currentPoints, goalPoints, me, partner }: Props) {
               {partner.score} tarefas
             </Text>
           </VStack>
-          <Avatar size="sm">
-            <AvatarFallbackText>{partner.name}</AvatarFallbackText>
-            {partner.avatarUrl && (
-              <AvatarImage
-                source={{ uri: partner.avatarUrl }}
-                alt={partner.name}
-              />
-            )}
-          </Avatar>
+          <UserPhoto
+            w="$8"
+            h="$8"
+            source={
+              partner.avatarUrl
+                ? {
+                    uri: `${api.defaults.baseURL}/tmp/uploads/avatar/${partner.avatarUrl}`,
+                  }
+                : DefaultUserPhoto
+            }
+          />
         </HStack>
       </HStack>
     </VStack>

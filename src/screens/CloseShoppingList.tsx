@@ -97,6 +97,7 @@ export function CloseShoppingList() {
       closeShoppingList({ listId: shoppingListId, items: apiPayload })
 
       toast.show({
+        placement: 'top',
         render: ({ id }) => (
           <ToastMessage
             id={id}
@@ -105,12 +106,12 @@ export function CloseShoppingList() {
             title="Lista de compras finalizada com sucesso!"
           />
         ),
-        placement: 'top',
       })
 
       navigation.navigate('shoppingLists')
     } catch (error) {
       toast.show({
+        placement: 'top',
         render: ({ id }) => (
           <ToastMessage
             id={id}
@@ -119,7 +120,6 @@ export function CloseShoppingList() {
             title="Erro ao fechar a lista"
           />
         ),
-        placement: 'top',
       })
     }
   }

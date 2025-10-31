@@ -204,6 +204,7 @@ export function EventEdit() {
       {
         onSuccess: () => {
           toast.show({
+            placement: 'top',
             render: ({ id }) => (
               <ToastMessage
                 id={id}
@@ -217,6 +218,7 @@ export function EventEdit() {
         },
         onError: (error) => {
           toast.show({
+            placement: 'top',
             render: ({ id }) => (
               <ToastMessage
                 id={id}

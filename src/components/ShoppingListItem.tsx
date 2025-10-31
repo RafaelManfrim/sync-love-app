@@ -38,9 +38,9 @@ export function ShoppingListItem({
         aria-label={item.product.name}
         value={item.product.name}
         isDisabled={isReadOnly}
+        mr="$3"
       >
         <CheckboxIndicator
-          mr="$3"
           $checked-bg={colors.primary500}
           $checked-borderColor={colors.primary600}
         >

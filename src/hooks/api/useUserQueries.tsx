@@ -26,6 +26,7 @@ export function useUpdatePassword() {
     mutationFn: updatePassword,
     onSuccess: () => {
       toast.show({
+        placement: 'top',
         render: ({ id }) => (
           <ToastMessage
             id={id}
@@ -43,6 +44,7 @@ export function useUpdatePassword() {
         ? error.message
         : 'Não foi possível atualizar a senha.'
       toast.show({
+        placement: 'top',
         render: ({ id }) => (
           <ToastMessage
             id={id}
@@ -78,6 +80,7 @@ export function useUpdateUserName() {
       await queryClient.invalidateQueries({ queryKey: ['userData'] })
 
       toast.show({
+        placement: 'top',
         render: ({ id }) => (
           <ToastMessage
             id={id}
@@ -96,6 +99,7 @@ export function useUpdateUserName() {
         ? error.message
         : 'Não foi possível atualizar o nome.'
       toast.show({
+        placement: 'top',
         render: ({ id }) => (
           <ToastMessage
             id={id}
@@ -122,6 +126,7 @@ export function useDeleteAccount() {
     mutationFn: deleteUserAccount,
     onSuccess: async () => {
       toast.show({
+        placement: 'top',
         render: ({ id }) => (
           <ToastMessage
             id={id}
@@ -141,6 +146,7 @@ export function useDeleteAccount() {
         ? error.message
         : 'Não foi possível excluir a conta.'
       toast.show({
+        placement: 'top',
         render: ({ id }) => (
           <ToastMessage
             id={id}

@@ -115,6 +115,7 @@ export function TaskCreate() {
     createTask(payload, {
       onSuccess: () => {
         toast.show({
+          placement: 'top',
           render: ({ id }) => (
             <ToastMessage
               id={id}
@@ -128,6 +129,7 @@ export function TaskCreate() {
       },
       onError: (error) => {
         toast.show({
+          placement: 'top',
           render: ({ id }) => (
             <ToastMessage
               id={id}

@@ -21,12 +21,12 @@ type UpdateTaskPayload = {
 
 type CompleteTaskPayload = {
   taskId: number
-  task_due_date: Date // O dia (YYYY-MM-DD)
+  taskDueDate: Date // O dia (YYYY-MM-DD)
 }
 
 type CreateExceptionPayload = {
   taskId: number
-  exception_date: Date // O dia (YYYY-MM-DD)
+  exceptionDate: Date // O dia (YYYY-MM-DD)
 }
 
 // === Constantes das Query Keys ===
@@ -195,11 +195,11 @@ export function useHouseholdTaskQueries() {
    */
   const useCompleteTask = () => {
     return useMutation({
-      mutationFn: async ({ taskId, task_due_date }: CompleteTaskPayload) => {
-        return api.post(`/tasks/${taskId}/complete`, { task_due_date })
+      mutationFn: async ({ taskId, taskDueDate }: CompleteTaskPayload) => {
+        return api.post(`/tasks/${taskId}/complete`, { taskDueDate })
       },
       onSuccess: (_, variables) => {
-        invalidateTasksQueries(variables.task_due_date)
+        invalidateTasksQueries(variables.taskDueDate)
       },
     })
   }
@@ -224,14 +224,11 @@ export function useHouseholdTaskQueries() {
    */
   const useCreateTaskException = () => {
     return useMutation({
-      mutationFn: async ({
-        taskId,
-        exception_date,
-      }: CreateExceptionPayload) => {
-        return api.post(`/tasks/${taskId}/exceptions`, { exception_date })
+      mutationFn: async ({ taskId, exceptionDate }: CreateExceptionPayload) => {
+        return api.post(`/tasks/${taskId}/exceptions`, { exceptionDate })
       },
       onSuccess: (_, variables) => {
-        invalidateTasksQueries(variables.exception_date)
+        invalidateTasksQueries(variables.exceptionDate)
       },
     })
   }

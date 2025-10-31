@@ -8,13 +8,13 @@ import {
   CheckIcon,
   CloseIcon,
   Pressable,
+  Spinner,
 } from '@gluestack-ui/themed'
 import { useTheme } from '@hooks/useTheme'
 import { TaskForDayDTO } from '@dtos/HouseholdTaskDTO'
 import { useHouseholdTaskQueries } from '@hooks/api/useHouseholdTaskQueries'
 import { UserPhoto } from './UserPhoto'
 import { useAuth } from '@hooks/useAuth'
-import { Loading } from './Loading'
 import DefaultUserPhoto from '@assets/userPhotoDefault.png'
 import { api } from '@services/api'
 
@@ -59,14 +59,14 @@ export function TaskCard({ task, currentDate }: Props) {
       })
     } else {
       // Complete
-      completeTask({ taskId: task.id, task_due_date: currentDate })
+      completeTask({ taskId: task.id, taskDueDate: currentDate })
     }
   }
 
   const handleCancelTask = () => {
     // Ação de "long press" ou menu (ex: "Cancelar hoje")
     if (isLoading || isCancelled) return
-    createException({ taskId: task.id, exception_date: currentDate })
+    createException({ taskId: task.id, exceptionDate: currentDate })
   }
 
   // Define o ícone do checkbox
@@ -89,24 +89,26 @@ export function TaskCard({ task, currentDate }: Props) {
         opacity={isCancelled ? 0.4 : 1}
       >
         <HStack alignItems="center" flex={1}>
-          {isLoading ? (
-            <Loading />
-          ) : (
-            <Checkbox
-              size="lg"
-              isInvalid={isCancelled} // Se cancelado, mostra X
-              isChecked={isCompleted}
-              isDisabled={isCancelled}
-              onChange={handleToggleCompletion}
-              aria-label={`Marcar ${task.title}`}
-              value={task.title}
-              mr="$4"
+          <Checkbox
+            size="lg"
+            isInvalid={isCancelled} // Se cancelado, mostra X
+            isChecked={isCompleted}
+            isDisabled={isCancelled}
+            onChange={handleToggleCompletion}
+            aria-label={`Marcar ${task.title}`}
+            value={task.title}
+            mr="$3"
+          >
+            <CheckboxIndicator
+              $checked-bg={colors.primary500}
+              $checked-borderColor={colors.primary600}
             >
-              <CheckboxIndicator>
-                <CheckboxIcon as={CheckboxStateIcon} />
-              </CheckboxIndicator>
-            </Checkbox>
-          )}
+              <CheckboxIcon
+                as={CheckboxStateIcon}
+                color={colors.textContrast}
+              />
+            </CheckboxIndicator>
+          </Checkbox>
 
           <VStack flex={1}>
             <Text
@@ -130,7 +132,7 @@ export function TaskCard({ task, currentDate }: Props) {
           </VStack>
         </HStack>
 
-        {whoCompleted && (
+        {whoCompleted ? (
           <UserPhoto
             w="$5"
             h="$5"
@@ -144,7 +146,9 @@ export function TaskCard({ task, currentDate }: Props) {
             borderColor={isMe ? colors.primary500 : colors.card}
             borderWidth={isMe ? 2 : 0}
           />
-        )}
+        ) : isLoading ? (
+          <Spinner color={colors.primary500} />
+        ) : null}
       </HStack>
     </Pressable>
   )

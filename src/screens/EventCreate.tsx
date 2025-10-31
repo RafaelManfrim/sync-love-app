@@ -178,6 +178,7 @@ export function EventCreate() {
       {
         onSuccess: () => {
           toast.show({
+            placement: 'top',
             render: ({ id }) => (
               <ToastMessage
                 id={id}
@@ -191,6 +192,7 @@ export function EventCreate() {
         },
         onError: (error) => {
           toast.show({
+            placement: 'top',
             render: ({ id }) => (
               <ToastMessage
                 id={id}
