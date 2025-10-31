@@ -3,6 +3,8 @@ import { Box, HStack, Icon, Text, VStack } from '@gluestack-ui/themed'
 import { useTheme } from '@hooks/useTheme'
 import { ClockIcon, UserPlusIcon } from 'lucide-react-native'
 import { Button } from './Button'
+import { UserPhoto } from './UserPhoto'
+import { api } from '@services/api'
 
 interface RecievedInviteCardProps {
   invite: InviteDTO
@@ -34,9 +36,23 @@ export function RecievedInviteCard({
       <VStack mb="$2">
         <HStack alignItems="center" gap="$2">
           <Icon as={UserPlusIcon} size="md" color={colors.primary500} />
-          <Text color={colors.title} fontSize="$lg" fontFamily="$heading">
-            {invite.inviter.name}
-          </Text>
+          <HStack flex={1} justifyContent="space-between" alignItems="center">
+            <Text color={colors.title} fontSize="$lg" fontFamily="$heading">
+              {invite.inviter.name}
+            </Text>
+
+            {invite.inviter.avatar_url && (
+              <UserPhoto
+                source={{
+                  uri: `${api.defaults.baseURL}/tmp/uploads/avatar/${invite.inviter.avatar_url}`,
+                }}
+                w="$6"
+                h="$6"
+                alt={`Foto de perfil do autor da lista: ${invite.inviter.name}`}
+                size="xl"
+              />
+            )}
+          </HStack>
         </HStack>
         <Text color={colors.text} fontSize="$sm">
           {invite.inviter.email}

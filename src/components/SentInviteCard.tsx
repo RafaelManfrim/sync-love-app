@@ -1,6 +1,7 @@
 import { Box, HStack, Icon, Text, VStack } from '@gluestack-ui/themed'
 import { useTheme } from '@hooks/useTheme'
 import {
+  CheckCircleIcon,
   ClockIcon,
   MailIcon,
   TrashIcon,
@@ -59,6 +60,19 @@ export function SentInviteCard({ invite, onDelete }: SentInviteCardProps) {
               <Text color="$error500" fontSize="$xs">
                 em {new Date(invite.rejected_at).toLocaleDateString()} às{' '}
                 {new Date(invite.rejected_at).toLocaleTimeString()}
+              </Text>
+            </Text>
+          </VStack>
+        </HStack>
+      ) : invite.accepted_at ? (
+        <HStack alignItems="center" gap="$2" borderRadius="$md">
+          <Icon as={CheckCircleIcon} size="sm" color="$success500" />
+          <VStack flex={1}>
+            <Text color="$success500" fontSize="$sm" fontWeight="$bold">
+              Aceito{' '}
+              <Text color="$success500" fontSize="$xs">
+                em {new Date(invite.accepted_at).toLocaleDateString()} às{' '}
+                {new Date(invite.accepted_at).toLocaleTimeString()}
               </Text>
             </Text>
           </VStack>
