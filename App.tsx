@@ -15,9 +15,10 @@ import { Routes } from '@routes/index'
 import { AuthContextProvider } from '@contexts/AuthContext'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ThemeContextProvider } from '@contexts/ThemeContext'
+import { LanguageContextProvider } from '@contexts/LanguageContext'
+import './src/locales/i18n'
 
 const queryClient = new QueryClient()
-// import './src/i18n'
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -28,17 +29,19 @@ export default function App() {
     Montserrat_700Bold,
   })
   return (
-    <ThemeContextProvider>
-      <QueryClientProvider client={queryClient}>
-        <StatusBar
-          barStyle="dark-content"
-          backgroundColor="transparent"
-          translucent
-        />
-        <AuthContextProvider>
-          {fontsLoaded ? <Routes /> : <Loading />}
-        </AuthContextProvider>
-      </QueryClientProvider>
-    </ThemeContextProvider>
+    <LanguageContextProvider>
+      <ThemeContextProvider>
+        <QueryClientProvider client={queryClient}>
+          <StatusBar
+            barStyle="dark-content"
+            backgroundColor="transparent"
+            translucent
+          />
+          <AuthContextProvider>
+            {fontsLoaded ? <Routes /> : <Loading />}
+          </AuthContextProvider>
+        </QueryClientProvider>
+      </ThemeContextProvider>
+    </LanguageContextProvider>
   )
 }

@@ -44,6 +44,10 @@ export function Theme() {
               borderColor={
                 currentTheme === key ? colors.primary500 : 'transparent'
               }
+              $active={{
+                opacity: 0.7,
+                transform: [{ scale: 0.98 }],
+              }}
             >
               <HStack alignItems="center" justifyContent="space-between">
                 <HStack alignItems="center" space="md">

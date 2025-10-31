@@ -1,5 +1,8 @@
 {
   "language": {
-    "language": "Idioma"
+    "title": "Idiomas",
+    "portuguese": "Português (Brasil)",
+    "english": "English (US)",
+    "spanish": "Español (España)"
   }
 }

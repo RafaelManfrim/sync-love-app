@@ -1,8 +1,6 @@
-import { Button } from '@components/Button'
 import { ScreenHeader } from '@components/ScreenHeader'
 import {
   VStack,
-  Center,
   Text,
   Pressable,
   HStack,
@@ -10,88 +8,81 @@ import {
   ScrollView,
 } from '@gluestack-ui/themed'
 import { useTheme } from '@hooks/useTheme'
-
-const SUPPORTED_LANGUAGES = [
-  { code: 'pt-BR', name: 'Português (Brasil)' },
-  { code: 'en-US', name: 'English (US)' },
-  { code: 'es-ES', name: 'Español (España)' },
-]
+import { useLanguage } from '@hooks/useLanguage'
+import { useState } from 'react'
+import type { LanguageCode } from '@contexts/LanguageContext'
+import { useTranslation } from 'react-i18next'
 
 export function Language() {
-  // const { t, i18n } = useTranslation()
-
-  // const currentLocale = i18n.language
-
+  const { t } = useTranslation()
   const { colors } = useTheme()
+  const { currentLanguage, changeLanguage } = useLanguage()
+  const [isChanging, setIsChanging] = useState(false)
 
-  function handleChangeLanguage() {}
+  const SUPPORTED_LANGUAGES: Array<{ code: LanguageCode; name: string }> = [
+    { code: 'pt-BR', name: t('language.portuguese') },
+    { code: 'en-US', name: t('language.english') },
+    { code: 'es-ES', name: t('language.spanish') },
+  ]
+
+  const handleSelectLanguage = async (code: LanguageCode) => {
+    if (code === currentLanguage || isChanging) {
+      return
+    }
+
+    try {
+      setIsChanging(true)
+      await changeLanguage(code)
+    } catch (error) {
+      console.error('Erro ao atualizar idioma:', error)
+    } finally {
+      setIsChanging(false)
+    }
+  }
 
   return (
-    <VStack flex={1}>
-      <ScreenHeader title="Idiomas" hasGoBackButton />
+    <VStack flex={1} bg={colors.background}>
+      <ScreenHeader title={t('language.title')} hasGoBackButton />
       <ScrollView flex={1}>
         <VStack flex={1} p="$6" gap="$3">
           {SUPPORTED_LANGUAGES.map((lang) => (
             <Pressable
               key={lang.code}
-              // onPress={() => changeTheme(key as ThemeName)}
+              onPress={() => handleSelectLanguage(lang.code)}
               bg={colors.card}
               p="$2"
               rounded="$md"
               borderWidth={2}
               borderColor={
-                lang.code === 'pt-BR' ? colors.primary500 : 'transparent'
+                currentLanguage === lang.code
+                  ? colors.primary500
+                  : 'transparent'
               }
+              opacity={isChanging ? 0.6 : 1}
+              disabled={isChanging}
+              $active={{
+                opacity: 0.7,
+                transform: [{ scale: 0.98 }],
+              }}
             >
               <HStack alignItems="center" justifyContent="space-between">
-                <Text fontSize="$md" color={colors.text}>
+                <Text
+                  fontSize="$md"
+                  color={colors.text}
+                  fontWeight={
+                    currentLanguage === lang.code ? '$bold' : '$normal'
+                  }
+                >
                   {lang.name}
                 </Text>
-                {lang.code === 'pt-BR' && (
-                  <CheckIcon color={colors.primary500} />
+                {currentLanguage === lang.code && (
+                  <CheckIcon color={colors.primary500} size="lg" />
                 )}
               </HStack>
             </Pressable>
           ))}
         </VStack>
       </ScrollView>
-      {/* <VStack flex={1} p="$6" gap="$3">
-        <Box
-          bgColor="$trueGray200"
-          p="$3"
-          borderRadius="$md"
-          borderColor="$red300"
-          borderWidth={1}
-        >
-          <Text>Português</Text>
-        </Box>
-        <Box
-          bgColor="$trueGray200"
-          p="$3"
-          borderRadius="$md"
-          borderWidth={1}
-          borderColor="$trueGray200"
-        >
-          <Text>Inglês</Text>
-        </Box>
-        <Box
-          bgColor="$trueGray200"
-          p="$3"
-          borderRadius="$md"
-          borderWidth={1}
-          borderColor="$trueGray200"
-        >
-          <Text>Espanhol</Text>
-        </Box>
-      </VStack> */}
-
-      <Center w="$full" gap="$3" p="$6">
-        <Button
-          title="Atualizar"
-          onPress={handleChangeLanguage}
-          // isLoading={isSubmitting}
-        />
-      </Center>
     </VStack>
   )
 }

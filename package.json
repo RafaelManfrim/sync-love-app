@@ -31,6 +31,7 @@
     "expo-status-bar": "~3.0.8",
     "expo-updates": "~29.0.12",
     "hoist-non-react-statics": "^3.3.2",
+    "i18next": "^25.6.0",
     "lucide-react-native": "^0.511.0",
     "react": "19.1.0",
     "react-hook-form": "^7.56.4",
