@@ -4,5 +4,78 @@
     "portuguese": "Português (Brasil)",
     "english": "English (US)",
     "spanish": "Español (España)"
+  },
+  "theme": {
+    "title": "Temas",
+    "default": "Predeterminado Claro",
+    "defaultDark": "Predeterminado Oscuro",
+    "romanticPink": "Rosa Romántico",
+    "romanticPinkDark": "Rosa Romántico Oscuro",
+    "royalPurple": "Púrpura Real",
+    "royalPurpleDark": "Púrpura Real Oscuro",
+    "oceanBlue": "Azul Océano",
+    "oceanBlueDark": "Azul Océano Oscuro",
+    "freshGreen": "Verde Fresco",
+    "freshGreenDark": "Verde Fresco Oscuro"
+  },
+  "settings": {
+    "title": "Configuración",
+    "userPhotoAlt": "Foto de perfil del usuario",
+    "themes": "Temas",
+    "language": "Idioma",
+    "signOut": "Cerrar Sesión"
+  },
+  "partner": {
+    "title": "Relación",
+    "userPhotoAlt": "Foto de perfil del usuario",
+    "togetherSince": "Juntos en la app desde:",
+    "lists": "Listas:",
+    "tasksCreated": "Tareas Creadas:",
+    "completedByYou": "Completadas por ti:",
+    "completedByPartner": "Completadas por {{partnerName}}:",
+    "importantDates": "Fechas importantes:",
+    "endRelationshipButton": "Terminar Relación",
+    "confirmTitle": "Terminar Relación",
+    "confirmMessage": "¿Estás seguro? Esta acción es irreversible y los desvinculará a ambos en la aplicación.",
+    "cancel": "Cancelar",
+    "confirmEnd": "Sí, terminar",
+    "ending": "Terminando..."
+  },
+  "profile": {
+    "title": "Perfil",
+    "userPhotoAlt": "Foto de perfil del usuario",
+    "changePhoto": "Cambiar Foto",
+    "changeName": "Cambiar Nombre",
+    "changePassword": "Cambiar Contraseña",
+    "deleteAccount": "Eliminar Cuenta",
+    "deleteAccountTitle": "Eliminar Cuenta",
+    "deleteAccountMessage": "¿Estás seguro? Esta acción es permanente y todos tus datos, incluidas las relaciones y listas, se borrarán para siempre.",
+    "cancel": "Cancelar",
+    "confirmDelete": "Sí, eliminar",
+    "deleting": "Eliminando...",
+    "imageTooLargeTitle": "Imagen muy grande",
+    "imageTooLargeDescription": "Elige una de hasta 5MB.",
+    "photoUpdatedSuccess": "¡Foto actualizada con éxito!",
+    "photoUpdateError": "No se pudo actualizar la foto"
+  },
+  "changeName": {
+    "title": "Cambiar nombre",
+    "nameLabel": "Nombre",
+    "namePlaceholder": "Nombre",
+    "nameRequired": "El nombre es obligatorio.",
+    "updateButton": "Actualizar"
+  },
+  "changePassword": {
+    "title": "Cambiar contraseña",
+    "oldPasswordLabel": "Contraseña antigua",
+    "oldPasswordPlaceholder": "Contraseña antigua",
+    "oldPasswordRequired": "Ingresa la contraseña antigua.",
+    "newPasswordLabel": "Nueva contraseña",
+    "newPasswordPlaceholder": "Nueva contraseña",
+    "newPasswordMinLength": "La nueva contraseña debe tener al menos 6 caracteres.",
+    "confirmPasswordLabel": "Confirma la nueva contraseña",
+    "confirmPasswordPlaceholder": "Confirma la nueva contraseña",
+    "confirmPasswordMismatch": "La confirmación de contraseña no coincide.",
+    "updateButton": "Actualizar"
   }
 }

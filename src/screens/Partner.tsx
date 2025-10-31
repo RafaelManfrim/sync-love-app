@@ -15,6 +15,7 @@ import {
 } from '@gluestack-ui/themed'
 import { format } from 'date-fns'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import DefaultUserPhoto from '@assets/userPhotoDefault.png'
 import { Button } from '@components/Button'
@@ -32,6 +33,7 @@ export function Partner() {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
 
   const { colors } = useTheme()
+  const { t } = useTranslation()
 
   const { data: coupleDetails, isLoading } = useCoupleDetails()
   const { mutate: endRelationship, isPending: isSubmitting } =
@@ -43,7 +45,7 @@ export function Partner() {
 
   return (
     <VStack flex={1}>
-      <ScreenHeader title="Relacionamento" />
+      <ScreenHeader title={t('partner.title')} />
 
       {!isLoading && coupleDetails ? (
         <>
@@ -65,7 +67,7 @@ export function Partner() {
                 }
                 w="$12"
                 h="$12"
-                alt="Foto de perfil do usuário"
+                alt={t('partner.userPhotoAlt')}
                 size="xl"
               />
 
@@ -80,7 +82,7 @@ export function Partner() {
             <VStack w="$full" bgColor={colors.card} p="$4" borderRadius="$md">
               <HStack justifyContent="space-between" alignItems="center">
                 <Text color={colors.text} fontSize="$sm">
-                  Juntos no app desde:
+                  {t('partner.togetherSince')}
                 </Text>
                 <Text fontWeight="bold" color={colors.primary500}>
                   {format(
@@ -93,7 +95,7 @@ export function Partner() {
             <VStack w="$full" bgColor={colors.card} p="$4" borderRadius="$md">
               <HStack justifyContent="space-between" alignItems="center">
                 <Text color={colors.text} fontSize="$sm">
-                  Listas:
+                  {t('partner.lists')}
                 </Text>
                 <Text fontWeight="bold" color={colors.primary500}>
                   {coupleDetails.listsCreated ?? 0}
@@ -103,7 +105,7 @@ export function Partner() {
             <VStack w="$full" bgColor={colors.card} p="$4" borderRadius="$md">
               <HStack justifyContent="space-between" alignItems="center">
                 <Text color={colors.text} fontSize="$sm">
-                  Tarefas Criadas:
+                  {t('partner.tasksCreated')}
                 </Text>
                 <Text fontWeight="bold" color={colors.primary500}>
                   {coupleDetails.totalTasksCreated ?? 0}
@@ -111,7 +113,7 @@ export function Partner() {
               </HStack>
               <HStack justifyContent="space-between" alignItems="center">
                 <Text color={colors.text} fontSize="$sm">
-                  Concluídas por você:
+                  {t('partner.completedByYou')}
                 </Text>
                 <Text fontWeight="bold" color={colors.primary500}>
                   {coupleDetails.taskCompletionSummary?.me ?? 0}
@@ -119,7 +121,9 @@ export function Partner() {
               </HStack>
               <HStack justifyContent="space-between" alignItems="center">
                 <Text color={colors.text} fontSize="$sm">
-                  Concluídas por {coupleDetails.partner.name}:
+                  {t('partner.completedByPartner', {
+                    partnerName: coupleDetails.partner.name,
+                  })}
                 </Text>
                 <Text fontWeight="bold" color={colors.primary500}>
                   {coupleDetails.taskCompletionSummary?.partner ?? 0}
@@ -129,7 +133,7 @@ export function Partner() {
             <VStack w="$full" bgColor={colors.card} p="$4" borderRadius="$md">
               <HStack justifyContent="space-between" alignItems="center">
                 <Text color={colors.text} fontSize="$sm">
-                  Datas importantes:
+                  {t('partner.importantDates')}
                 </Text>
                 <Text fontWeight="bold" color={colors.primary500}>
                   {coupleDetails.totalCalendarEventsCreated ?? 0}
@@ -139,7 +143,7 @@ export function Partner() {
           </VStack>
           <Center w="$full" gap="$3" p="$6">
             <Button
-              title="Terminar Relacionamento"
+              title={t('partner.endRelationshipButton')}
               onPress={() => setShowConfirmDialog(true)}
               variant="outline"
             />
@@ -151,13 +155,12 @@ export function Partner() {
             <AlertDialogBackdrop />
             <AlertDialogContent bg={colors.card}>
               <AlertDialogHeader>
-                <Heading color={colors.title}>Terminar Relacionamento</Heading>
+                <Heading color={colors.title}>
+                  {t('partner.confirmTitle')}
+                </Heading>
               </AlertDialogHeader>
               <AlertDialogBody>
-                <Text color={colors.text}>
-                  Você tem certeza? Esta ação é irreversível e irá desvincular
-                  vocês dois no aplicativo.
-                </Text>
+                <Text color={colors.text}>{t('partner.confirmMessage')}</Text>
               </AlertDialogBody>
               <AlertDialogFooter>
                 <ButtonGroup space="lg">
@@ -167,7 +170,7 @@ export function Partner() {
                     borderRadius="$md"
                   >
                     <Text color={colors.textInactive} fontWeight="$medium">
-                      Cancelar
+                      {t('partner.cancel')}
                     </Text>
                   </Pressable>
                   <Pressable
@@ -182,7 +185,9 @@ export function Partner() {
                       color={isSubmitting ? '$trueGray500' : '$error500'}
                       fontWeight="$semibold"
                     >
-                      {isSubmitting ? 'Encerrando...' : 'Sim, terminar'}
+                      {isSubmitting
+                        ? t('partner.ending')
+                        : t('partner.confirmEnd')}
                     </Text>
                   </Pressable>
                 </ButtonGroup>

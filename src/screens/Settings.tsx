@@ -11,10 +11,12 @@ import { api } from '@services/api'
 import DefaultUserPhoto from '@assets/userPhotoDefault.png'
 import { Button } from '@components/Button'
 import { useTheme } from '@hooks/useTheme'
+import { useTranslation } from 'react-i18next'
 
 export function Settings() {
   const { user, signOut } = useAuth()
   const { colors } = useTheme()
+  const { t } = useTranslation()
 
   const navigation = useNavigation<SettingsNavigationRoutesProps>()
 
@@ -32,7 +34,7 @@ export function Settings() {
 
   return (
     <VStack flex={1}>
-      <ScreenHeader title="Configurações" />
+      <ScreenHeader title={t('settings.title')} />
 
       <VStack flex={1} p="$6" gap="$3">
         <TouchableOpacity onPress={handleNavigateToProfile}>
@@ -53,7 +55,7 @@ export function Settings() {
               }
               w="$12"
               h="$12"
-              alt="Foto de perfil do usuário"
+              alt={t('settings.userPhotoAlt')}
               size="xl"
             />
 
@@ -77,7 +79,7 @@ export function Settings() {
           >
             <Icon as={Palette} color={colors.text} size="md" mr="$2" />
             <Text mr="auto" color={colors.text}>
-              Temas
+              {t('settings.themes')}
             </Text>
             <Icon as={ChevronRight} color={colors.primary500} size="xl" />
           </HStack>
@@ -93,7 +95,7 @@ export function Settings() {
           >
             <Icon as={BookType} color={colors.text} size="md" mr="$2" />
             <Text mr="auto" color={colors.text}>
-              Idioma
+              {t('settings.language')}
             </Text>
             <Icon as={ChevronRight} color={colors.primary500} size="xl" />
           </HStack>
@@ -101,7 +103,7 @@ export function Settings() {
       </VStack>
       <Center w="$full" gap="$3" p="$6">
         <Button
-          title="Sair do aplicativo"
+          title={t('settings.signOut')}
           onPress={signOut}
           variant="outline"
         />

@@ -11,26 +11,28 @@ import {
 import { useTheme } from '@hooks/useTheme'
 import { Check } from 'lucide-react-native'
 import { ThemeName } from '../theme'
+import { useTranslation } from 'react-i18next'
 
 export function Theme() {
+  const { t } = useTranslation()
   const { currentTheme, changeTheme, colors, customTheme } = useTheme()
 
   const themes: Record<ThemeName, { name: string }> = {
-    default: { name: 'Padrão Claro' },
-    defaultDark: { name: 'Padrão Escuro' },
-    romanticPink: { name: 'Rosa Romântico' },
-    romanticPinkDark: { name: 'Rosa Romântico Escuro' },
-    royalPurple: { name: 'Roxo Real' },
-    royalPurpleDark: { name: 'Roxo Real Escuro' },
-    oceanBlue: { name: 'Azul Oceano' },
-    oceanBlueDark: { name: 'Azul Oceano Escuro' },
-    freshGreen: { name: 'Verde Fresco' },
-    freshGreenDark: { name: 'Verde Fresco Escuro' },
+    default: { name: t('theme.default') },
+    defaultDark: { name: t('theme.defaultDark') },
+    romanticPink: { name: t('theme.romanticPink') },
+    romanticPinkDark: { name: t('theme.romanticPinkDark') },
+    royalPurple: { name: t('theme.royalPurple') },
+    royalPurpleDark: { name: t('theme.royalPurpleDark') },
+    oceanBlue: { name: t('theme.oceanBlue') },
+    oceanBlueDark: { name: t('theme.oceanBlueDark') },
+    freshGreen: { name: t('theme.freshGreen') },
+    freshGreenDark: { name: t('theme.freshGreenDark') },
   }
 
   return (
     <VStack flex={1}>
-      <ScreenHeader title="Temas" hasGoBackButton />
+      <ScreenHeader title={t('theme.title')} hasGoBackButton />
       <ScrollView flex={1}>
         <VStack flex={1} p="$6" gap="$3">
           {Object.entries(themes).map(([key, theme]) => (
@@ -70,62 +72,6 @@ export function Theme() {
               </HStack>
             </Pressable>
           ))}
-          {/* <HStack
-            bgColor="$trueGray200"
-            p="$3"
-            borderRadius="$md"
-            borderColor="$red300"
-            borderWidth={1}
-            alignItems="center"
-          >
-            <Text mr="auto">Tema Romântico</Text>
-            <HStack gap="$1">
-              <Box w="$8" h="$8" bgColor="$blue500" rounded="$full"></Box>
-              <Box w="$8" h="$8" bgColor="$pink500" rounded="$full"></Box>
-            </HStack>
-          </HStack>
-          <HStack
-            bgColor="$trueGray200"
-            p="$3"
-            borderRadius="$md"
-            borderColor="$trueGray200"
-            borderWidth={1}
-            alignItems="center"
-          >
-            <Text mr="auto">Tema Fofo</Text>
-            <HStack gap="$1">
-              <Box w="$8" h="$8" bgColor="$green500" rounded="$full"></Box>
-              <Box w="$8" h="$8" bgColor="$violet500" rounded="$full"></Box>
-            </HStack>
-          </HStack>
-          <HStack
-            bgColor="$trueGray200"
-            p="$3"
-            borderRadius="$md"
-            borderColor="$trueGray200"
-            borderWidth={1}
-            alignItems="center"
-          >
-            <Text mr="auto">Tema Gótico</Text>
-            <HStack gap="$1">
-              <Box w="$8" h="$8" bgColor="$darkBlue500" rounded="$full"></Box>
-              <Box w="$8" h="$8" bgColor="$purple500" rounded="$full"></Box>
-            </HStack>
-          </HStack>
-          <HStack
-            bgColor="$trueGray200"
-            p="$3"
-            borderRadius="$md"
-            borderColor="$trueGray200"
-            borderWidth={1}
-            alignItems="center"
-          >
-            <Text mr="auto">Tema Chique</Text>
-            <HStack gap="$1">
-              <Box w="$8" h="$8" bgColor="$emerald500" rounded="$full"></Box>
-              <Box w="$8" h="$8" bgColor="$amber500" rounded="$full"></Box>
-            </HStack>
-          </HStack> */}
         </VStack>
       </ScrollView>
     </VStack>

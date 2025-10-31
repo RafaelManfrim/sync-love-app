@@ -33,11 +33,13 @@ import { SettingsNavigationRoutesProps } from '@routes/settings.routes'
 import { useState } from 'react'
 import { useDeleteAccount } from '@hooks/api/useUserQueries'
 import { useTheme } from '@hooks/useTheme'
+import { useTranslation } from 'react-i18next'
 
 export function Profile() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
   const { colors } = useTheme()
+  const { t } = useTranslation()
   const toast = useToast()
   const { user, updateUserProfile } = useAuth()
   const navigation = useNavigation<SettingsNavigationRoutesProps>()
@@ -71,8 +73,8 @@ export function Profile() {
               <ToastMessage
                 id={id}
                 action="error"
-                title="Imagem muito grande"
-                description="Escolha uma de até 5MB."
+                title={t('profile.imageTooLargeTitle')}
+                description={t('profile.imageTooLargeDescription')}
                 onClose={() => toast.close(id)}
               />
             ),
@@ -103,7 +105,7 @@ export function Profile() {
             <ToastMessage
               id={id}
               action="success"
-              title="Foto atualizada com sucesso!"
+              title={t('profile.photoUpdatedSuccess')}
               onClose={() => toast.close(id)}
             />
           ),
@@ -118,9 +120,7 @@ export function Profile() {
       console.log(error)
 
       const isAppError = error instanceof AppError
-      const title = isAppError
-        ? error.message
-        : 'Não foi possível atualizar a foto'
+      const title = isAppError ? error.message : t('profile.photoUpdateError')
 
       toast.show({
         placement: 'top',
@@ -146,7 +146,7 @@ export function Profile() {
 
   return (
     <VStack flex={1}>
-      <ScreenHeader title="Perfil" hasGoBackButton />
+      <ScreenHeader title={t('profile.title')} hasGoBackButton />
       <VStack flex={1} p="$6" gap="$3">
         <ScrollView contentContainerStyle={{ paddingBottom: 36 }}>
           <Center>
@@ -159,7 +159,7 @@ export function Profile() {
                       }
                     : DefaultUserPhoto
                 }
-                alt="Foto de perfil do usuário"
+                alt={t('profile.userPhotoAlt')}
                 size="xl"
               />
             </TouchableOpacity>
@@ -172,7 +172,7 @@ export function Profile() {
                 mt="$2"
                 bold
               >
-                Alterar Foto
+                {t('profile.changePhoto')}
               </Text>
             </TouchableOpacity>
 
@@ -189,7 +189,7 @@ export function Profile() {
                   borderRadius="$md"
                 >
                   <Text mr="auto" color={colors.text}>
-                    Alterar Nome
+                    {t('profile.changeName')}
                   </Text>
                   <Icon as={ChevronRight} color={colors.primary500} size="xl" />
                 </HStack>
@@ -204,7 +204,7 @@ export function Profile() {
                   borderRadius="$md"
                 >
                   <Text mr="auto" color={colors.text}>
-                    Alterar Senha
+                    {t('profile.changePassword')}
                   </Text>
                   <Icon as={ChevronRight} color={colors.primary500} size="xl" />
                 </HStack>
@@ -216,7 +216,7 @@ export function Profile() {
 
       <Center w="$full" gap="$3" p="$6">
         <Button
-          title="Excluir Conta"
+          title={t('profile.deleteAccount')}
           variant="outline"
           onPress={() => setShowDeleteDialog(true)}
           // isLoading={isSubmitting}
@@ -230,13 +230,12 @@ export function Profile() {
         <AlertDialogBackdrop />
         <AlertDialogContent bg={colors.card}>
           <AlertDialogHeader>
-            <Heading color={colors.title}>Excluir Conta</Heading>
+            <Heading color={colors.title}>
+              {t('profile.deleteAccountTitle')}
+            </Heading>
           </AlertDialogHeader>
           <AlertDialogBody>
-            <Text color={colors.text}>
-              Você tem certeza? Esta ação é permanente e todos os seus dados,
-              incluindo relacionamentos e listas, serão apagados para sempre.
-            </Text>
+            <Text color={colors.text}>{t('profile.deleteAccountMessage')}</Text>
           </AlertDialogBody>
           <AlertDialogFooter>
             <ButtonGroup space="lg">
@@ -246,7 +245,7 @@ export function Profile() {
                 borderRadius="$md"
               >
                 <Text color={colors.textInactive} fontWeight="$medium">
-                  Cancelar
+                  {t('profile.cancel')}
                 </Text>
               </Pressable>
               <Pressable
@@ -261,7 +260,9 @@ export function Profile() {
                   color={isDeleting ? '$trueGray500' : '$error500'}
                   fontWeight="$semibold"
                 >
-                  {isDeleting ? 'Excluindo...' : 'Sim, excluir'}
+                  {isDeleting
+                    ? t('profile.deleting')
+                    : t('profile.confirmDelete')}
                 </Text>
               </Pressable>
             </ButtonGroup>

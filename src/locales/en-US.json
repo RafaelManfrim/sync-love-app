@@ -4,5 +4,78 @@
     "portuguese": "Português (Brasil)",
     "english": "English (US)",
     "spanish": "Español (España)"
+  },
+  "theme": {
+    "title": "Themes",
+    "default": "Light Default",
+    "defaultDark": "Dark Default",
+    "romanticPink": "Romantic Pink",
+    "romanticPinkDark": "Dark Romantic Pink",
+    "royalPurple": "Royal Purple",
+    "royalPurpleDark": "Dark Royal Purple",
+    "oceanBlue": "Ocean Blue",
+    "oceanBlueDark": "Dark Ocean Blue",
+    "freshGreen": "Fresh Green",
+    "freshGreenDark": "Dark Fresh Green"
+  },
+  "settings": {
+    "title": "Settings",
+    "userPhotoAlt": "User profile photo",
+    "themes": "Themes",
+    "language": "Language",
+    "signOut": "Sign Out"
+  },
+  "partner": {
+    "title": "Relationship",
+    "userPhotoAlt": "User profile photo",
+    "togetherSince": "Together in app since:",
+    "lists": "Lists:",
+    "tasksCreated": "Tasks Created:",
+    "completedByYou": "Completed by you:",
+    "completedByPartner": "Completed by {{partnerName}}:",
+    "importantDates": "Important dates:",
+    "endRelationshipButton": "End Relationship",
+    "confirmTitle": "End Relationship",
+    "confirmMessage": "Are you sure? This action is irreversible and will unlink you both in the app.",
+    "cancel": "Cancel",
+    "confirmEnd": "Yes, end it",
+    "ending": "Ending..."
+  },
+  "profile": {
+    "title": "Profile",
+    "userPhotoAlt": "User profile photo",
+    "changePhoto": "Change Photo",
+    "changeName": "Change Name",
+    "changePassword": "Change Password",
+    "deleteAccount": "Delete Account",
+    "deleteAccountTitle": "Delete Account",
+    "deleteAccountMessage": "Are you sure? This action is permanent and all your data, including relationships and lists, will be deleted forever.",
+    "cancel": "Cancel",
+    "confirmDelete": "Yes, delete",
+    "deleting": "Deleting...",
+    "imageTooLargeTitle": "Image too large",
+    "imageTooLargeDescription": "Choose one up to 5MB.",
+    "photoUpdatedSuccess": "Photo updated successfully!",
+    "photoUpdateError": "Unable to update photo"
+  },
+  "changeName": {
+    "title": "Change name",
+    "nameLabel": "Name",
+    "namePlaceholder": "Name",
+    "nameRequired": "Name is required.",
+    "updateButton": "Update"
+  },
+  "changePassword": {
+    "title": "Change password",
+    "oldPasswordLabel": "Old password",
+    "oldPasswordPlaceholder": "Old password",
+    "oldPasswordRequired": "Enter the old password.",
+    "newPasswordLabel": "New password",
+    "newPasswordPlaceholder": "New password",
+    "newPasswordMinLength": "New password must have at least 6 characters.",
+    "confirmPasswordLabel": "Confirm new password",
+    "confirmPasswordPlaceholder": "Confirm new password",
+    "confirmPasswordMismatch": "Password confirmation does not match.",
+    "updateButton": "Update"
   }
 }

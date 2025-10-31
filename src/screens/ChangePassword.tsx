@@ -14,25 +14,25 @@ import { useUpdatePassword } from '@hooks/api/useUserQueries'
 import { useTheme } from '@hooks/useTheme'
 import { Controller, useForm } from 'react-hook-form'
 import { Platform } from 'react-native'
+import { useTranslation } from 'react-i18next'
 import z from 'zod'
-
-const changePasswordSchema = z
-  .object({
-    oldPassword: z.string().min(1, 'Informe a senha antiga.'),
-    newPassword: z
-      .string()
-      .min(6, 'A nova senha deve ter no mínimo 6 caracteres.'),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    message: 'A confirmação de senha não confere.',
-    path: ['confirmPassword'],
-  })
-
-type ChangePasswordFormData = z.infer<typeof changePasswordSchema>
 
 export function ChangePassword() {
   const { colors } = useTheme()
+  const { t } = useTranslation()
+
+  const changePasswordSchema = z
+    .object({
+      oldPassword: z.string().min(1, t('changePassword.oldPasswordRequired')),
+      newPassword: z.string().min(6, t('changePassword.newPasswordMinLength')),
+      confirmPassword: z.string(),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+      message: t('changePassword.confirmPasswordMismatch'),
+      path: ['confirmPassword'],
+    })
+
+  type ChangePasswordFormData = z.infer<typeof changePasswordSchema>
 
   const { mutate: updatePassword, isPending } = useUpdatePassword()
 
@@ -46,7 +46,7 @@ export function ChangePassword() {
 
   return (
     <VStack flex={1}>
-      <ScreenHeader title="Alterar a senha" hasGoBackButton />
+      <ScreenHeader title={t('changePassword.title')} hasGoBackButton />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -55,7 +55,7 @@ export function ChangePassword() {
           <FormControl>
             <FormControlLabel>
               <FormControlLabelText color={colors.text}>
-                Senha antiga
+                {t('changePassword.oldPasswordLabel')}
               </FormControlLabelText>
             </FormControlLabel>
             <Controller
@@ -63,7 +63,7 @@ export function ChangePassword() {
               control={control}
               render={({ field: { onChange } }) => (
                 <PasswordInput
-                  placeholder="Senha antiga"
+                  placeholder={t('changePassword.oldPasswordPlaceholder')}
                   onChangeText={onChange}
                   errorMessage={formState.errors?.oldPassword?.message}
                 />
@@ -74,7 +74,7 @@ export function ChangePassword() {
           <FormControl>
             <FormControlLabel>
               <FormControlLabelText color={colors.text}>
-                Senha nova
+                {t('changePassword.newPasswordLabel')}
               </FormControlLabelText>
             </FormControlLabel>
             <Controller
@@ -82,7 +82,7 @@ export function ChangePassword() {
               control={control}
               render={({ field: { onChange } }) => (
                 <PasswordInput
-                  placeholder="Nova senha"
+                  placeholder={t('changePassword.newPasswordPlaceholder')}
                   onChangeText={onChange}
                   errorMessage={formState.errors?.newPassword?.message}
                 />
@@ -92,7 +92,7 @@ export function ChangePassword() {
           <FormControl>
             <FormControlLabel>
               <FormControlLabelText color={colors.text}>
-                Confirme a nova senha
+                {t('changePassword.confirmPasswordLabel')}
               </FormControlLabelText>
             </FormControlLabel>
             <Controller
@@ -100,7 +100,7 @@ export function ChangePassword() {
               control={control}
               render={({ field: { onChange } }) => (
                 <PasswordInput
-                  placeholder="Confirme a nova senha"
+                  placeholder={t('changePassword.confirmPasswordPlaceholder')}
                   onChangeText={onChange}
                   errorMessage={formState.errors?.confirmPassword?.message}
                 />
@@ -111,7 +111,7 @@ export function ChangePassword() {
 
         <Center w="$full" gap="$4" p="$6">
           <Button
-            title="Atualizar"
+            title={t('changePassword.updateButton')}
             onPress={handleSubmit(handleUpdatePassword)}
             isLoading={isPending}
           />

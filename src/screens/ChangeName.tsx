@@ -15,17 +15,19 @@ import { useAuth } from '@hooks/useAuth'
 import { useTheme } from '@hooks/useTheme'
 import { Controller, useForm } from 'react-hook-form'
 import { Platform } from 'react-native'
+import { useTranslation } from 'react-i18next'
 import z from 'zod'
-
-const changeNameSchema = z.object({
-  name: z.string().min(1, 'O nome é obrigatório.'),
-})
-
-type ChangeNameFormData = z.infer<typeof changeNameSchema>
 
 export function ChangeName() {
   const { user } = useAuth()
   const { colors } = useTheme()
+  const { t } = useTranslation()
+
+  const changeNameSchema = z.object({
+    name: z.string().min(1, t('changeName.nameRequired')),
+  })
+
+  type ChangeNameFormData = z.infer<typeof changeNameSchema>
 
   const { mutate: updateName, isPending } = useUpdateUserName()
 
@@ -40,7 +42,7 @@ export function ChangeName() {
 
   return (
     <VStack flex={1}>
-      <ScreenHeader title="Alterar nome" hasGoBackButton />
+      <ScreenHeader title={t('changeName.title')} hasGoBackButton />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -49,7 +51,7 @@ export function ChangeName() {
           <FormControl>
             <FormControlLabel>
               <FormControlLabelText color={colors.text}>
-                Nome
+                {t('changeName.nameLabel')}
               </FormControlLabelText>
             </FormControlLabel>
             <Controller
@@ -57,7 +59,7 @@ export function ChangeName() {
               control={control}
               render={({ field: { value, onChange } }) => (
                 <Input
-                  placeholder="Nome"
+                  placeholder={t('changeName.namePlaceholder')}
                   value={value}
                   onChangeText={onChange}
                   errorMessage={formState.errors?.name?.message}
@@ -71,7 +73,7 @@ export function ChangeName() {
 
         <Center w="$full" gap="$4" p="$6">
           <Button
-            title="Atualizar"
+            title={t('changeName.updateButton')}
             onPress={handleSubmit(handleUpdateName)}
             isLoading={isPending}
           />
