@@ -7,6 +7,7 @@ import {
   Image,
   useToast,
   KeyboardAvoidingView,
+  Icon,
 } from '@gluestack-ui/themed'
 import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -19,8 +20,9 @@ import { api } from '@services/api'
 import { useNavigation } from '@react-navigation/native'
 import { AuthNavigationRoutesProps } from '@routes/auth.routes'
 import { ToastMessage } from '@components/ToastMessage'
-import { Platform } from 'react-native'
+import { Platform, TouchableOpacity } from 'react-native'
 import { useTheme } from '@hooks/useTheme'
+import { ChevronLeft } from 'lucide-react-native'
 
 const invitePartnerSchema = z.object({
   email: z.string().email('E-mail inválido').nonempty('Informe o e-mail'),
@@ -77,6 +79,13 @@ export function InvitePartner() {
       >
         <VStack flex={1} px="$8" pb="$16">
           <Center my="$16">
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ position: 'absolute', left: 0, top: 24 }}
+            >
+              <Icon as={ChevronLeft} color={colors.textInactive} size="xl" />
+            </TouchableOpacity>
+
             <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
 
             <Text color={colors.text} fontSize="$sm" textAlign="center">
@@ -104,12 +113,16 @@ export function InvitePartner() {
               )}
             />
           </Center>
-
-          <Center flex={1} justifyContent="flex-end" mt="$4">
+          <Center flex={1} justifyContent="flex-end" mt="$4" gap="$3">
             <Button
               title="Enviar Convite"
               onPress={handleSubmit(handleInvite)}
               isLoading={isLoading}
+            />
+            <Button
+              title="Voltar"
+              variant="outline"
+              onPress={() => navigation.goBack()}
             />
           </Center>
         </VStack>

@@ -13,8 +13,7 @@ import Logo from '@assets/sync_love_square-no-bg.png'
 import { Button } from '@components/Button'
 import { useNavigation } from '@react-navigation/native'
 import { AuthNavigationRoutesProps } from '@routes/auth.routes'
-import { TrashIcon } from 'lucide-react-native'
-import { TouchableOpacity } from 'react-native'
+import { MailIcon } from 'lucide-react-native'
 import { Loading } from '@components/Loading'
 import {
   useAcceptInvite,
@@ -25,6 +24,8 @@ import {
 import { useEffect } from 'react'
 import { useAuth } from '@hooks/useAuth'
 import { useTheme } from '@hooks/useTheme'
+import { RecievedInviteCard } from '@components/RecievedInviteCard'
+import { SentInviteCard } from '@components/SentInviteCard'
 
 export function WaitingPartner() {
   const { colors } = useTheme()
@@ -49,174 +50,124 @@ export function WaitingPartner() {
     if (invitations?.sentInvites.some((invite) => invite.accepted_at)) {
       getUserData()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [invitations])
 
   return (
-    <ScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
-      showsVerticalScrollIndicator={false}
-    >
-      <VStack flex={1} px="$8" pb="$16">
-        <Center my="$16">
-          <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
+    <VStack flex={1} px="$8" pb="$16">
+      <Center my="$16">
+        <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
 
-          <Text color={colors.text} fontSize="$sm" textAlign="center">
-            Tenha um relacionamento melhor com seu parceiro
-          </Text>
-        </Center>
+        <Text color={colors.text} fontSize="$sm" textAlign="center">
+          Tenha um relacionamento melhor com seu parceiro
+        </Text>
+      </Center>
 
-        <Center gap="$2">
-          <Heading color={colors.title}>Encontre seu parceiro</Heading>
+      <Center mb="$2">
+        <Heading color={colors.title}>Encontre seu parceiro</Heading>
+      </Center>
 
-          <Text
-            color={colors.text}
-            textAlign="center"
-            fontFamily="$heading"
-            bold
-          >
-            Convites recebidos
-          </Text>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* Seção de Convites Recebidos */}
+        <VStack mb="$6" gap="$3">
+          <HStack alignItems="center" gap="$2" mb="$2">
+            <Icon as={MailIcon} size="lg" color={colors.primary500} />
+            <Text color={colors.title} fontSize="$lg" fontFamily="$heading">
+              Convites Recebidos
+            </Text>
+          </HStack>
 
-          {/* Listagen de convites recebidos e enviados */}
-          {invitations?.recievedInvites.length === 0 && (
-            <Text color={colors.textInactive}>Nenhum convite recebido</Text>
-          )}
-
-          {invitations?.recievedInvites.map((invite) => (
-            <VStack
-              key={invite.id}
-              w="$full"
-              px="$4"
-              py="$2"
+          {invitations?.recievedInvites.length === 0 ? (
+            <Box
+              p="$6"
               bg={colors.card}
+              borderRadius="$lg"
               borderWidth={1}
               borderColor={colors.border}
-              borderRadius="$md"
             >
-              <VStack>
-                <Text color={colors.title}>De: {invite.inviter.name}</Text>
-                <Text color={colors.text} fontSize="$sm">
-                  {invite.inviter.email}
+              <Center gap="$2">
+                <Icon as={MailIcon} size="xl" color={colors.textInactive} />
+                <Text color={colors.textInactive} textAlign="center">
+                  Nenhum convite recebido
                 </Text>
-              </VStack>
-
-              <HStack
-                alignItems="center"
-                justifyContent="space-between"
-                mt="$1"
-                w="$full"
-              >
-                <Text color={colors.textInactive} fontSize="$sm">
-                  Recebido em:
+                <Text
+                  color={colors.textInactive}
+                  fontSize="$sm"
+                  textAlign="center"
+                  opacity={0.7}
+                >
+                  Quando alguém te convidar, aparecerá aqui
                 </Text>
-                <Text color={colors.textInactive} fontSize="$sm">
-                  {new Date(invite.invited_at).toLocaleDateString()}
-                  {' - '}
-                  {new Date(invite.invited_at).toLocaleTimeString()}
-                </Text>
-              </HStack>
-              <HStack mt="$1" w="$full" gap="$2">
-                <Button
-                  w="auto"
-                  title="Recusar"
-                  variant="outline"
-                  onPress={() => rejectInvite(invite.id)}
-                  flex={1}
-                  h="$10"
-                />
-
-                <Button
-                  w="auto"
-                  flex={1}
-                  title="Aceitar"
-                  onPress={() => acceptInvite(invite.id)}
-                  h="$10"
-                />
-              </HStack>
-            </VStack>
-          ))}
-
-          <Box>{isLoadingSomething && <Loading />}</Box>
-
-          <Text
-            color={colors.text}
-            textAlign="center"
-            mt="$4"
-            fontFamily="$heading"
-            bold
-          >
-            Convites enviados
-          </Text>
-
-          {invitations?.sentInvites.length === 0 && (
-            <Text color={colors.textInactive}>Nenhum convite enviado</Text>
+              </Center>
+            </Box>
+          ) : (
+            invitations?.recievedInvites.map((invite) => (
+              <RecievedInviteCard
+                key={invite.id}
+                invite={invite}
+                onAccept={acceptInvite}
+                onReject={rejectInvite}
+              />
+            ))
           )}
 
-          {invitations?.sentInvites.map((invite) => (
-            <VStack
-              key={invite.id}
-              w="$full"
-              px="$4"
-              py="$2"
+          {isLoadingSomething && (
+            <Center py="$4">
+              <Loading />
+            </Center>
+          )}
+        </VStack>
+
+        {/* Seção de Convites Enviados */}
+        <VStack gap="$3">
+          <HStack alignItems="center" gap="$2" mb="$2">
+            <Icon as={MailIcon} size="lg" color={colors.primary500} />
+            <Text color={colors.title} fontSize="$lg" fontFamily="$heading">
+              Convites Enviados
+            </Text>
+          </HStack>
+
+          {invitations?.sentInvites.length === 0 ? (
+            <Box
+              p="$6"
               bg={colors.card}
+              borderRadius="$lg"
               borderWidth={1}
               borderColor={colors.border}
-              borderRadius="$md"
             >
-              <HStack
-                justifyContent="space-between"
-                alignItems="center"
-                w="$full"
-              >
-                <Text color={colors.title}>{invite.invitee_email}</Text>
-
-                <TouchableOpacity onPress={() => deleteInvite(invite.id)}>
-                  <Icon as={TrashIcon} size="lg" color="$error500" />
-                </TouchableOpacity>
-              </HStack>
-              {invite.rejected_at ? (
-                <HStack
-                  alignItems="center"
-                  justifyContent="space-between"
-                  mt="$1"
-                  w="$full"
+              <Center gap="$2">
+                <Icon as={MailIcon} size="xl" color={colors.textInactive} />
+                <Text color={colors.textInactive} textAlign="center">
+                  Nenhum convite enviado
+                </Text>
+                <Text
+                  color={colors.textInactive}
+                  fontSize="$sm"
+                  textAlign="center"
+                  opacity={0.7}
                 >
-                  <Text color="$error500" fontSize="$sm">
-                    Rejeitado em:
-                  </Text>
-                  <Text color={colors.textInactive} fontSize="$sm">
-                    {new Date(invite.rejected_at).toLocaleDateString()}
-                    {' - '}
-                    {new Date(invite.rejected_at).toLocaleTimeString()}
-                  </Text>
-                </HStack>
-              ) : (
-                <HStack
-                  alignItems="center"
-                  justifyContent="space-between"
-                  mt="$1"
-                  w="$full"
-                >
-                  <Text color={colors.text} fontSize="$sm">
-                    Enviado em:
-                  </Text>
-                  <Text color={colors.textInactive} fontSize="$sm">
-                    {new Date(invite.invited_at).toLocaleDateString()}
-                    {' - '}
-                    {new Date(invite.invited_at).toLocaleTimeString()}
-                  </Text>
-                </HStack>
-              )}
-            </VStack>
-          ))}
+                  Convide seu parceiro para começar
+                </Text>
+              </Center>
+            </Box>
+          ) : (
+            invitations?.sentInvites.map((invite) => (
+              <SentInviteCard
+                key={invite.id}
+                invite={invite}
+                onDelete={deleteInvite}
+              />
+            ))
+          )}
+        </VStack>
+      </ScrollView>
 
-          <Box>{isLoadingSomething && <Loading />}</Box>
-        </Center>
-
-        <Center flex={1} justifyContent="flex-end" mt="$4">
-          <Button title="Convidar Parceiro" onPress={handleInvite} />
-        </Center>
-      </VStack>
-    </ScrollView>
+      <Center mt="$8">
+        <Button title="Convidar Parceiro" onPress={handleInvite} />
+      </Center>
+    </VStack>
   )
 }
