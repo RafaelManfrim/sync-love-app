@@ -64,6 +64,7 @@ export function useCalendarQueries() {
     endDate: string, // "YYYY-MM-DD"
     enabled: boolean = true,
   ) => {
+    const isEnabled = enabled && !!startDate && !!endDate
     return useQuery({
       queryKey: CALENDAR_QUERY_KEYS.eventsInRange(startDate, endDate),
       queryFn: async () => {
@@ -74,7 +75,9 @@ export function useCalendarQueries() {
         })
         return response.data.events
       },
-      enabled: enabled && !!startDate && !!endDate,
+      enabled: isEnabled,
+      refetchInterval: isEnabled ? 15000 : false, // Só atualiza se enabled
+      refetchIntervalInBackground: false, // Pausa em background
     })
   }
 

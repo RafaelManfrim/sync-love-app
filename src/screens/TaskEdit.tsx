@@ -136,8 +136,15 @@ export function TaskEdit() {
   }
 
   const handleUpdateTask = (data: FormData) => {
+    // Converte 'none' para null antes de enviar
+    const payload = {
+      ...data,
+      recurrence_rule:
+        data.recurrence_rule === 'none' ? null : data.recurrence_rule,
+    }
+
     updateTask(
-      { taskId, data },
+      { taskId, data: payload },
       {
         onSuccess: () => {
           toast.show({

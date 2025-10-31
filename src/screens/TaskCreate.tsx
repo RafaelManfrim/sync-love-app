@@ -105,7 +105,14 @@ export function TaskCreate() {
   }
 
   const handleCreateTask = (data: FormData) => {
-    createTask(data, {
+    // Converte 'none' para null antes de enviar
+    const payload = {
+      ...data,
+      recurrenceRule:
+        data.recurrenceRule === 'none' ? null : data.recurrenceRule,
+    }
+
+    createTask(payload, {
       onSuccess: () => {
         toast.show({
           render: ({ id }) => (

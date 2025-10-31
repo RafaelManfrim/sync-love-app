@@ -66,6 +66,7 @@ export function useHouseholdTaskQueries() {
    * A data DEVE estar no formato "YYYY-MM-DD".
    */
   const useFetchTasksByDay = (dateYYYYMMDD: string) => {
+    const enabled = !!dateYYYYMMDD
     return useQuery({
       queryKey: TASK_QUERY_KEYS.tasksByDay(dateYYYYMMDD),
       queryFn: async () => {
@@ -79,6 +80,9 @@ export function useHouseholdTaskQueries() {
         )
         return response.data.tasks
       },
+      enabled,
+      refetchInterval: enabled ? 15000 : false, // Só atualiza se enabled
+      refetchIntervalInBackground: false, // Pausa em background
     })
   }
 
@@ -112,6 +116,8 @@ export function useHouseholdTaskQueries() {
         })
         return response.data
       },
+      refetchInterval: 15000, // Atualiza a cada 15 segundos
+      refetchIntervalInBackground: false, // Pausa em background
     })
   }
 
