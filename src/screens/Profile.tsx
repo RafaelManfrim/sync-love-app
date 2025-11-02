@@ -34,6 +34,7 @@ import { useState } from 'react'
 import { useDeleteAccount } from '@hooks/api/useUserQueries'
 import { useTheme } from '@hooks/useTheme'
 import { useTranslation } from 'react-i18next'
+import { translateApiError } from '@utils/translateApiError'
 
 export function Profile() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
@@ -120,7 +121,9 @@ export function Profile() {
       console.log(error)
 
       const isAppError = error instanceof AppError
-      const title = isAppError ? error.message : t('profile.photoUpdateError')
+      const title = isAppError
+        ? translateApiError(error)
+        : t('profile.photoUpdateError')
 
       toast.show({
         placement: 'top',

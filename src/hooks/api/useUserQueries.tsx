@@ -6,6 +6,7 @@ import { ToastMessage } from '@components/ToastMessage'
 import { useNavigation } from '@react-navigation/native'
 import { useAuth } from '@hooks/useAuth'
 import { useTranslation } from 'react-i18next'
+import { translateApiError } from '@utils/translateApiError'
 
 type UpdatePasswordParams = {
   oldPassword: string
@@ -43,7 +44,7 @@ export function useUpdatePassword() {
     onError: (error) => {
       const isAppError = error instanceof AppError
       const title = isAppError
-        ? error.message
+        ? translateApiError(error)
         : t('hooks.userQueries.passwordError')
       toast.show({
         placement: 'top',
@@ -99,7 +100,7 @@ export function useUpdateUserName() {
     onError: (error) => {
       const isAppError = error instanceof AppError
       const title = isAppError
-        ? error.message
+        ? translateApiError(error)
         : t('hooks.userQueries.profileError')
       toast.show({
         placement: 'top',
@@ -147,7 +148,7 @@ export function useDeleteAccount() {
     onError: (error) => {
       const isAppError = error instanceof AppError
       const title = isAppError
-        ? error.message
+        ? translateApiError(error)
         : t('hooks.userQueries.accountDeleteError')
       toast.show({
         placement: 'top',

@@ -30,6 +30,7 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker'
 import { useTranslation } from 'react-i18next'
+import { translateApiError } from '@utils/translateApiError'
 
 type FormData = {
   title: string
@@ -201,13 +202,15 @@ export function EventCreate() {
           navigation.goBack()
         },
         onError: (error) => {
+          const description = translateApiError(error)
+
           toast.show({
             placement: 'top',
             render: ({ id }) => (
               <ToastMessage
                 id={id}
                 title={t('eventCreate.createError')}
-                description={error.message}
+                description={description}
                 action="error"
                 onClose={() => toast.close(id)}
               />

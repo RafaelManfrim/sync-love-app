@@ -449,5 +449,25 @@
       "coupleEndSuccess": "Relationship ended",
       "coupleEndError": "Error ending relationship"
     }
+  },
+  "errors": {
+    "INVALID_CREDENTIALS": "The provided credentials are invalid.",
+    "RESOURCE_NOT_FOUND": "The requested resource was not found.",
+    "USER_ALREADY_EXISTS": "This email is already in use.",
+    "UNAUTHORIZED": "You do not have permission to perform this action.",
+    "USER_NOT_FOUND": "The user was not found.",
+    "INVITATION_NOT_FOUND": "The invitation was not found.",
+    "INVITATION_ALREADY_EXISTS": "The invitation for this person has already been sent.",
+    "INVITATION_ALREADY_ACCEPTED": "This person's invitation has already been accepted.",
+    "INVITATION_ALREADY_REJECTED": "This person's invitation has already been rejected.",
+    "INVITER_NOT_FOUND": "The user sending the invitation was not found.",
+    "SHOPPING_LIST_ALREADY_CLOSED": "The shopping list is already closed.",
+    "TASK_ALREADY_COMPLETED": "The household task has already been completed for this day.",
+    "TASK_EXCEPTION_ALREADY_EXISTS": "This task exception already exists for the specified day.",
+    "CALENDAR_EXCEPTION_ALREADY_EXISTS": "This event occurrence has already been canceled.",
+    "REFRESH_TOKEN_NOT_FOUND": "The refresh token was not found.",
+    "REFRESH_TOKEN_EXPIRED": "The refresh token has expired.",
+    "INTERNAL_SERVER_ERROR": "Internal server error.",
+    "UNKNOWN_ERROR": "An unexpected error occurred."
   }
 }

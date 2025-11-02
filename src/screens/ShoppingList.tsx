@@ -31,6 +31,7 @@ import { AppError } from '@utils/AppError'
 import { useCallback, useState } from 'react'
 import { Platform } from 'react-native'
 import { useTranslation } from 'react-i18next'
+import { translateApiError } from '@utils/translateApiError'
 
 export function ShoppingList() {
   const [newItemName, setNewItemName] = useState('')
@@ -91,7 +92,9 @@ export function ShoppingList() {
       invalidateListDetails(shoppingListId)
     } catch (error) {
       const isAppError = error instanceof AppError
-      const title = isAppError ? error.message : t('shoppingList.addItemError')
+      const title = isAppError
+        ? translateApiError(error)
+        : t('shoppingList.addItemError')
       toast.show({
         placement: 'top',
         render: ({ id }) => (
@@ -112,7 +115,7 @@ export function ShoppingList() {
     } catch (error) {
       const isAppError = error instanceof AppError
       const title = isAppError
-        ? error.message
+        ? translateApiError(error)
         : t('shoppingList.updateItemError')
       toast.show({
         placement: 'top',

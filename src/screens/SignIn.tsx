@@ -25,6 +25,7 @@ import { z } from 'zod'
 import { Platform } from 'react-native'
 import { useTheme } from '@hooks/useTheme'
 import { useTranslation } from 'react-i18next'
+import { translateApiError } from '@utils/translateApiError'
 
 type FormDataProps = {
   email: string
@@ -64,7 +65,9 @@ export function SignIn() {
       await signIn(email, password)
     } catch (error) {
       const isAppError = error instanceof AppError
-      const title = isAppError ? error.message : t('signIn.signInError')
+      const title = isAppError
+        ? translateApiError(error)
+        : t('signIn.signInError')
 
       toast.show({
         placement: 'top',

@@ -25,6 +25,7 @@ import { TextInput } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useTheme } from '@hooks/useTheme'
 import { useTranslation } from 'react-i18next'
+import { translateApiError } from '@utils/translateApiError'
 
 type FormDataProps = {
   name: string
@@ -97,7 +98,9 @@ export function SignUp() {
       await signIn(email, password)
     } catch (error) {
       const isAppError = error instanceof AppError
-      const title = isAppError ? error.message : t('signUp.signUpError')
+      const title = isAppError
+        ? translateApiError(error)
+        : t('signUp.signUpError')
 
       toast.show({
         placement: 'top',

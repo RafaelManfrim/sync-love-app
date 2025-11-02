@@ -22,6 +22,7 @@ import { ToastMessage } from './ToastMessage'
 import { format, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { useTranslation } from 'react-i18next'
+import { translateApiError } from '@utils/translateApiError'
 
 type Props = {
   event: CalendarEventOccurrenceDTO
@@ -57,13 +58,15 @@ export function EventManagementCard({ event, onEdit }: Props) {
         setShowDeleteDialog(false)
       },
       onError: (error) => {
+        const description = translateApiError(error)
+
         toast.show({
           placement: 'top',
           render: ({ id }) => (
             <ToastMessage
               id={id}
               title={t('components.eventManagementCard.deleteError')}
-              description={error.message}
+              description={description}
               action="error"
               onClose={() => toast.close(id)}
             />

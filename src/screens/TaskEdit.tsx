@@ -41,6 +41,7 @@ import {
   getWeekDaysFromRule,
 } from '@utils/recurrenceTypes'
 import { useTranslation } from 'react-i18next'
+import { translateApiError } from '@utils/translateApiError'
 
 export function TaskEdit() {
   const { colors } = useTheme()
@@ -163,13 +164,15 @@ export function TaskEdit() {
           navigation.goBack()
         },
         onError: (error) => {
+          const description = translateApiError(error)
+
           toast.show({
             placement: 'top',
             render: ({ id }) => (
               <ToastMessage
                 id={id}
                 title={t('taskEdit.updateError')}
-                description={error.message}
+                description={description}
                 action="error"
                 onClose={() => toast.close(id)}
               />

@@ -6,6 +6,7 @@ import { useToast } from '@gluestack-ui/themed'
 import { AppError } from '@utils/AppError'
 import { ToastMessage } from '@components/ToastMessage'
 import { useTranslation } from 'react-i18next'
+import { translateApiError } from '@utils/translateApiError'
 
 async function getCoupleDetails() {
   const { data } = await api.get<{ coupleDetails: CoupleDetailsDTO }>(
@@ -54,7 +55,7 @@ export function useEndRelationship() {
     onError: (error) => {
       const isAppError = error instanceof AppError
       const title = isAppError
-        ? error.message
+        ? translateApiError(error)
         : t('hooks.coupleQueries.endError')
       toast.show({
         render: ({ id }) => (

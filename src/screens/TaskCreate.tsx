@@ -37,6 +37,7 @@ import {
   getRecurrenceRule,
 } from '@utils/recurrenceTypes'
 import { useTranslation } from 'react-i18next'
+import { translateApiError } from '@utils/translateApiError'
 
 export function TaskCreate() {
   const { colors } = useTheme()
@@ -130,13 +131,15 @@ export function TaskCreate() {
         navigation.goBack()
       },
       onError: (error) => {
+        const description = translateApiError(error)
+
         toast.show({
           placement: 'top',
           render: ({ id }) => (
             <ToastMessage
               id={id}
               title={t('taskCreate.createError')}
-              description={error.message}
+              description={description}
               action="error"
               onClose={() => toast.close(id)}
             />

@@ -20,6 +20,7 @@ import { useState, useRef } from 'react'
 import { useHouseholdTaskQueries } from '@hooks/api/useHouseholdTaskQueries'
 import { ToastMessage } from './ToastMessage'
 import { useTranslation } from 'react-i18next'
+import { translateApiError } from '@utils/translateApiError'
 
 type Props = {
   task: HouseholdTaskDTO
@@ -55,13 +56,15 @@ export function TaskManagementCard({ task, onEdit }: Props) {
         setShowDeleteDialog(false)
       },
       onError: (error) => {
+        const description = translateApiError(error)
+
         toast.show({
           placement: 'top',
           render: ({ id }) => (
             <ToastMessage
               id={id}
               title={t('components.taskManagementCard.deleteError')}
-              description={error.message}
+              description={description}
               action="error"
               onClose={() => toast.close(id)}
             />

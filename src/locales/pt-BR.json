@@ -449,5 +449,25 @@
       "coupleEndSuccess": "Relacionamento encerrado",
       "coupleEndError": "Erro ao encerrar relacionamento"
     }
+  },
+  "errors": {
+    "INVALID_CREDENTIALS": "As credenciais fornecidas são inválidas.",
+    "RESOURCE_NOT_FOUND": "O recurso solicitado não foi encontrado.",
+    "USER_ALREADY_EXISTS": "Esse e-mail já está em uso.",
+    "UNAUTHORIZED": "Você não tem permissão para realizar esta ação.",
+    "USER_NOT_FOUND": "O usuário não foi encontrado.",
+    "INVITATION_NOT_FOUND": "O convite não foi encontrado.",
+    "INVITATION_ALREADY_EXISTS": "O convite para essa pessoa já foi enviado.",
+    "INVITATION_ALREADY_ACCEPTED": "O convite dessa pessoa já foi aceito.",
+    "INVITATION_ALREADY_REJECTED": "O convite dessa pessoa já foi rejeitado.",
+    "INVITER_NOT_FOUND": "O usuário que está enviando o convite não foi encontrado.",
+    "SHOPPING_LIST_ALREADY_CLOSED": "A lista de compras já está fechada.",
+    "TASK_ALREADY_COMPLETED": "A tarefa doméstica já foi concluída para este dia.",
+    "TASK_EXCEPTION_ALREADY_EXISTS": "Essa exceção de tarefa já existe para o dia informado.",
+    "CALENDAR_EXCEPTION_ALREADY_EXISTS": "Essa ocorrência de evento já foi cancelada.",
+    "REFRESH_TOKEN_NOT_FOUND": "O token de refresh não foi encontrado.",
+    "REFRESH_TOKEN_EXPIRED": "O token de refresh expirou.",
+    "INTERNAL_SERVER_ERROR": "Erro interno do servidor.",
+    "UNKNOWN_ERROR": "Ocorreu um erro inesperado."
   }
 }

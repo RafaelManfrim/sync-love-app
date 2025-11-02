@@ -449,5 +449,25 @@
       "coupleEndSuccess": "Relación terminada",
       "coupleEndError": "Error al terminar relación"
     }
+  },
+  "errors": {
+    "INVALID_CREDENTIALS": "Las credenciales proporcionadas son inválidas.",
+    "RESOURCE_NOT_FOUND": "El recurso solicitado no fue encontrado.",
+    "USER_ALREADY_EXISTS": "Este correo electrónico ya está en uso.",
+    "UNAUTHORIZED": "No tienes permiso para realizar esta acción.",
+    "USER_NOT_FOUND": "El usuario no fue encontrado.",
+    "INVITATION_NOT_FOUND": "La invitación no fue encontrada.",
+    "INVITATION_ALREADY_EXISTS": "La invitación para esta persona ya fue enviada.",
+    "INVITATION_ALREADY_ACCEPTED": "La invitación de esta persona ya fue aceptada.",
+    "INVITATION_ALREADY_REJECTED": "La invitación de esta persona ya fue rechazada.",
+    "INVITER_NOT_FOUND": "El usuario que está enviando la invitación no fue encontrado.",
+    "SHOPPING_LIST_ALREADY_CLOSED": "La lista de compras ya está cerrada.",
+    "TASK_ALREADY_COMPLETED": "La tarea doméstica ya fue completada para este día.",
+    "TASK_EXCEPTION_ALREADY_EXISTS": "Esta excepción de tarea ya existe para el día especificado.",
+    "CALENDAR_EXCEPTION_ALREADY_EXISTS": "Esta ocurrencia de evento ya fue cancelada.",
+    "REFRESH_TOKEN_NOT_FOUND": "El token de actualización no fue encontrado.",
+    "REFRESH_TOKEN_EXPIRED": "El token de actualización expiró.",
+    "INTERNAL_SERVER_ERROR": "Error interno del servidor.",
+    "UNKNOWN_ERROR": "Ocurrió un error inesperado."
   }
 }

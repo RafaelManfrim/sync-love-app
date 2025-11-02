@@ -23,6 +23,7 @@ import { useState } from 'react'
 import { Platform } from 'react-native'
 import { useTheme } from '@hooks/useTheme'
 import { useTranslation } from 'react-i18next'
+import { translateApiError } from '@utils/translateApiError'
 
 export function NewShoppingList() {
   const [isLoading, setIsLoading] = useState(false)
@@ -67,7 +68,7 @@ export function NewShoppingList() {
     } catch (error) {
       const isAppError = error instanceof AppError
       const title = isAppError
-        ? error.message
+        ? translateApiError(error)
         : t('newShoppingList.createError')
 
       toast.show({
