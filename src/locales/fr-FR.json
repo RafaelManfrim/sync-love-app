@@ -1,0 +1,476 @@
+{
+  "language": {
+    "title": "Langues",
+    "portuguese": "Português (Brasil)",
+    "english": "English (US)",
+    "spanish": "Español (España)",
+    "italian": "Italiano (Italia)",
+    "french": "Français (France)",
+    "german": "Deutsch (Deutschland)"
+  },
+  "theme": {
+    "title": "Thèmes",
+    "default": "Clair par défaut",
+    "defaultDark": "Sombre par défaut",
+    "romanticPink": "Rose romantique",
+    "romanticPinkDark": "Rose romantique sombre",
+    "royalPurple": "Violet royal",
+    "royalPurpleDark": "Violet royal sombre",
+    "oceanBlue": "Bleu océan",
+    "oceanBlueDark": "Bleu océan sombre",
+    "freshGreen": "Vert frais",
+    "freshGreenDark": "Vert frais sombre"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "userPhotoAlt": "Photo de profil de l'utilisateur",
+    "themes": "Thèmes",
+    "language": "Langue",
+    "signOut": "Se déconnecter de l'application"
+  },
+  "partner": {
+    "title": "Relation",
+    "userPhotoAlt": "Photo de profil de l'utilisateur",
+    "togetherSince": "Ensemble sur l'app depuis :",
+    "lists": "Listes :",
+    "tasksCreated": "Tâches créées :",
+    "completedByYou": "Terminées par vous :",
+    "completedByPartner": "Terminées par {{partnerName}} :",
+    "importantDates": "Dates importantes :",
+    "endRelationshipButton": "Mettre fin à la relation",
+    "confirmTitle": "Mettre fin à la relation",
+    "confirmMessage": "Êtes-vous sûr ? Cette action est irréversible et vous dissociera tous les deux dans l'application.",
+    "cancel": "Annuler",
+    "confirmEnd": "Oui, terminer",
+    "ending": "Fermeture..."
+  },
+  "profile": {
+    "title": "Profil",
+    "userPhotoAlt": "Photo de profil de l'utilisateur",
+    "changePhoto": "Changer la photo",
+    "changeName": "Changer le nom",
+    "changePassword": "Changer le mot de passe",
+    "deleteAccount": "Supprimer le compte",
+    "deleteAccountTitle": "Supprimer le compte",
+    "deleteAccountMessage": "Êtes-vous sûr ? Cette action est permanente et toutes vos données, y compris relations et listes, seront supprimées définitivement.",
+    "cancel": "Annuler",
+    "confirmDelete": "Oui, supprimer",
+    "deleting": "Suppression...",
+    "imageTooLargeTitle": "Image trop lourde",
+    "imageTooLargeDescription": "Choisissez-en une jusqu'à 5 Mo.",
+    "photoUpdatedSuccess": "Photo mise à jour avec succès !",
+    "photoUpdateError": "Impossible de mettre à jour la photo"
+  },
+  "changeName": {
+    "title": "Changer le nom",
+    "nameLabel": "Nom",
+    "namePlaceholder": "Nom",
+    "nameRequired": "Le nom est obligatoire.",
+    "updateButton": "Mettre à jour"
+  },
+  "changePassword": {
+    "title": "Changer le mot de passe",
+    "oldPasswordLabel": "Ancien mot de passe",
+    "oldPasswordPlaceholder": "Ancien mot de passe",
+    "oldPasswordRequired": "Saisissez l'ancien mot de passe.",
+    "newPasswordLabel": "Nouveau mot de passe",
+    "newPasswordPlaceholder": "Nouveau mot de passe",
+    "newPasswordMinLength": "Le nouveau mot de passe doit contenir au moins 6 caractères.",
+    "confirmPasswordLabel": "Confirmez le nouveau mot de passe",
+    "confirmPasswordPlaceholder": "Confirmez le nouveau mot de passe",
+    "confirmPasswordMismatch": "La confirmation du mot de passe ne correspond pas.",
+    "updateButton": "Mettre à jour"
+  },
+  "shoppingLists": {
+    "title": "Listes de courses",
+    "openTab": "Ouvertes ({{count}})",
+    "closedTab": "Terminées ({{count}})",
+    "listsHeader": "Listes",
+    "emptyOpen": "Aucune liste de courses ouverte.\nCréons la première ?",
+    "emptyClosed": "Aucune liste de courses terminée."
+  },
+  "shoppingList": {
+    "title": "Liste de courses",
+    "completedLabel": "Liste terminée",
+    "itemPlaceholder": "Saisissez le nom de l'article",
+    "addButton": "+",
+    "itemHeader": "Article",
+    "averagePriceHeader": "Prix moyen",
+    "paidPriceHeader": "Prix payé",
+    "emptyList": "Aucun article dans la liste.",
+    "finishButton": "Finaliser l'achat",
+    "itemAdded": "Article ajouté !",
+    "addItemError": "Impossible d'ajouter l'article.",
+    "updateItemError": "Impossible de mettre à jour l'article."
+  },
+  "newShoppingList": {
+    "title": "Nouvelle liste de courses",
+    "nameLabel": "Nom",
+    "namePlaceholder": "Titre de la liste",
+    "titleMinLength": "Le titre doit contenir au moins 3 caractères.",
+    "titleMaxLength": "Le titre doit contenir au maximum 30 caractères.",
+    "createButton": "Créer",
+    "createSuccess": "Liste de courses créée avec succès !",
+    "createError": "Impossible de créer la liste de courses."
+  },
+  "closeShoppingList": {
+    "title": "Fermer la liste de courses",
+    "itemHeader": "Article",
+    "unitPriceHeader": "Prix unitaire",
+    "unitPricePlaceholder": "€ 0,00",
+    "unitPriceRequired": "Renseignez le prix unitaire",
+    "emptyList": "Aucun article dans la liste.",
+    "closeButton": "Fermer la liste",
+    "closeSuccess": "Liste de courses finalisée avec succès !",
+    "closeError": "Erreur lors de la fermeture de la liste"
+  },
+  "tasks": {
+    "title": "Tâches",
+    "emptyDay": "Aucune tâche pour ce jour."
+  },
+  "taskCreate": {
+    "title": "Créer une nouvelle tâche",
+    "titleLabel": "Titre de la tâche",
+    "titlePlaceholder": "Ex : Faire la vaisselle",
+    "titleRequired": "Le titre est obligatoire.",
+    "descriptionLabel": "Description (Optionnel)",
+    "descriptionPlaceholder": "Ex : Sortir aussi les poubelles",
+    "startDateLabel": "Date de début (ou Échéance)",
+    "startDateRequired": "La date de début est obligatoire.",
+    "recurrenceLabel": "Répéter",
+    "recurrencePlaceholder": "Choisissez la répétition",
+    "weekDaysLabel": "Jours de la semaine",
+    "saveButton": "Enregistrer la tâche",
+    "createSuccess": "Tâche créée avec succès !",
+    "createError": "Erreur lors de la création de la tâche"
+  },
+  "taskEdit": {
+    "title": "Modifier la tâche",
+    "titleLabel": "Titre de la tâche",
+    "titlePlaceholder": "Ex : Faire la vaisselle",
+    "titleRequired": "Le titre est obligatoire.",
+    "descriptionLabel": "Description (Optionnel)",
+    "descriptionPlaceholder": "Ex : Sortir aussi les poubelles",
+    "startDateLabel": "Date de début (ou Échéance)",
+    "startDateRequired": "La date de début est obligatoire.",
+    "recurrenceLabel": "Répéter",
+    "recurrencePlaceholder": "Choisissez la répétition",
+    "weekDaysLabel": "Jours de la semaine",
+    "saveButton": "Enregistrer les modifications",
+    "updateSuccess": "Tâche mise à jour avec succès !",
+    "updateError": "Erreur lors de la mise à jour de la tâche"
+  },
+  "taskManagement": {
+    "title": "Gérer les tâches",
+    "recurrentTab": "Récurrentes ({{count}})",
+    "uniqueTab": "Uniques ({{count}})",
+    "emptyRecurrent": "Aucune tâche récurrente enregistrée.",
+    "emptyUnique": "Aucune tâche unique enregistrée."
+  },
+  "importantDates": {
+    "title": "Dates importantes",
+    "emptyMonth": "Aucun événement enregistré ce mois-ci.",
+    "emptyDescription": "Ajoutez des dates importantes comme anniversaires, célébrations et rendez-vous.",
+    "errorLoading": "Erreur lors du chargement des événements.",
+    "errorRetry": "Réessayez plus tard."
+  },
+  "eventCreate": {
+    "title": "Nouvel événement",
+    "titleLabel": "Titre de l'événement",
+    "titlePlaceholder": "Ex : Anniversaire de Marie",
+    "titleRequired": "Le titre est obligatoire.",
+    "categoryLabel": "Catégorie",
+    "categoryNone": "Aucune catégorie",
+    "allDayLabel": "Toute la journée",
+    "startLabel": "Début",
+    "endLabel": "Fin",
+    "endDateError": "La date de fin doit être postérieure à la date de début.",
+    "recurrenceLabel": "Répéter",
+    "recurrenceNone": "Ne se répète pas",
+    "recurrenceDaily": "Quotidiennement",
+    "recurrenceWeekly": "Hebdomadairement",
+    "recurrenceBiweekly": "Toutes les deux semaines",
+    "recurrenceMonthly": "Mensuellement",
+    "recurrenceBimonthly": "Tous les deux mois",
+    "recurrenceYearly": "Annuellement",
+    "descriptionLabel": "Description (Optionnel)",
+    "descriptionPlaceholder": "Ex : Apporter un cadeau...",
+    "saveButton": "Enregistrer l'événement",
+    "createSuccess": "Événement créé avec succès !",
+    "createError": "Erreur lors de la création de l'événement"
+  },
+  "eventEdit": {
+    "title": "Modifier l'événement",
+    "titleLabel": "Titre de l'événement",
+    "titlePlaceholder": "Ex : Anniversaire de Marie",
+    "titleRequired": "Le titre est obligatoire.",
+    "categoryLabel": "Catégorie",
+    "categoryNone": "Aucune catégorie",
+    "allDayLabel": "Toute la journée",
+    "startLabel": "Début",
+    "endLabel": "Fin",
+    "endDateError": "La date de fin doit être postérieure à la date de début.",
+    "recurrenceLabel": "Répéter",
+    "recurrenceNone": "Ne se répète pas",
+    "recurrenceDaily": "Quotidiennement",
+    "recurrenceWeekly": "Hebdomadairement",
+    "recurrenceBiweekly": "Toutes les deux semaines",
+    "recurrenceMonthly": "Mensuellement",
+    "recurrenceBimonthly": "Tous les deux mois",
+    "recurrenceYearly": "Annuellement",
+    "descriptionLabel": "Description (Optionnel)",
+    "descriptionPlaceholder": "Ex : Apporter un cadeau...",
+    "saveButton": "Enregistrer les modifications",
+    "updateSuccess": "Événement mis à jour avec succès !",
+    "updateError": "Erreur lors de la mise à jour de l'événement"
+  },
+  "signIn": {
+    "logoAlt": "Logo Sync Love",
+    "subtitle": "Améliorez votre relation avec votre partenaire",
+    "title": "Connectez-vous",
+    "emailPlaceholder": "E-mail",
+    "emailRequired": "Saisissez l'e-mail",
+    "emailInvalid": "E-mail invalide",
+    "passwordPlaceholder": "Mot de passe",
+    "passwordRequired": "Saisissez le mot de passe",
+    "signInButton": "Se connecter",
+    "noAccount": "Vous n'avez pas encore de compte ?",
+    "createAccountButton": "Créer un compte",
+    "signInError": "Connexion impossible. Réessayez plus tard."
+  },
+  "signUp": {
+    "logoAlt": "Logo Sync Love",
+    "subtitle": "Améliorez votre relation avec votre partenaire",
+    "title": "Créez votre compte",
+    "namePlaceholder": "Nom",
+    "nameRequired": "Saisissez le nom",
+    "emailPlaceholder": "E-mail",
+    "emailRequired": "Saisissez l'e-mail",
+    "emailInvalid": "E-mail invalide",
+    "genderLabel": "Genre",
+    "genderPlaceholder": "Sélectionnez votre genre",
+    "genderRequired": "Sélectionnez le genre",
+    "genderMale": "Masculin",
+    "genderFemale": "Féminin",
+    "passwordPlaceholder": "Mot de passe",
+    "passwordRequired": "Saisissez le mot de passe",
+    "passwordMin": "Le mot de passe doit comporter au moins 6 caractères",
+    "passwordConfirmPlaceholder": "Confirmez le mot de passe",
+    "passwordConfirmRequired": "Confirmez le mot de passe",
+    "passwordsMatch": "Les mots de passe ne correspondent pas",
+    "signUpButton": "Créer et se connecter",
+    "backToLoginButton": "Retour à la connexion",
+    "signUpError": "Impossible de créer le compte. Réessayez plus tard."
+  },
+  "invitePartner": {
+    "logoAlt": "Logo Sync Love",
+    "subtitle": "Améliorez votre relation avec votre partenaire",
+    "title": "Invitez votre partenaire",
+    "emailPlaceholder": "E-mail",
+    "emailRequired": "Saisissez l'e-mail",
+    "emailInvalid": "E-mail invalide",
+    "sendButton": "Envoyer l'invitation",
+    "backButton": "Retour",
+    "inviteSuccess": "Invitation envoyée avec succès !"
+  },
+  "waitingPartner": {
+    "logoAlt": "Logo Sync Love",
+    "subtitle": "Améliorez votre relation avec votre partenaire",
+    "title": "Trouvez votre partenaire",
+    "receivedInvites": "Invitations reçues",
+    "noReceivedInvites": "Aucune invitation reçue",
+    "noReceivedInvitesDescription": "Lorsqu'on vous invite, cela apparaîtra ici",
+    "sentInvites": "Invitations envoyées",
+    "noSentInvites": "Aucune invitation envoyée",
+    "noSentInvitesDescription": "Invitez votre partenaire pour commencer",
+    "inviteButton": "Inviter le partenaire"
+  },
+  "components": {
+    "button": {
+      "loading": "Chargement"
+    },
+    "calendarView": {
+      "monthNames": [
+        "Janvier",
+        "Février",
+        "Mars",
+        "Avril",
+        "Mai",
+        "Juin",
+        "Juillet",
+        "Août",
+        "Septembre",
+        "Octobre",
+        "Novembre",
+        "Décembre"
+      ],
+      "monthNamesShort": [
+        "Janv.",
+        "Févr.",
+        "Mars",
+        "Avr.",
+        "Mai",
+        "Juin",
+        "Juil.",
+        "Août",
+        "Sept.",
+        "Oct.",
+        "Nov.",
+        "Déc."
+      ],
+      "dayNames": [
+        "Dimanche",
+        "Lundi",
+        "Mardi",
+        "Mercredi",
+        "Jeudi",
+        "Vendredi",
+        "Samedi"
+      ],
+      "dayNamesShort": ["D", "L", "M", "M", "J", "V", "S"],
+      "today": "Aujourd'hui"
+    },
+    "receivedInviteCard": {
+      "profilePhotoAlt": "Photo de profil de l'auteur de la liste : {{name}}",
+      "receivedAt": "Reçu le",
+      "at": "à",
+      "acceptButton": "Accepter",
+      "rejectButton": "Refuser"
+    },
+    "sentInviteCard": {
+      "rejected": "Rejeté",
+      "accepted": "Accepté",
+      "waiting": "En attente de réponse",
+      "sentAt": "Envoyé le",
+      "at": "à",
+      "on": "le"
+    },
+    "weekDaySelector": {
+      "sunday": "D",
+      "monday": "L",
+      "tuesday": "M",
+      "wednesday": "M",
+      "thursday": "J",
+      "friday": "V",
+      "saturday": "S"
+    },
+    "eventManagementCard": {
+      "deleteSuccess": "Événement supprimé avec succès !",
+      "deleteError": "Erreur lors de la suppression de l'événement",
+      "deleteDialogTitle": "Supprimer l'événement",
+      "deleteDialogMessage": "Êtes-vous sûr de vouloir supprimer cet événement ?",
+      "deleteDialogMessageRecurrent": "Êtes-vous sûr de vouloir supprimer cet événement récurrent ? Toutes les occurrences futures seront supprimées.",
+      "deleteDialogCancel": "Annuler",
+      "deleteDialogConfirm": "Oui, supprimer",
+      "deleteDialogDeleting": "Suppression...",
+      "uniqueEvent": "Événement unique",
+      "daily": "Quotidiennement",
+      "weekly": "Hebdomadairement",
+      "biweekly": "Toutes les deux semaines",
+      "monthly": "Mensuellement",
+      "bimonthly": "Tous les deux mois",
+      "yearly": "Annuellement",
+      "customRecurrence": "Récurrence personnalisée"
+    },
+    "taskManagementCard": {
+      "deleteSuccess": "Tâche supprimée avec succès !",
+      "deleteError": "Erreur lors de la suppression de la tâche",
+      "deleteDialogTitle": "Supprimer la tâche",
+      "deleteDialogMessage": "Êtes-vous sûr de vouloir supprimer cette tâche ?",
+      "deleteDialogMessageRecurrent": "Êtes-vous sûr de vouloir supprimer cette tâche récurrente ? Toutes les occurrences futures seront supprimées.",
+      "deleteDialogCancel": "Annuler",
+      "deleteDialogConfirm": "Oui, supprimer",
+      "deleteDialogDeleting": "Suppression...",
+      "unique": "Unique",
+      "daily": "Quotidiennement",
+      "weekly": "Hebdomadaire",
+      "weeklyDays": "Hebdomadaire ({{days}})",
+      "monthly": "Mensuel",
+      "custom": "Personnalisée",
+      "startDate": "Début :",
+      "startDateLabel": "Date de début",
+      "dueDate": "Échéance",
+      "recurrence": "Répétition",
+      "weekDays": "Jours de la semaine"
+    },
+    "shoppingListCard": {
+      "items": "{{count}} articles",
+      "createdBy": "Créée par :",
+      "createdByPhotoAlt": "Photo de profil de l'auteur de la liste : {{name}}",
+      "closedAt": "Terminée le :"
+    },
+    "scoreCard": {
+      "monthlyScore": "Score du mois",
+      "tasks": "tâches"
+    },
+    "userPhoto": {
+      "alt": "Photo de profil de l'utilisateur"
+    },
+    "taskSummary": {
+      "you": "Vous",
+      "partner": "Partenaire",
+      "monthYearFormat": "{{month}} {{year}}"
+    },
+    "shoppingListItem": {
+      "checkboxLabel": "Cocher l'article {{name}}",
+      "notAvailable": "N/A"
+    }
+  },
+  "utils": {
+    "recurrenceTypes": {
+      "none": "Ne se répète pas",
+      "daily": "Quotidienne",
+      "weekly": "Hebdomadaire",
+      "biweekly": "Toutes les deux semaines",
+      "monthly": "Mensuelle",
+      "bimonthly": "Tous les deux mois",
+      "custom": "Personnalisée (jours de la semaine)"
+    },
+    "zFormattedNumber": {
+      "defaultMessage": "Renseignez la valeur"
+    }
+  },
+  "navigation": {
+    "lists": "Listes",
+    "tasks": "Tâches",
+    "dates": "Dates",
+    "partner": "Partenaire",
+    "settings": "Paramètres"
+  },
+  "hooks": {
+    "userQueries": {
+      "profileUpdateSuccess": "Profil mis à jour avec succès !",
+      "profileUpdateError": "Erreur lors de la mise à jour du profil",
+      "passwordUpdateSuccess": "Mot de passe modifié avec succès !",
+      "passwordUpdateError": "Erreur lors de la modification du mot de passe",
+      "photoUpdateSuccess": "Photo mise à jour avec succès !",
+      "photoUpdateError": "Erreur lors de la mise à jour de la photo",
+      "accountDeleteSuccess": "Compte supprimé avec sucesso !",
+      "accountDeleteError": "Erreur lors de la suppression du compte"
+    },
+    "coupleQueries": {
+      "coupleEndSuccess": "Relation terminée",
+      "coupleEndError": "Erreur lors de la fin de la relation"
+    }
+  },
+  "errors": {
+    "INVALID_CREDENTIALS": "Les identifiants fournis sont invalides.",
+    "RESOURCE_NOT_FOUND": "La ressource demandée est introuvable.",
+    "USER_ALREADY_EXISTS": "Cet e-mail est déjà utilisé.",
+    "UNAUTHORIZED": "Vous n'avez pas l'autorisation d'effectuer cette action.",
+    "USER_NOT_FOUND": "Utilisateur introuvable.",
+    "INVITATION_NOT_FOUND": "Invitation introuvable.",
+    "INVITATION_ALREADY_EXISTS": "L'invitation pour cette personne a déjà été envoyée.",
+    "INVITATION_ALREADY_ACCEPTED": "L'invitation de cette personne a déjà été acceptée.",
+    "INVITATION_ALREADY_REJECTED": "L'invitation de cette personne a déjà été refusée.",
+    "INVITER_NOT_FOUND": "L'utilisateur qui envoie l'invitation est introuvable.",
+    "SHOPPING_LIST_ALREADY_CLOSED": "La liste de courses est déjà fermée.",
+    "TASK_ALREADY_COMPLETED": "La tâche ménagère a déjà été effectuée pour ce jour.",
+    "TASK_EXCEPTION_ALREADY_EXISTS": "Cette exception de tâche existe déjà pour le jour indiqué.",
+    "CALENDAR_EXCEPTION_ALREADY_EXISTS": "Cette occurrence d'événement a déjà été annulée.",
+    "REFRESH_TOKEN_NOT_FOUND": "Le jeton de rafraîchissement est introuvable.",
+    "REFRESH_TOKEN_EXPIRED": "Le jeton de rafraîchissement a expiré.",
+    "INTERNAL_SERVER_ERROR": "Erreur interne du serveur.",
+    "UNKNOWN_ERROR": "Une erreur inattendue s'est produite."
+  }
+}

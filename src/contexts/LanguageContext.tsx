@@ -3,7 +3,13 @@ import { useTranslation } from 'react-i18next'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { LANGUAGE_STORAGE } from '@storage/config'
 
-export type LanguageCode = 'pt-BR' | 'en-US' | 'es-ES'
+export type LanguageCode =
+  | 'pt-BR'
+  | 'en-US'
+  | 'es-ES'
+  | 'it-IT'
+  | 'fr-FR'
+  | 'de-DE'
 
 export type LanguageContextData = {
   currentLanguage: LanguageCode
@@ -23,11 +29,22 @@ export function LanguageContextProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   const localeKey = useMemo(() => {
-    return currentLanguage === 'pt-BR'
-      ? 'pt-br'
-      : currentLanguage === 'en-US'
-        ? 'en'
-        : 'es'
+    switch (currentLanguage) {
+      case 'pt-BR':
+        return 'pt-br'
+      case 'en-US':
+        return 'en'
+      case 'es-ES':
+        return 'es'
+      case 'it-IT':
+        return 'it'
+      case 'fr-FR':
+        return 'fr'
+      case 'de-DE':
+        return 'de'
+      default:
+        return 'pt-br'
+    }
   }, [currentLanguage])
 
   const getCurrencyConfig = () => {
@@ -38,6 +55,12 @@ export function LanguageContextProvider({ children }: { children: ReactNode }) {
         return { locale: 'en-US', currency: 'USD' }
       case 'es-ES':
         return { locale: 'es-ES', currency: 'EUR' }
+      case 'it-IT':
+        return { locale: 'it-IT', currency: 'EUR' }
+      case 'fr-FR':
+        return { locale: 'fr-FR', currency: 'EUR' }
+      case 'de-DE':
+        return { locale: 'de-DE', currency: 'EUR' }
       default:
         return { locale: 'pt-BR', currency: 'BRL' }
     }
@@ -75,7 +98,7 @@ export function LanguageContextProvider({ children }: { children: ReactNode }) {
   }
 
   const isValidLanguageCode = (code: string): code is LanguageCode => {
-    return ['pt-BR', 'en-US', 'es-ES'].includes(code)
+    return ['pt-BR', 'en-US', 'es-ES', 'it-IT', 'fr-FR', 'de-DE'].includes(code)
   }
 
   return (

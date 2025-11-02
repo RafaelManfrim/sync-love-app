@@ -23,6 +23,9 @@ export function Language() {
     { code: 'pt-BR', name: t('language.portuguese') },
     { code: 'en-US', name: t('language.english') },
     { code: 'es-ES', name: t('language.spanish') },
+    { code: 'it-IT', name: t('language.italian') },
+    { code: 'fr-FR', name: t('language.french') },
+    { code: 'de-DE', name: t('language.german') },
   ]
 
   const handleSelectLanguage = async (code: LanguageCode) => {

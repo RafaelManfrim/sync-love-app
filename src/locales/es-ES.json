@@ -3,7 +3,10 @@
     "title": "Idiomas",
     "portuguese": "Português (Brasil)",
     "english": "English (US)",
-    "spanish": "Español (España)"
+    "spanish": "Español (España)",
+    "italian": "Italiano (Italia)",
+    "french": "Français (France)",
+    "german": "Deutsch (Deutschland)"
   },
   "theme": {
     "title": "Temas",
