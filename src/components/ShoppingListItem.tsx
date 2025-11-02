@@ -9,6 +9,8 @@ import {
 } from '@gluestack-ui/themed'
 import { useTheme } from '@hooks/useTheme'
 import { currencyFormatter } from '@utils/currencyFormatter'
+import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@hooks/useLanguage'
 
 interface ShoppingListItemProps {
   item: ShoppingItemDTO
@@ -22,6 +24,10 @@ export function ShoppingListItem({
   isReadOnly = false,
 }: ShoppingListItemProps) {
   const { colors } = useTheme()
+  const { t } = useTranslation()
+  const { getCurrencyConfig } = useLanguage()
+
+  const { locale, currency } = getCurrencyConfig()
 
   return (
     <HStack
@@ -35,7 +41,9 @@ export function ShoppingListItem({
         size="md"
         isChecked={item.is_checked}
         onChange={() => handleToggleItem(item.id)}
-        aria-label={item.product.name}
+        aria-label={t('components.shoppingListItem.checkboxLabel', {
+          name: item.product.name,
+        })}
         value={item.product.name}
         isDisabled={isReadOnly}
         mr="$3"
@@ -60,10 +68,10 @@ export function ShoppingListItem({
       >
         {/* (x{item.quantity}) */}
         {item.unit_price
-          ? currencyFormatter(item.unit_price, 'pt-BR', 'BRL')
+          ? currencyFormatter(item.unit_price, locale, currency)
           : item.average_price && !isReadOnly
-            ? currencyFormatter(item.average_price, 'pt-BR', 'BRL')
-            : 'N/A'}
+            ? currencyFormatter(item.average_price, locale, currency)
+            : t('components.shoppingListItem.notAvailable')}
       </Text>
     </HStack>
   )

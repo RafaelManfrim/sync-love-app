@@ -5,6 +5,7 @@ import { useAuth } from '@hooks/useAuth'
 import { useToast } from '@gluestack-ui/themed'
 import { AppError } from '@utils/AppError'
 import { ToastMessage } from '@components/ToastMessage'
+import { useTranslation } from 'react-i18next'
 
 async function getCoupleDetails() {
   const { data } = await api.get<{ coupleDetails: CoupleDetailsDTO }>(
@@ -29,6 +30,7 @@ export function useEndRelationship() {
   const { signOut } = useAuth()
   const toast = useToast()
   const queryClient = useQueryClient()
+  const { t } = useTranslation()
 
   return useMutation({
     mutationFn: endRelationship,
@@ -42,7 +44,7 @@ export function useEndRelationship() {
           <ToastMessage
             id={id}
             onClose={() => toast.close(id)}
-            title="Relacionamento encerrado."
+            title={t('hooks.coupleQueries.endSuccess')}
             action="success"
           />
         ),
@@ -53,7 +55,7 @@ export function useEndRelationship() {
       const isAppError = error instanceof AppError
       const title = isAppError
         ? error.message
-        : 'Não foi possível encerrar o relacionamento.'
+        : t('hooks.coupleQueries.endError')
       toast.show({
         render: ({ id }) => (
           <ToastMessage

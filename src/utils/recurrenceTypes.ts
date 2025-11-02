@@ -1,3 +1,5 @@
+import i18n from '../locales/i18n'
+
 // Tipos de Recorrência
 export type RecurrenceType =
   | 'none'
@@ -8,15 +10,15 @@ export type RecurrenceType =
   | 'bimonthly'
   | 'custom'
 
-// Opções de Recorrência
-export const recurrenceOptions = [
-  { label: 'Não se repete', value: 'none' },
-  { label: 'Diariamente', value: 'daily' },
-  { label: 'Semanalmente', value: 'weekly' },
-  { label: 'A cada duas semanas', value: 'biweekly' },
-  { label: 'Mensalmente', value: 'monthly' },
-  { label: 'A cada dois meses', value: 'bimonthly' },
-  { label: 'Personalizado (dias da semana)', value: 'custom' },
+// Opções de Recorrência (função para usar traduções)
+export const getRecurrenceOptions = () => [
+  { label: i18n.t('utils.recurrenceTypes.none'), value: 'none' },
+  { label: i18n.t('utils.recurrenceTypes.daily'), value: 'daily' },
+  { label: i18n.t('utils.recurrenceTypes.weekly'), value: 'weekly' },
+  { label: i18n.t('utils.recurrenceTypes.biweekly'), value: 'biweekly' },
+  { label: i18n.t('utils.recurrenceTypes.monthly'), value: 'monthly' },
+  { label: i18n.t('utils.recurrenceTypes.bimonthly'), value: 'bimonthly' },
+  { label: i18n.t('utils.recurrenceTypes.custom'), value: 'custom' },
 ]
 
 // Mapeia o tipo de recorrência para a regra RRULE

@@ -18,6 +18,7 @@ import { AddRoundedButton } from '@components/AddRoundedButton'
 import { useShoppingListQueries } from '@hooks/api/useShoppingListQueries'
 import { useTheme } from '@hooks/useTheme'
 import { ShoppingListCard } from '@components/ShoppingListCard'
+import { useTranslation } from 'react-i18next'
 
 export function ShoppingLists() {
   const { useFetchShoppingLists } = useShoppingListQueries()
@@ -25,6 +26,7 @@ export function ShoppingLists() {
   const { data: shoppingLists, isLoading, refetch } = useFetchShoppingLists()
 
   const { colors } = useTheme()
+  const { t } = useTranslation()
 
   const [activeTab, setActiveTab] = useState<'open' | 'closed'>('open')
 
@@ -56,7 +58,7 @@ export function ShoppingLists() {
 
   return (
     <VStack flex={1}>
-      <ScreenHeader title="Listas de Compras" />
+      <ScreenHeader title={t('shoppingLists.title')} />
       {!isLoading && shoppingLists ? (
         <>
           <VStack flex={1} p="$6" gap="$3">
@@ -81,7 +83,7 @@ export function ShoppingLists() {
                   fontFamily="$heading"
                   textAlign="center"
                 >
-                  Abertas ({openLists.length})
+                  {t('shoppingLists.openTab', { count: openLists.length })}
                 </Text>
               </Pressable>
 
@@ -104,7 +106,7 @@ export function ShoppingLists() {
                   fontFamily="$heading"
                   textAlign="center"
                 >
-                  Concluídas ({closedLists.length})
+                  {t('shoppingLists.closedTab', { count: closedLists.length })}
                 </Text>
               </Pressable>
             </HStack>
@@ -115,7 +117,7 @@ export function ShoppingLists() {
                 fontSize="$md"
                 fontFamily="$heading"
               >
-                Listas
+                {t('shoppingLists.listsHeader')}
               </Heading>
 
               <Text color={colors.title} fontSize="$sm" fontFamily="$body">
@@ -140,8 +142,8 @@ export function ShoppingLists() {
               ListEmptyComponent={() => (
                 <Text color={colors.textInactive} textAlign="center" mt="$8">
                   {activeTab === 'open'
-                    ? 'Nenhuma lista de compras aberta. \nVamos criar a primeira?'
-                    : 'Nenhuma lista de compras concluída.'}
+                    ? t('shoppingLists.emptyOpen')
+                    : t('shoppingLists.emptyClosed')}
                 </Text>
               )}
               showsVerticalScrollIndicator={false}

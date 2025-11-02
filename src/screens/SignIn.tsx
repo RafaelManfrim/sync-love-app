@@ -24,18 +24,26 @@ import { useEffect, useState } from 'react'
 import { z } from 'zod'
 import { Platform } from 'react-native'
 import { useTheme } from '@hooks/useTheme'
+import { useTranslation } from 'react-i18next'
 
-const signInSchema = z.object({
-  email: z.string().nonempty('Informe o e-mail').email('E-mail inválido'),
-  password: z.string().nonempty('Informe a senha'),
-})
-
-type FormDataProps = z.infer<typeof signInSchema>
+type FormDataProps = {
+  email: string
+  password: string
+}
 
 export function SignIn() {
   const [isLoading, setIsLoading] = useState(false)
 
   const { colors } = useTheme()
+  const { t } = useTranslation()
+
+  const signInSchema = z.object({
+    email: z
+      .string()
+      .nonempty(t('signIn.emailRequired'))
+      .email(t('signIn.emailInvalid')),
+    password: z.string().nonempty(t('signIn.passwordRequired')),
+  })
 
   const { control, handleSubmit, formState } = useForm<FormDataProps>({
     resolver: zodResolver(signInSchema),
@@ -56,9 +64,7 @@ export function SignIn() {
       await signIn(email, password)
     } catch (error) {
       const isAppError = error instanceof AppError
-      const title = isAppError
-        ? error.message
-        : 'Não foi possível entrar. Tente novamente mais tarde.'
+      const title = isAppError ? error.message : t('signIn.signInError')
 
       toast.show({
         placement: 'top',
@@ -94,22 +100,26 @@ export function SignIn() {
       >
         <VStack flex={1} px="$8" pb="$16">
           <Center my="$16">
-            <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
+            <Image
+              source={Logo}
+              defaultSource={Logo}
+              alt={t('signIn.logoAlt')}
+            />
 
             <Text color={colors.text} fontSize="$sm" textAlign="center">
-              Tenha um relacionamento melhor com seu parceiro
+              {t('signIn.subtitle')}
             </Text>
           </Center>
 
           <Center gap="$2">
-            <Heading color={colors.title}>Acesse a conta</Heading>
+            <Heading color={colors.title}>{t('signIn.title')}</Heading>
 
             <Controller
               name="email"
               control={control}
               render={({ field: { onChange, value } }) => (
                 <Input
-                  placeholder="E-mail"
+                  placeholder={t('signIn.emailPlaceholder')}
                   keyboardType="email-address"
                   autoCapitalize="none"
                   onChangeText={onChange}
@@ -124,7 +134,7 @@ export function SignIn() {
               control={control}
               render={({ field: { onChange, value } }) => (
                 <PasswordInput
-                  placeholder="Senha"
+                  placeholder={t('signIn.passwordPlaceholder')}
                   onChangeText={onChange}
                   value={value}
                   errorMessage={formState.errors?.password?.message}
@@ -135,7 +145,7 @@ export function SignIn() {
             />
 
             <Button
-              title="Acessar"
+              title={t('signIn.signInButton')}
               isLoading={isLoading}
               onPress={handleSubmit(handleSignIn)}
             />
@@ -143,11 +153,11 @@ export function SignIn() {
 
           <Center flex={1} justifyContent="flex-end" mt="$4">
             <Text color={colors.text} fontSize="$sm" mb="$3" fontFamily="$body">
-              Ainda não tem acesso?
+              {t('signIn.noAccount')}
             </Text>
 
             <Button
-              title="Criar conta"
+              title={t('signIn.createAccountButton')}
               variant="outline"
               onPress={handleNavigateToSignUp}
             />

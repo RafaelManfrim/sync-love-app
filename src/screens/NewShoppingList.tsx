@@ -22,15 +22,7 @@ import { Button } from '@components/Button'
 import { useState } from 'react'
 import { Platform } from 'react-native'
 import { useTheme } from '@hooks/useTheme'
-
-const newShoppingListSchema = z.object({
-  title: z
-    .string()
-    .min(3, { message: 'O título deve ter no mínimo 3 caracteres.' })
-    .max(30, { message: 'O título deve ter no máximo 30 caracteres.' }),
-})
-
-type NewShoppingListFormData = z.infer<typeof newShoppingListSchema>
+import { useTranslation } from 'react-i18next'
 
 export function NewShoppingList() {
   const [isLoading, setIsLoading] = useState(false)
@@ -38,6 +30,16 @@ export function NewShoppingList() {
   const toast = useToast()
 
   const { colors } = useTheme()
+  const { t } = useTranslation()
+
+  const newShoppingListSchema = z.object({
+    title: z
+      .string()
+      .min(3, { message: t('newShoppingList.titleMinLength') })
+      .max(30, { message: t('newShoppingList.titleMaxLength') }),
+  })
+
+  type NewShoppingListFormData = z.infer<typeof newShoppingListSchema>
 
   const { control, handleSubmit, formState } = useForm<NewShoppingListFormData>(
     {
@@ -54,7 +56,7 @@ export function NewShoppingList() {
         render: ({ id }) => (
           <ToastMessage
             id={id}
-            title="Lista de compras criada com sucesso!"
+            title={t('newShoppingList.createSuccess')}
             action="success"
             onClose={() => toast.close(id)}
           />
@@ -66,7 +68,7 @@ export function NewShoppingList() {
       const isAppError = error instanceof AppError
       const title = isAppError
         ? error.message
-        : 'Não foi possível criar a lista de compras.'
+        : t('newShoppingList.createError')
 
       toast.show({
         render: ({ id }) => (
@@ -86,7 +88,7 @@ export function NewShoppingList() {
 
   return (
     <VStack flex={1}>
-      <ScreenHeader title="Nova Lista de Compras" hasGoBackButton />
+      <ScreenHeader title={t('newShoppingList.title')} hasGoBackButton />
 
       <KeyboardAvoidingView
         style={{ flex: 1 }}
@@ -96,7 +98,7 @@ export function NewShoppingList() {
           <FormControl>
             <FormControlLabel>
               <FormControlLabelText color={colors.text}>
-                Nome
+                {t('newShoppingList.nameLabel')}
               </FormControlLabelText>
             </FormControlLabel>
             <Controller
@@ -104,7 +106,7 @@ export function NewShoppingList() {
               control={control}
               render={({ field: { onChange, value } }) => (
                 <Input
-                  placeholder="Título da lista"
+                  placeholder={t('newShoppingList.namePlaceholder')}
                   onChangeText={onChange}
                   value={value}
                   errorMessage={formState.errors?.title?.message}
@@ -117,7 +119,7 @@ export function NewShoppingList() {
         </VStack>
         <Center w="$full" gap="$3" p="$6">
           <Button
-            title="Criar"
+            title={t('newShoppingList.createButton')}
             onPress={handleSubmit(handleCreate)}
             isLoading={isLoading}
           />

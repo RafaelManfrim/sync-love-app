@@ -77,5 +77,377 @@
     "confirmPasswordPlaceholder": "Confirma la nueva contraseña",
     "confirmPasswordMismatch": "La confirmación de contraseña no coincide.",
     "updateButton": "Actualizar"
+  },
+  "shoppingLists": {
+    "title": "Listas de Compras",
+    "openTab": "Abiertas ({{count}})",
+    "closedTab": "Completadas ({{count}})",
+    "listsHeader": "Listas",
+    "emptyOpen": "No hay listas de compras abiertas. \n¿Vamos a crear la primera?",
+    "emptyClosed": "No hay listas de compras completadas."
+  },
+  "shoppingList": {
+    "title": "Lista de Compras",
+    "completedLabel": "Lista Completada",
+    "itemPlaceholder": "Ingresa el nombre del artículo",
+    "addButton": "+",
+    "itemHeader": "Artículo",
+    "averagePriceHeader": "Precio Promedio",
+    "paidPriceHeader": "Precio Pagado",
+    "emptyList": "No hay artículos en la lista todavía.",
+    "finishButton": "Finalizar Compra",
+    "itemAdded": "¡Artículo agregado!",
+    "addItemError": "No se pudo agregar el artículo.",
+    "updateItemError": "No se pudo actualizar el artículo."
+  },
+  "newShoppingList": {
+    "title": "Nueva Lista de Compras",
+    "nameLabel": "Nombre",
+    "namePlaceholder": "Título de la lista",
+    "titleMinLength": "El título debe tener al menos 3 caracteres.",
+    "titleMaxLength": "El título debe tener como máximo 30 caracteres.",
+    "createButton": "Crear",
+    "createSuccess": "¡Lista de compras creada con éxito!",
+    "createError": "No se pudo crear la lista de compras."
+  },
+  "closeShoppingList": {
+    "title": "Cerrar Lista de Compras",
+    "itemHeader": "Artículo",
+    "unitPriceHeader": "Precio Unitario",
+    "unitPricePlaceholder": "$ 0,00",
+    "unitPriceRequired": "Ingresa el precio unitario",
+    "emptyList": "No hay artículos en la lista todavía.",
+    "closeButton": "Cerrar Lista",
+    "closeSuccess": "¡Lista de compras finalizada con éxito!",
+    "closeError": "Error al cerrar la lista"
+  },
+  "tasks": {
+    "title": "Tareas",
+    "emptyDay": "No hay tareas para este día."
+  },
+  "taskCreate": {
+    "title": "Crear Nueva Tarea",
+    "titleLabel": "Título de la Tarea",
+    "titlePlaceholder": "Ej: Lavar los platos",
+    "titleRequired": "El título es obligatorio.",
+    "descriptionLabel": "Descripción (Opcional)",
+    "descriptionPlaceholder": "Ej: Sacar la basura también",
+    "startDateLabel": "Fecha de Inicio (o Vencimiento)",
+    "startDateRequired": "La fecha de inicio es obligatoria.",
+    "recurrenceLabel": "Repetir",
+    "recurrencePlaceholder": "Elige la repetición",
+    "weekDaysLabel": "Días de la Semana",
+    "saveButton": "Guardar Tarea",
+    "createSuccess": "¡Tarea creada con éxito!",
+    "createError": "Error al crear tarea"
+  },
+  "taskEdit": {
+    "title": "Editar Tarea",
+    "titleLabel": "Título de la Tarea",
+    "titlePlaceholder": "Ej: Lavar los platos",
+    "titleRequired": "El título es obligatorio.",
+    "descriptionLabel": "Descripción (Opcional)",
+    "descriptionPlaceholder": "Ej: Sacar la basura también",
+    "startDateLabel": "Fecha de Inicio (o Vencimiento)",
+    "startDateRequired": "La fecha de inicio es obligatoria.",
+    "recurrenceLabel": "Repetir",
+    "recurrencePlaceholder": "Elige la repetición",
+    "weekDaysLabel": "Días de la Semana",
+    "saveButton": "Guardar Cambios",
+    "updateSuccess": "¡Tarea actualizada con éxito!",
+    "updateError": "Error al actualizar tarea"
+  },
+  "taskManagement": {
+    "title": "Gestionar Tareas",
+    "recurrentTab": "Recurrentes ({{count}})",
+    "uniqueTab": "Únicas ({{count}})",
+    "emptyRecurrent": "No hay tareas recurrentes registradas.",
+    "emptyUnique": "No hay tareas únicas registradas."
+  },
+  "importantDates": {
+    "title": "Fechas Importantes",
+    "emptyMonth": "No hay eventos registrados este mes.",
+    "emptyDescription": "Agregue fechas importantes como cumpleaños, celebraciones y citas.",
+    "errorLoading": "Error al cargar eventos.",
+    "errorRetry": "Inténtelo de nuevo más tarde."
+  },
+  "eventCreate": {
+    "title": "Nuevo Evento",
+    "titleLabel": "Título del Evento",
+    "titlePlaceholder": "Ej: Cumpleaños de María",
+    "titleRequired": "El título es obligatorio.",
+    "categoryLabel": "Categoría",
+    "categoryNone": "Sin categoría",
+    "allDayLabel": "Todo el Día",
+    "startLabel": "Inicio",
+    "endLabel": "Fin",
+    "endDateError": "La fecha final debe ser posterior a la fecha inicial.",
+    "recurrenceLabel": "Repetir",
+    "recurrenceNone": "No se repite",
+    "recurrenceDaily": "Diariamente",
+    "recurrenceWeekly": "Semanalmente",
+    "recurrenceBiweekly": "Cada dos semanas",
+    "recurrenceMonthly": "Mensualmente",
+    "recurrenceBimonthly": "Cada dos meses",
+    "recurrenceYearly": "Anualmente",
+    "descriptionLabel": "Descripción (Opcional)",
+    "descriptionPlaceholder": "Ej: Llevar regalo...",
+    "saveButton": "Guardar Evento",
+    "createSuccess": "¡Evento creado con éxito!",
+    "createError": "Error al crear evento"
+  },
+  "eventEdit": {
+    "title": "Editar Evento",
+    "titleLabel": "Título del Evento",
+    "titlePlaceholder": "Ej: Cumpleaños de María",
+    "titleRequired": "El título es obligatorio.",
+    "categoryLabel": "Categoría",
+    "categoryNone": "Sin categoría",
+    "allDayLabel": "Todo el Día",
+    "startLabel": "Inicio",
+    "endLabel": "Fin",
+    "endDateError": "La fecha final debe ser posterior a la fecha inicial.",
+    "recurrenceLabel": "Repetir",
+    "recurrenceNone": "No se repite",
+    "recurrenceDaily": "Diariamente",
+    "recurrenceWeekly": "Semanalmente",
+    "recurrenceBiweekly": "Cada dos semanas",
+    "recurrenceMonthly": "Mensualmente",
+    "recurrenceBimonthly": "Cada dos meses",
+    "recurrenceYearly": "Anualmente",
+    "descriptionLabel": "Descripción (Opcional)",
+    "descriptionPlaceholder": "Ej: Llevar regalo...",
+    "saveButton": "Guardar Cambios",
+    "updateSuccess": "¡Evento actualizado con éxito!",
+    "updateError": "Error al actualizar evento"
+  },
+  "signIn": {
+    "logoAlt": "Logo Sync Love",
+    "subtitle": "Ten una mejor relación con tu pareja",
+    "title": "Accede a tu cuenta",
+    "emailPlaceholder": "Correo electrónico",
+    "emailRequired": "Ingresa el correo electrónico",
+    "emailInvalid": "Correo electrónico inválido",
+    "passwordPlaceholder": "Contraseña",
+    "passwordRequired": "Ingresa la contraseña",
+    "signInButton": "Acceder",
+    "noAccount": "¿Aún no tienes acceso?",
+    "createAccountButton": "Crear cuenta",
+    "signInError": "No fue posible acceder. Inténtalo de nuevo más tarde."
+  },
+  "signUp": {
+    "logoAlt": "Logo Sync Love",
+    "subtitle": "Ten una mejor relación con tu pareja",
+    "title": "Crea tu cuenta",
+    "namePlaceholder": "Nombre",
+    "nameRequired": "Ingresa el nombre",
+    "emailPlaceholder": "Correo electrónico",
+    "emailRequired": "Ingresa el correo electrónico",
+    "emailInvalid": "Correo electrónico inválido",
+    "genderLabel": "Género",
+    "genderPlaceholder": "Selecciona tu género",
+    "genderRequired": "Selecciona el género",
+    "genderMale": "Masculino",
+    "genderFemale": "Femenino",
+    "passwordPlaceholder": "Contraseña",
+    "passwordRequired": "Ingresa la contraseña",
+    "passwordMin": "La contraseña debe tener al menos 6 caracteres",
+    "passwordConfirmPlaceholder": "Confirma la Contraseña",
+    "passwordConfirmRequired": "Confirma la contraseña",
+    "passwordsMatch": "Las contraseñas no coinciden",
+    "signUpButton": "Crear y acceder",
+    "backToLoginButton": "Volver al inicio de sesión",
+    "signUpError": "No fue posible crear la cuenta. Inténtalo de nuevo más tarde."
+  },
+  "invitePartner": {
+    "logoAlt": "Logo Sync Love",
+    "subtitle": "Ten una mejor relación con tu pareja",
+    "title": "Invita a tu pareja",
+    "emailPlaceholder": "Correo electrónico",
+    "emailRequired": "Ingresa el correo electrónico",
+    "emailInvalid": "Correo electrónico inválido",
+    "sendButton": "Enviar Invitación",
+    "backButton": "Volver",
+    "inviteSuccess": "¡Invitación enviada con éxito!"
+  },
+  "waitingPartner": {
+    "logoAlt": "Logo Sync Love",
+    "subtitle": "Ten una mejor relación con tu pareja",
+    "title": "Encuentra a tu pareja",
+    "receivedInvites": "Invitaciones Recibidas",
+    "noReceivedInvites": "Ninguna invitación recibida",
+    "noReceivedInvitesDescription": "Cuando alguien te invite, aparecerá aquí",
+    "sentInvites": "Invitaciones Enviadas",
+    "noSentInvites": "Ninguna invitación enviada",
+    "noSentInvitesDescription": "Invita a tu pareja para comenzar",
+    "inviteButton": "Invitar Pareja"
+  },
+  "components": {
+    "button": {
+      "loading": "Cargando"
+    },
+    "calendarView": {
+      "monthNames": [
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre"
+      ],
+      "monthNamesShort": [
+        "Ene",
+        "Feb",
+        "Mar",
+        "Abr",
+        "May",
+        "Jun",
+        "Jul",
+        "Ago",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dic"
+      ],
+      "dayNames": [
+        "Domingo",
+        "Lunes",
+        "Martes",
+        "Miércoles",
+        "Jueves",
+        "Viernes",
+        "Sábado"
+      ],
+      "dayNamesShort": ["D", "L", "M", "M", "J", "V", "S"],
+      "today": "Hoy"
+    },
+    "receivedInviteCard": {
+      "profilePhotoAlt": "Foto de perfil del autor de la lista: {{name}}",
+      "receivedAt": "Recibido el",
+      "at": "a las",
+      "acceptButton": "Aceptar",
+      "rejectButton": "Rechazar"
+    },
+    "sentInviteCard": {
+      "rejected": "Rechazado",
+      "accepted": "Aceptado",
+      "waiting": "Esperando respuesta",
+      "sentAt": "Enviado el",
+      "at": "a las",
+      "on": "el"
+    },
+    "weekDaySelector": {
+      "sunday": "D",
+      "monday": "L",
+      "tuesday": "M",
+      "wednesday": "M",
+      "thursday": "J",
+      "friday": "V",
+      "saturday": "S"
+    },
+    "eventManagementCard": {
+      "deleteSuccess": "¡Evento eliminado con éxito!",
+      "deleteError": "Error al eliminar evento",
+      "deleteDialogTitle": "Eliminar Evento",
+      "deleteDialogMessage": "¿Estás seguro de que quieres eliminar este evento?",
+      "deleteDialogMessageRecurrent": "¿Estás seguro de que quieres eliminar este evento recurrente? Todas las ocurrencias futuras serán eliminadas.",
+      "deleteDialogCancel": "Cancelar",
+      "deleteDialogConfirm": "Sí, eliminar",
+      "deleteDialogDeleting": "Eliminando...",
+      "uniqueEvent": "Evento único",
+      "daily": "Diariamente",
+      "weekly": "Semanalmente",
+      "biweekly": "Cada dos semanas",
+      "monthly": "Mensualmente",
+      "bimonthly": "Cada dos meses",
+      "yearly": "Anualmente",
+      "customRecurrence": "Recurrencia personalizada"
+    },
+    "taskManagementCard": {
+      "deleteSuccess": "¡Tarea eliminada con éxito!",
+      "deleteError": "Error al eliminar tarea",
+      "deleteDialogTitle": "Eliminar Tarea",
+      "deleteDialogMessage": "¿Estás seguro de que quieres eliminar esta tarea?",
+      "deleteDialogMessageRecurrent": "¿Estás seguro de que quieres eliminar esta tarea recurrente? Todas las ocurrencias futuras serán eliminadas.",
+      "deleteDialogCancel": "Cancelar",
+      "deleteDialogConfirm": "Sí, eliminar",
+      "deleteDialogDeleting": "Eliminando...",
+      "unique": "Única",
+      "daily": "Diariamente",
+      "weekly": "Semanalmente",
+      "weeklyDays": "Semanalmente ({{days}})",
+      "monthly": "Mensualmente",
+      "custom": "Personalizada",
+      "startDate": "Inicio:",
+      "startDateLabel": "Fecha de inicio",
+      "dueDate": "Vencimiento",
+      "recurrence": "Repetición",
+      "weekDays": "Días de la semana"
+    },
+    "shoppingListCard": {
+      "items": "{{count}} artículos",
+      "createdBy": "Creada por:",
+      "createdByPhotoAlt": "Foto de perfil del autor de la lista: {{name}}",
+      "closedAt": "Cerrada el:"
+    },
+    "scoreCard": {
+      "monthlyScore": "Marcador del Mes",
+      "tasks": "tareas"
+    },
+    "userPhoto": {
+      "alt": "Foto de perfil del usuario"
+    },
+    "taskSummary": {
+      "you": "Tú",
+      "partner": "Pareja",
+      "monthYearFormat": "{{month}} de {{year}}"
+    },
+    "shoppingListItem": {
+      "checkboxLabel": "Marcar artículo {{name}}",
+      "notAvailable": "N/D"
+    }
+  },
+  "utils": {
+    "recurrenceTypes": {
+      "none": "No se repite",
+      "daily": "Diariamente",
+      "weekly": "Semanalmente",
+      "biweekly": "Cada dos semanas",
+      "monthly": "Mensualmente",
+      "bimonthly": "Cada dos meses",
+      "custom": "Personalizado (días de la semana)"
+    },
+    "zFormattedNumber": {
+      "defaultMessage": "Ingrese el valor"
+    }
+  },
+  "navigation": {
+    "lists": "Listas",
+    "tasks": "Tareas",
+    "dates": "Fechas",
+    "partner": "Pareja",
+    "settings": "Ajustes"
+  },
+  "hooks": {
+    "userQueries": {
+      "profileUpdateSuccess": "¡Perfil actualizado con éxito!",
+      "profileUpdateError": "Error al actualizar perfil",
+      "passwordUpdateSuccess": "¡Contraseña cambiada con éxito!",
+      "passwordUpdateError": "Error al cambiar contraseña",
+      "photoUpdateSuccess": "¡Foto actualizada con éxito!",
+      "photoUpdateError": "Error al actualizar foto",
+      "accountDeleteSuccess": "¡Cuenta eliminada con éxito!",
+      "accountDeleteError": "Error al eliminar cuenta"
+    },
+    "coupleQueries": {
+      "coupleEndSuccess": "Relación terminada",
+      "coupleEndError": "Error al terminar relación"
+    }
   }
 }

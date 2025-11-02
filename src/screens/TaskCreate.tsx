@@ -33,26 +33,28 @@ import DateTimePicker, {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
   RecurrenceType,
-  recurrenceOptions,
+  getRecurrenceOptions,
   getRecurrenceRule,
 } from '@utils/recurrenceTypes'
-
-// Esquema de validação Zod
-const createTaskFormSchema = z.object({
-  title: z
-    .string({ required_error: 'O título é obrigatório.' })
-    .min(1, 'O título é obrigatório.'),
-  description: z.string().nullable().optional(),
-  startDate: z.date({ required_error: 'A data de início é obrigatória.' }),
-  recurrenceRule: z.string().nullable().optional(),
-})
-
-type FormData = z.infer<typeof createTaskFormSchema>
+import { useTranslation } from 'react-i18next'
 
 export function TaskCreate() {
   const { colors } = useTheme()
+  const { t } = useTranslation()
   const navigation = useNavigation()
   const toast = useToast()
+
+  // Esquema de validação Zod
+  const createTaskFormSchema = z.object({
+    title: z
+      .string({ required_error: t('taskCreate.titleRequired') })
+      .min(1, t('taskCreate.titleRequired')),
+    description: z.string().nullable().optional(),
+    startDate: z.date({ required_error: t('taskCreate.startDateRequired') }),
+    recurrenceRule: z.string().nullable().optional(),
+  })
+
+  type FormData = z.infer<typeof createTaskFormSchema>
 
   const { useCreateTask } = useHouseholdTaskQueries()
   const { mutate: createTask, isPending } = useCreateTask()
@@ -119,7 +121,7 @@ export function TaskCreate() {
           render: ({ id }) => (
             <ToastMessage
               id={id}
-              title="Tarefa criada com sucesso!"
+              title={t('taskCreate.createSuccess')}
               action="success"
               onClose={() => toast.close(id)}
             />
@@ -133,7 +135,7 @@ export function TaskCreate() {
           render: ({ id }) => (
             <ToastMessage
               id={id}
-              title="Erro ao criar tarefa"
+              title={t('taskCreate.createError')}
               description={error.message}
               action="error"
               onClose={() => toast.close(id)}
@@ -146,7 +148,7 @@ export function TaskCreate() {
 
   return (
     <VStack flex={1} bg={colors.background}>
-      <ScreenHeader title="Criar Nova Tarefa" hasGoBackButton />
+      <ScreenHeader title={t('taskCreate.title')} hasGoBackButton />
 
       <KeyboardAwareScrollView
         enableOnAndroid={true}
@@ -160,7 +162,7 @@ export function TaskCreate() {
           <FormControl>
             <FormControlLabel>
               <FormControlLabelText color={colors.text}>
-                Título da Tarefa
+                {t('taskCreate.titleLabel')}
               </FormControlLabelText>
             </FormControlLabel>
             <Controller
@@ -168,7 +170,7 @@ export function TaskCreate() {
               name="title"
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
-                  placeholder="Ex: Lavar a louça"
+                  placeholder={t('taskCreate.titlePlaceholder')}
                   onChangeText={onChange}
                   onBlur={onBlur}
                   value={value}
@@ -186,7 +188,7 @@ export function TaskCreate() {
               <FormControl isInvalid={!!errors.description} mt="$4">
                 <FormControlLabel>
                   <FormControlLabelText color={colors.text}>
-                    Descrição (Opcional)
+                    {t('taskCreate.descriptionLabel')}
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Textarea
@@ -199,7 +201,7 @@ export function TaskCreate() {
                   isInvalid={!!errors.description}
                 >
                   <TextareaInput
-                    placeholder="Ex: Tirar o lixo também"
+                    placeholder={t('taskCreate.descriptionPlaceholder')}
                     placeholderTextColor={colors.textInactive}
                     value={value || ''}
                     onChangeText={onChange}
@@ -219,7 +221,7 @@ export function TaskCreate() {
               <FormControl isInvalid={!!errors.startDate} mt="$4">
                 <FormControlLabel>
                   <FormControlLabelText color={colors.text}>
-                    Data de Início (ou Vencimento)
+                    {t('taskCreate.startDateLabel')}
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Pressable
@@ -265,13 +267,13 @@ export function TaskCreate() {
 
           {/* Recorrência */}
           <Select
-            label="Repetir"
-            items={recurrenceOptions}
-            placeholder="Escolha a repetição"
+            label={t('taskCreate.recurrenceLabel')}
+            items={getRecurrenceOptions()}
+            placeholder={t('taskCreate.recurrencePlaceholder')}
             selectedValue={recurrenceType}
             value={
-              recurrenceOptions.find((opt) => opt.value === recurrenceType)
-                ?.label || 'Não se repete'
+              getRecurrenceOptions().find((opt) => opt.value === recurrenceType)
+                ?.label || t('utils.recurrenceTypes.none')
             }
             onValueChange={handleRecurrenceChange}
             mt="$4"
@@ -282,7 +284,7 @@ export function TaskCreate() {
             <FormControl mt="$4">
               <FormControlLabel>
                 <FormControlLabelText color={colors.text}>
-                  Dias da Semana
+                  {t('taskCreate.weekDaysLabel')}
                 </FormControlLabelText>
               </FormControlLabel>
               <WeekDaySelector
@@ -295,7 +297,7 @@ export function TaskCreate() {
           {/* Botão Salvar */}
           <Box mt="$8">
             <Button
-              title="Salvar Tarefa"
+              title={t('taskCreate.saveButton')}
               onPress={handleSubmit(handleCreateTask)}
               isLoading={isPending}
             />

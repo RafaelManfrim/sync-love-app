@@ -19,6 +19,7 @@ import { View } from '@gluestack-ui/themed'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { PartnerRoutes } from './partner.routes'
 import { useTheme } from '@hooks/useTheme'
+import { useTranslation } from 'react-i18next'
 
 type AppRoutesProps = {
   listsStack: undefined
@@ -64,6 +65,7 @@ const CustomTabBarButton = (props: any) => {
 export function AppRoutes() {
   const { colors, customTheme } = useTheme()
   const iconSize = customTheme.config.tokens.space['6']
+  const { t } = useTranslation()
 
   const { bottom } = useSafeAreaInsets()
 
@@ -87,7 +89,7 @@ export function AppRoutes() {
         name="listsStack"
         component={ListsRoutes}
         options={{
-          tabBarLabel: 'Listas',
+          tabBarLabel: t('navigation.lists'),
           tabBarIcon: ({ color }) => (
             <ShoppingCartSvg width={iconSize} height={iconSize} fill={color} />
           ),
@@ -101,7 +103,7 @@ export function AppRoutes() {
         name="tasksStack"
         component={TasksRoutes}
         options={{
-          tabBarLabel: 'Tarefas',
+          tabBarLabel: t('navigation.tasks'),
           tabBarIcon: ({ color }) => (
             <ClipboardListSvg width={iconSize} height={iconSize} fill={color} />
           ),
@@ -115,7 +117,7 @@ export function AppRoutes() {
         name="datesStack"
         component={DatesRoutes}
         options={{
-          tabBarLabel: 'Datas',
+          tabBarLabel: t('navigation.dates'),
           tabBarIcon: ({ color }) => (
             <CalendarSvg width={iconSize} height={iconSize} fill={color} />
           ),
@@ -129,7 +131,7 @@ export function AppRoutes() {
         name="relationshipStack"
         component={PartnerRoutes}
         options={{
-          tabBarLabel: 'Parceiro',
+          tabBarLabel: t('navigation.partner'),
           tabBarIcon: ({ color }) => (
             <HeartSvg width={iconSize} height={iconSize} fill={color} />
           ),
@@ -143,7 +145,7 @@ export function AppRoutes() {
         name="settingsStack"
         component={SettingsRoutes}
         options={{
-          tabBarLabel: 'Ajustes',
+          tabBarLabel: t('navigation.settings'),
           tabBarIcon: ({ color }) => (
             <GearSvg width={iconSize} height={iconSize} fill={color} />
           ),

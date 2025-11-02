@@ -15,11 +15,13 @@ import { useHouseholdTaskQueries } from '@hooks/api/useHouseholdTaskQueries'
 import { useNavigation } from '@react-navigation/native'
 import { TasksNavigationRoutesProps } from '@routes/tasks.routes'
 import { HouseholdTaskDTO } from '@dtos/HouseholdTaskDTO'
+import { useTranslation } from 'react-i18next'
 
 type Tab = 'unique' | 'recurrent'
 
 export function TaskManagement() {
   const { colors } = useTheme()
+  const { t } = useTranslation()
   const [selectedTab, setSelectedTab] = useState<Tab>('recurrent')
   const navigation = useNavigation<TasksNavigationRoutesProps>()
 
@@ -43,7 +45,7 @@ export function TaskManagement() {
 
   return (
     <VStack flex={1} bg={colors.background}>
-      <ScreenHeader title="Gerenciar Tarefas" hasGoBackButton />
+      <ScreenHeader title={t('taskManagement.title')} hasGoBackButton />
 
       {/* Tabs */}
       <HStack w="100%" px="$6" mt="$4" mb="$2">
@@ -64,7 +66,9 @@ export function TaskManagement() {
             fontFamily="$heading"
             fontSize="$md"
           >
-            Recorrentes ({recurrentTasks.length})
+            {t('taskManagement.recurrentTab', {
+              count: recurrentTasks.length,
+            })}
           </Text>
         </Pressable>
 
@@ -83,7 +87,7 @@ export function TaskManagement() {
             fontFamily="$heading"
             fontSize="$md"
           >
-            Únicas ({uniqueTasks.length})
+            {t('taskManagement.uniqueTab', { count: uniqueTasks.length })}
           </Text>
         </Pressable>
       </HStack>
@@ -108,8 +112,8 @@ export function TaskManagement() {
             <Box h="$40" justifyContent="center" alignItems="center">
               <Text color={colors.text} opacity={0.6} textAlign="center">
                 {selectedTab === 'unique'
-                  ? 'Nenhuma tarefa única cadastrada.'
-                  : 'Nenhuma tarefa recorrente cadastrada.'}
+                  ? t('taskManagement.emptyUnique')
+                  : t('taskManagement.emptyRecurrent')}
               </Text>
             </Box>
           )}

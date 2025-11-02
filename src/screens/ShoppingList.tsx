@@ -30,12 +30,14 @@ import {
 import { AppError } from '@utils/AppError'
 import { useCallback, useState } from 'react'
 import { Platform } from 'react-native'
+import { useTranslation } from 'react-i18next'
 
 export function ShoppingList() {
   const [newItemName, setNewItemName] = useState('')
   const [suggestions, setSuggestions] = useState<ProductDTO[]>([])
 
   const { colors } = useTheme()
+  const { t } = useTranslation()
 
   const navigation = useNavigation<ShoppingListNavigationRoutesProps>()
   const route = useRoute()
@@ -79,7 +81,7 @@ export function ShoppingList() {
           <ToastMessage
             id={id}
             onClose={() => toast.close(id)}
-            title="Item adicionado!"
+            title={t('shoppingList.itemAdded')}
             action="success"
           />
         ),
@@ -89,9 +91,7 @@ export function ShoppingList() {
       invalidateListDetails(shoppingListId)
     } catch (error) {
       const isAppError = error instanceof AppError
-      const title = isAppError
-        ? error.message
-        : 'Não foi possível adicionar o item.'
+      const title = isAppError ? error.message : t('shoppingList.addItemError')
       toast.show({
         placement: 'top',
         render: ({ id }) => (
@@ -113,7 +113,7 @@ export function ShoppingList() {
       const isAppError = error instanceof AppError
       const title = isAppError
         ? error.message
-        : 'Não foi possível atualizar o item.'
+        : t('shoppingList.updateItemError')
       toast.show({
         placement: 'top',
         render: ({ id }) => (
@@ -161,7 +161,7 @@ export function ShoppingList() {
 
   return (
     <VStack flex={1}>
-      <ScreenHeader title="Lista de Compras" hasGoBackButton />
+      <ScreenHeader title={t('shoppingList.title')} hasGoBackButton />
 
       {isLoading ? (
         <Loading />
@@ -190,7 +190,7 @@ export function ShoppingList() {
                 fontSize="$lg"
                 mb="$4"
               >
-                Lista Concluída
+                {t('shoppingList.completedLabel')}
               </Text>
             )}
 
@@ -200,7 +200,7 @@ export function ShoppingList() {
                 <HStack space="sm">
                   <Input flex={1}>
                     <InputField
-                      placeholder="Digite o nome do item"
+                      placeholder={t('shoppingList.itemPlaceholder')}
                       value={newItemName}
                       onChangeText={handleSearchTermChange}
                       onSubmitEditing={handleAddItem}
@@ -210,7 +210,7 @@ export function ShoppingList() {
                     />
                   </Input>
                   <Button
-                    title="+"
+                    title={t('shoppingList.addButton')}
                     onPress={handleAddItem}
                     isLoading={isAddingItem}
                     w="$12"
@@ -266,23 +266,25 @@ export function ShoppingList() {
                   pb="$2"
                 >
                   <Text flex={1} color={colors.textInactive} fontSize="$sm">
-                    Item
+                    {t('shoppingList.itemHeader')}
                   </Text>
                   <Text color={colors.textInactive} fontSize="$sm">
-                    {isListClosed ? 'Preço Pago' : 'Preço Médio'}
+                    {isListClosed
+                      ? t('shoppingList.paidPriceHeader')
+                      : t('shoppingList.averagePriceHeader')}
                   </Text>
                 </HStack>
               )}
               ListEmptyComponent={() => (
                 <Text color={colors.textInactive} textAlign="center" mt="$8">
-                  Nenhum item na lista ainda.
+                  {t('shoppingList.emptyList')}
                 </Text>
               )}
               showsVerticalScrollIndicator={false}
             />
             {!isListClosed && (
               <Button
-                title="Finalizar Compra"
+                title={t('shoppingList.finishButton')}
                 mt="$5"
                 onPress={handleCloseShoppingList}
                 disabled={

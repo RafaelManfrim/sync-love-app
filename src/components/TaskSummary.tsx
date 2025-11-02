@@ -6,6 +6,8 @@ import { useHouseholdTaskQueries } from '@hooks/api/useHouseholdTaskQueries'
 import { Loading } from './Loading'
 import { ScoreCard } from './ScoreCard' // Reutilizando o componente de Missions
 import { Feather } from '@expo/vector-icons'
+import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@hooks/useLanguage'
 
 // Função para capitalizar o mês
 function capitalizeFirstLetter(string: string) {
@@ -16,6 +18,8 @@ export function TaskSummary() {
   const { colors } = useTheme()
   const { user } = useAuth()
   const [selectedMonth, setSelectedMonth] = useState(new Date())
+  const { t } = useTranslation()
+  const { currentLanguage } = useLanguage()
 
   const { useFetchTasksSummary } = useHouseholdTaskQueries()
 
@@ -37,11 +41,14 @@ export function TaskSummary() {
   }
 
   const formattedMonth = useMemo(() => {
-    const monthName = selectedMonth.toLocaleDateString('pt-BR', {
+    const monthName = selectedMonth.toLocaleDateString(currentLanguage, {
       month: 'long',
     })
-    return `${capitalizeFirstLetter(monthName)} de ${selectedMonth.getFullYear()}`
-  }, [selectedMonth])
+    return t('components.taskSummary.monthYearFormat', {
+      month: capitalizeFirstLetter(monthName),
+      year: selectedMonth.getFullYear(),
+    })
+  }, [selectedMonth, currentLanguage, t])
 
   // Encontra os dados do usuário logado e do parceiro
   const me = summary?.members.find((m) => m.id === user.id)
@@ -87,12 +94,12 @@ export function TaskSummary() {
           currentPoints={summary?.totalCompleted || 0}
           goalPoints={summary?.totalPlanned || 0}
           me={{
-            name: me?.name || 'Você',
+            name: me?.name || t('components.taskSummary.you'),
             score: me?.completedCount || 0,
             avatarUrl: me?.avatar_url ?? undefined,
           }}
           partner={{
-            name: partner?.name || 'Parceiro(a)',
+            name: partner?.name || t('components.taskSummary.partner'),
             score: partner?.completedCount || 0,
             avatarUrl: partner?.avatar_url ?? undefined,
           }}

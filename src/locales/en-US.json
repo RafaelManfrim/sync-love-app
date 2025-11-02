@@ -77,5 +77,377 @@
     "confirmPasswordPlaceholder": "Confirm new password",
     "confirmPasswordMismatch": "Password confirmation does not match.",
     "updateButton": "Update"
+  },
+  "shoppingLists": {
+    "title": "Shopping Lists",
+    "openTab": "Open ({{count}})",
+    "closedTab": "Completed ({{count}})",
+    "listsHeader": "Lists",
+    "emptyOpen": "No open shopping lists. \nLet's create the first one?",
+    "emptyClosed": "No completed shopping lists."
+  },
+  "shoppingList": {
+    "title": "Shopping List",
+    "completedLabel": "List Completed",
+    "itemPlaceholder": "Enter item name",
+    "addButton": "+",
+    "itemHeader": "Item",
+    "averagePriceHeader": "Average Price",
+    "paidPriceHeader": "Paid Price",
+    "emptyList": "No items in the list yet.",
+    "finishButton": "Finish Shopping",
+    "itemAdded": "Item added!",
+    "addItemError": "Unable to add item.",
+    "updateItemError": "Unable to update item."
+  },
+  "newShoppingList": {
+    "title": "New Shopping List",
+    "nameLabel": "Name",
+    "namePlaceholder": "List title",
+    "titleMinLength": "Title must have at least 3 characters.",
+    "titleMaxLength": "Title must have at most 30 characters.",
+    "createButton": "Create",
+    "createSuccess": "Shopping list created successfully!",
+    "createError": "Unable to create shopping list."
+  },
+  "closeShoppingList": {
+    "title": "Close Shopping List",
+    "itemHeader": "Item",
+    "unitPriceHeader": "Unit Price",
+    "unitPricePlaceholder": "$ 0.00",
+    "unitPriceRequired": "Enter unit price",
+    "emptyList": "No items in the list yet.",
+    "closeButton": "Close List",
+    "closeSuccess": "Shopping list completed successfully!",
+    "closeError": "Error closing list"
+  },
+  "tasks": {
+    "title": "Tasks",
+    "emptyDay": "No tasks for this day."
+  },
+  "taskCreate": {
+    "title": "Create New Task",
+    "titleLabel": "Task Title",
+    "titlePlaceholder": "Ex: Wash the dishes",
+    "titleRequired": "Title is required.",
+    "descriptionLabel": "Description (Optional)",
+    "descriptionPlaceholder": "Ex: Take out the trash too",
+    "startDateLabel": "Start Date (or Due Date)",
+    "startDateRequired": "Start date is required.",
+    "recurrenceLabel": "Repeat",
+    "recurrencePlaceholder": "Choose repetition",
+    "weekDaysLabel": "Week Days",
+    "saveButton": "Save Task",
+    "createSuccess": "Task created successfully!",
+    "createError": "Error creating task"
+  },
+  "taskEdit": {
+    "title": "Edit Task",
+    "titleLabel": "Task Title",
+    "titlePlaceholder": "Ex: Wash the dishes",
+    "titleRequired": "Title is required.",
+    "descriptionLabel": "Description (Optional)",
+    "descriptionPlaceholder": "Ex: Take out the trash too",
+    "startDateLabel": "Start Date (or Due Date)",
+    "startDateRequired": "Start date is required.",
+    "recurrenceLabel": "Repeat",
+    "recurrencePlaceholder": "Choose repetition",
+    "weekDaysLabel": "Week Days",
+    "saveButton": "Save Changes",
+    "updateSuccess": "Task updated successfully!",
+    "updateError": "Error updating task"
+  },
+  "taskManagement": {
+    "title": "Manage Tasks",
+    "recurrentTab": "Recurrent ({{count}})",
+    "uniqueTab": "Unique ({{count}})",
+    "emptyRecurrent": "No recurrent tasks registered.",
+    "emptyUnique": "No unique tasks registered."
+  },
+  "importantDates": {
+    "title": "Important Dates",
+    "emptyMonth": "No events registered this month.",
+    "emptyDescription": "Add important dates like birthdays, celebrations, and appointments.",
+    "errorLoading": "Error loading events.",
+    "errorRetry": "Please try again later."
+  },
+  "eventCreate": {
+    "title": "New Event",
+    "titleLabel": "Event Title",
+    "titlePlaceholder": "Ex: Maria's Birthday",
+    "titleRequired": "Title is required.",
+    "categoryLabel": "Category",
+    "categoryNone": "No category",
+    "allDayLabel": "All Day",
+    "startLabel": "Start",
+    "endLabel": "End",
+    "endDateError": "End date must be after start date.",
+    "recurrenceLabel": "Repeat",
+    "recurrenceNone": "Does not repeat",
+    "recurrenceDaily": "Daily",
+    "recurrenceWeekly": "Weekly",
+    "recurrenceBiweekly": "Every two weeks",
+    "recurrenceMonthly": "Monthly",
+    "recurrenceBimonthly": "Every two months",
+    "recurrenceYearly": "Yearly",
+    "descriptionLabel": "Description (Optional)",
+    "descriptionPlaceholder": "Ex: Bring a gift...",
+    "saveButton": "Save Event",
+    "createSuccess": "Event created successfully!",
+    "createError": "Error creating event"
+  },
+  "eventEdit": {
+    "title": "Edit Event",
+    "titleLabel": "Event Title",
+    "titlePlaceholder": "Ex: Maria's Birthday",
+    "titleRequired": "Title is required.",
+    "categoryLabel": "Category",
+    "categoryNone": "No category",
+    "allDayLabel": "All Day",
+    "startLabel": "Start",
+    "endLabel": "End",
+    "endDateError": "End date must be after start date.",
+    "recurrenceLabel": "Repeat",
+    "recurrenceNone": "Does not repeat",
+    "recurrenceDaily": "Daily",
+    "recurrenceWeekly": "Weekly",
+    "recurrenceBiweekly": "Every two weeks",
+    "recurrenceMonthly": "Monthly",
+    "recurrenceBimonthly": "Every two months",
+    "recurrenceYearly": "Yearly",
+    "descriptionLabel": "Description (Optional)",
+    "descriptionPlaceholder": "Ex: Bring a gift...",
+    "saveButton": "Save Changes",
+    "updateSuccess": "Event updated successfully!",
+    "updateError": "Error updating event"
+  },
+  "signIn": {
+    "logoAlt": "Sync Love Logo",
+    "subtitle": "Have a better relationship with your partner",
+    "title": "Sign in to your account",
+    "emailPlaceholder": "Email",
+    "emailRequired": "Please enter your email",
+    "emailInvalid": "Invalid email",
+    "passwordPlaceholder": "Password",
+    "passwordRequired": "Please enter your password",
+    "signInButton": "Sign In",
+    "noAccount": "Don't have an account yet?",
+    "createAccountButton": "Create account",
+    "signInError": "Unable to sign in. Please try again later."
+  },
+  "signUp": {
+    "logoAlt": "Sync Love Logo",
+    "subtitle": "Have a better relationship with your partner",
+    "title": "Create your account",
+    "namePlaceholder": "Name",
+    "nameRequired": "Please enter your name",
+    "emailPlaceholder": "Email",
+    "emailRequired": "Please enter your email",
+    "emailInvalid": "Invalid email",
+    "genderLabel": "Gender",
+    "genderPlaceholder": "Select your gender",
+    "genderRequired": "Please select your gender",
+    "genderMale": "Male",
+    "genderFemale": "Female",
+    "passwordPlaceholder": "Password",
+    "passwordRequired": "Please enter your password",
+    "passwordMin": "Password must be at least 6 characters",
+    "passwordConfirmPlaceholder": "Confirm Password",
+    "passwordConfirmRequired": "Please confirm your password",
+    "passwordsMatch": "Passwords do not match",
+    "signUpButton": "Create and sign in",
+    "backToLoginButton": "Back to login",
+    "signUpError": "Unable to create account. Please try again later."
+  },
+  "invitePartner": {
+    "logoAlt": "Sync Love Logo",
+    "subtitle": "Have a better relationship with your partner",
+    "title": "Invite your partner",
+    "emailPlaceholder": "Email",
+    "emailRequired": "Please enter email",
+    "emailInvalid": "Invalid email",
+    "sendButton": "Send Invitation",
+    "backButton": "Back",
+    "inviteSuccess": "Invitation sent successfully!"
+  },
+  "waitingPartner": {
+    "logoAlt": "Sync Love Logo",
+    "subtitle": "Have a better relationship with your partner",
+    "title": "Find your partner",
+    "receivedInvites": "Received Invitations",
+    "noReceivedInvites": "No invitations received",
+    "noReceivedInvitesDescription": "When someone invites you, it will appear here",
+    "sentInvites": "Sent Invitations",
+    "noSentInvites": "No invitations sent",
+    "noSentInvitesDescription": "Invite your partner to get started",
+    "inviteButton": "Invite Partner"
+  },
+  "components": {
+    "button": {
+      "loading": "Loading"
+    },
+    "calendarView": {
+      "monthNames": [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ],
+      "monthNamesShort": [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+      ],
+      "dayNames": [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ],
+      "dayNamesShort": ["S", "M", "T", "W", "T", "F", "S"],
+      "today": "Today"
+    },
+    "receivedInviteCard": {
+      "profilePhotoAlt": "Profile photo of list author: {{name}}",
+      "receivedAt": "Received on",
+      "at": "at",
+      "acceptButton": "Accept",
+      "rejectButton": "Reject"
+    },
+    "sentInviteCard": {
+      "rejected": "Rejected",
+      "accepted": "Accepted",
+      "waiting": "Awaiting response",
+      "sentAt": "Sent on",
+      "at": "at",
+      "on": "on"
+    },
+    "weekDaySelector": {
+      "sunday": "S",
+      "monday": "M",
+      "tuesday": "T",
+      "wednesday": "W",
+      "thursday": "T",
+      "friday": "F",
+      "saturday": "S"
+    },
+    "eventManagementCard": {
+      "deleteSuccess": "Event deleted successfully!",
+      "deleteError": "Error deleting event",
+      "deleteDialogTitle": "Delete Event",
+      "deleteDialogMessage": "Are you sure you want to delete this event?",
+      "deleteDialogMessageRecurrent": "Are you sure you want to delete this recurring event? All future occurrences will be removed.",
+      "deleteDialogCancel": "Cancel",
+      "deleteDialogConfirm": "Yes, delete",
+      "deleteDialogDeleting": "Deleting...",
+      "uniqueEvent": "Unique event",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "biweekly": "Every two weeks",
+      "monthly": "Monthly",
+      "bimonthly": "Every two months",
+      "yearly": "Yearly",
+      "customRecurrence": "Custom recurrence"
+    },
+    "taskManagementCard": {
+      "deleteSuccess": "Task deleted successfully!",
+      "deleteError": "Error deleting task",
+      "deleteDialogTitle": "Delete Task",
+      "deleteDialogMessage": "Are you sure you want to delete this task?",
+      "deleteDialogMessageRecurrent": "Are you sure you want to delete this recurring task? All future occurrences will be removed.",
+      "deleteDialogCancel": "Cancel",
+      "deleteDialogConfirm": "Yes, delete",
+      "deleteDialogDeleting": "Deleting...",
+      "unique": "Unique",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "weeklyDays": "Weekly ({{days}})",
+      "monthly": "Monthly",
+      "custom": "Custom",
+      "startDate": "Start:",
+      "startDateLabel": "Start date",
+      "dueDate": "Due date",
+      "recurrence": "Recurrence",
+      "weekDays": "Week days"
+    },
+    "shoppingListCard": {
+      "items": "{{count}} items",
+      "createdBy": "Created by:",
+      "createdByPhotoAlt": "Profile photo of list author: {{name}}",
+      "closedAt": "Closed on:"
+    },
+    "scoreCard": {
+      "monthlyScore": "Monthly Score",
+      "tasks": "tasks"
+    },
+    "userPhoto": {
+      "alt": "User profile photo"
+    },
+    "taskSummary": {
+      "you": "You",
+      "partner": "Partner",
+      "monthYearFormat": "{{month}} {{year}}"
+    },
+    "shoppingListItem": {
+      "checkboxLabel": "Check item {{name}}",
+      "notAvailable": "N/A"
+    }
+  },
+  "utils": {
+    "recurrenceTypes": {
+      "none": "Does not repeat",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "biweekly": "Every two weeks",
+      "monthly": "Monthly",
+      "bimonthly": "Every two months",
+      "custom": "Custom (week days)"
+    },
+    "zFormattedNumber": {
+      "defaultMessage": "Enter the value"
+    }
+  },
+  "navigation": {
+    "lists": "Lists",
+    "tasks": "Tasks",
+    "dates": "Dates",
+    "partner": "Partner",
+    "settings": "Settings"
+  },
+  "hooks": {
+    "userQueries": {
+      "profileUpdateSuccess": "Profile updated successfully!",
+      "profileUpdateError": "Error updating profile",
+      "passwordUpdateSuccess": "Password changed successfully!",
+      "passwordUpdateError": "Error changing password",
+      "photoUpdateSuccess": "Photo updated successfully!",
+      "photoUpdateError": "Error updating photo",
+      "accountDeleteSuccess": "Account deleted successfully!",
+      "accountDeleteError": "Error deleting account"
+    },
+    "coupleQueries": {
+      "coupleEndSuccess": "Relationship ended",
+      "coupleEndError": "Error ending relationship"
+    }
   }
 }

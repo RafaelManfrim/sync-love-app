@@ -21,6 +21,7 @@ import { useCalendarQueries } from '@hooks/api/useCalendarQueries'
 import { ToastMessage } from './ToastMessage'
 import { format, parseISO } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   event: CalendarEventOccurrenceDTO
@@ -32,6 +33,7 @@ export function EventManagementCard({ event, onEdit }: Props) {
   const toast = useToast()
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const cancelRef = useRef(null)
+  const { t } = useTranslation()
 
   const { useDeleteCalendarEvent } = useCalendarQueries()
   const { mutate: deleteEvent, isPending } = useDeleteCalendarEvent()
@@ -46,7 +48,7 @@ export function EventManagementCard({ event, onEdit }: Props) {
           render: ({ id }) => (
             <ToastMessage
               id={id}
-              title="Evento excluído com sucesso!"
+              title={t('components.eventManagementCard.deleteSuccess')}
               action="success"
               onClose={() => toast.close(id)}
             />
@@ -60,7 +62,7 @@ export function EventManagementCard({ event, onEdit }: Props) {
           render: ({ id }) => (
             <ToastMessage
               id={id}
-              title="Erro ao excluir evento"
+              title={t('components.eventManagementCard.deleteError')}
               description={error.message}
               action="error"
               onClose={() => toast.close(id)}
@@ -72,20 +74,24 @@ export function EventManagementCard({ event, onEdit }: Props) {
   }
 
   const formatRecurrenceRule = (rule: string | null) => {
-    if (!rule) return 'Evento único'
+    if (!rule) return t('components.eventManagementCard.uniqueEvent')
 
-    if (rule.includes('FREQ=DAILY')) return 'Diariamente'
+    if (rule.includes('FREQ=DAILY'))
+      return t('components.eventManagementCard.daily')
     if (rule.includes('FREQ=WEEKLY')) {
-      if (rule.includes('INTERVAL=2')) return 'A cada duas semanas'
-      return 'Semanalmente'
+      if (rule.includes('INTERVAL=2'))
+        return t('components.eventManagementCard.biweekly')
+      return t('components.eventManagementCard.weekly')
     }
     if (rule.includes('FREQ=MONTHLY')) {
-      if (rule.includes('INTERVAL=2')) return 'A cada dois meses'
-      return 'Mensalmente'
+      if (rule.includes('INTERVAL=2'))
+        return t('components.eventManagementCard.bimonthly')
+      return t('components.eventManagementCard.monthly')
     }
-    if (rule.includes('FREQ=YEARLY')) return 'Anualmente'
+    if (rule.includes('FREQ=YEARLY'))
+      return t('components.eventManagementCard.yearly')
 
-    return 'Recorrência personalizada'
+    return t('components.eventManagementCard.customRecurrence')
   }
 
   const formatDateTime = (dateString: string, isAllDay: boolean) => {
@@ -181,14 +187,16 @@ export function EventManagementCard({ event, onEdit }: Props) {
         <AlertDialogContent bg={colors.card}>
           <AlertDialogHeader>
             <Heading size="lg" color={colors.title}>
-              Excluir Evento
+              {t('components.eventManagementCard.deleteDialogTitle')}
             </Heading>
           </AlertDialogHeader>
           <AlertDialogBody>
             <Text color={colors.text}>
               {isRecurrent
-                ? 'Tem certeza que deseja excluir este evento recorrente? Todas as ocorrências futuras serão removidas.'
-                : 'Tem certeza que deseja excluir este evento?'}
+                ? t(
+                    'components.eventManagementCard.deleteDialogMessageRecurrent',
+                  )
+                : t('components.eventManagementCard.deleteDialogMessage')}
             </Text>
           </AlertDialogBody>
           <AlertDialogFooter>
@@ -199,7 +207,7 @@ export function EventManagementCard({ event, onEdit }: Props) {
                 borderRadius="$md"
               >
                 <Text color={colors.textInactive} fontWeight="$medium">
-                  Cancelar
+                  {t('components.eventManagementCard.deleteDialogCancel')}
                 </Text>
               </Pressable>
               <Pressable
@@ -214,7 +222,9 @@ export function EventManagementCard({ event, onEdit }: Props) {
                   color={isPending ? '$trueGray500' : '$error500'}
                   fontWeight="$semibold"
                 >
-                  {isPending ? 'Excluindo...' : 'Sim, excluir'}
+                  {isPending
+                    ? t('components.eventManagementCard.deleteDialogDeleting')
+                    : t('components.eventManagementCard.deleteDialogConfirm')}
                 </Text>
               </Pressable>
             </ButtonGroup>

@@ -2,50 +2,9 @@ import { Calendar, LocaleConfig } from 'react-native-calendars'
 import { DateData } from 'react-native-calendars/src/types'
 import { useTheme } from '@hooks/useTheme'
 import { addYears } from 'date-fns'
-
-// Configuração para o idioma Português (Brasil)
-LocaleConfig.locales['pt-br'] = {
-  monthNames: [
-    'Janeiro',
-    'Fevereiro',
-    'Março',
-    'Abril',
-    'Maio',
-    'Junho',
-    'Julho',
-    'Agosto',
-    'Setembro',
-    'Outubro',
-    'Novembro',
-    'Dezembro',
-  ],
-  monthNamesShort: [
-    'Jan.',
-    'Fev.',
-    'Mar.',
-    'Abr.',
-    'Mai.',
-    'Jun.',
-    'Jul.',
-    'Ago.',
-    'Set.',
-    'Out.',
-    'Nov.',
-    'Dez.',
-  ],
-  dayNames: [
-    'Domingo',
-    'Segunda',
-    'Terça',
-    'Quarta',
-    'Quinta',
-    'Sexta',
-    'Sábado',
-  ],
-  dayNamesShort: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
-  today: 'Hoje',
-}
-LocaleConfig.defaultLocale = 'pt-br'
+import { useLanguage } from '@hooks/useLanguage'
+import { useTranslation } from 'react-i18next'
+import { useEffect } from 'react'
 
 type MarkedDatesType = {
   [key: string]: {
@@ -70,10 +29,31 @@ export function CalendarView({
   onMonthChange,
 }: Props) {
   const { colors, currentTheme } = useTheme()
+  const { currentLanguage, localeKey } = useLanguage()
+  const { t } = useTranslation()
+
+  // Configurar o locale do calendário baseado no idioma atual
+  useEffect(() => {
+    LocaleConfig.locales[localeKey] = {
+      monthNames: t('components.calendarView.monthNames', {
+        returnObjects: true,
+      }) as string[],
+      monthNamesShort: t('components.calendarView.monthNamesShort', {
+        returnObjects: true,
+      }) as string[],
+      dayNames: t('components.calendarView.dayNames', {
+        returnObjects: true,
+      }) as string[],
+      dayNamesShort: t('components.calendarView.dayNamesShort', {
+        returnObjects: true,
+      }) as string[],
+      today: t('components.calendarView.today'),
+    }
+    LocaleConfig.defaultLocale = localeKey
+  }, [t, localeKey])
 
   const markedDates: MarkedDatesType = {}
 
-  // Marca os dias com eventos
   dates.forEach((item) => {
     markedDates[item.date] = {
       marked: true,
@@ -82,7 +62,6 @@ export function CalendarView({
     }
   })
 
-  // Marca o dia selecionado
   if (markedDates[selectedDate]) {
     markedDates[selectedDate] = {
       ...markedDates[selectedDate],
@@ -98,11 +77,11 @@ export function CalendarView({
 
   return (
     <Calendar
-      key={currentTheme} // Força re-renderização quando o tema muda
+      key={`${currentTheme}-${currentLanguage}`}
       onDayPress={onDayPress}
       markedDates={markedDates}
       onMonthChange={onMonthChange}
-      maxDate={addYears(new Date(), 50).toDateString()} // hoje mais 50 anos com date fns
+      maxDate={addYears(new Date(), 50).toDateString()}
       theme={{
         backgroundColor: colors.card,
         calendarBackground: colors.card,

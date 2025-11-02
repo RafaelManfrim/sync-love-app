@@ -19,6 +19,7 @@ import { Pencil, Trash2 } from 'lucide-react-native'
 import { useState, useRef } from 'react'
 import { useHouseholdTaskQueries } from '@hooks/api/useHouseholdTaskQueries'
 import { ToastMessage } from './ToastMessage'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   task: HouseholdTaskDTO
@@ -30,6 +31,7 @@ export function TaskManagementCard({ task, onEdit }: Props) {
   const toast = useToast()
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const cancelRef = useRef(null)
+  const { t } = useTranslation()
 
   const { useDeleteTask } = useHouseholdTaskQueries()
   const { mutate: deleteTask, isPending } = useDeleteTask()
@@ -44,7 +46,7 @@ export function TaskManagementCard({ task, onEdit }: Props) {
           render: ({ id }) => (
             <ToastMessage
               id={id}
-              title="Tarefa excluída com sucesso!"
+              title={t('components.taskManagementCard.deleteSuccess')}
               action="success"
               onClose={() => toast.close(id)}
             />
@@ -58,7 +60,7 @@ export function TaskManagementCard({ task, onEdit }: Props) {
           render: ({ id }) => (
             <ToastMessage
               id={id}
-              title="Erro ao excluir tarefa"
+              title={t('components.taskManagementCard.deleteError')}
               description={error.message}
               action="error"
               onClose={() => toast.close(id)}
@@ -70,17 +72,20 @@ export function TaskManagementCard({ task, onEdit }: Props) {
   }
 
   const formatRecurrenceRule = (rule: string | null) => {
-    if (!rule) return 'Única'
+    if (!rule) return t('components.taskManagementCard.unique')
 
-    if (rule.includes('FREQ=DAILY')) return 'Diariamente'
+    if (rule.includes('FREQ=DAILY'))
+      return t('components.taskManagementCard.daily')
     if (rule.includes('FREQ=WEEKLY') && rule.includes('BYDAY')) {
       const days = rule.match(/BYDAY=([^;]+)/)?.[1]
-      return `Semanalmente (${days})`
+      return t('components.taskManagementCard.weeklyDays', { days })
     }
-    if (rule.includes('FREQ=WEEKLY')) return 'Semanalmente'
-    if (rule.includes('FREQ=MONTHLY')) return 'Mensalmente'
+    if (rule.includes('FREQ=WEEKLY'))
+      return t('components.taskManagementCard.weekly')
+    if (rule.includes('FREQ=MONTHLY'))
+      return t('components.taskManagementCard.monthly')
 
-    return 'Personalizada'
+    return t('components.taskManagementCard.custom')
   }
 
   return (
@@ -113,7 +118,8 @@ export function TaskManagementCard({ task, onEdit }: Props) {
               {formatRecurrenceRule(task.recurrence_rule)}
             </Text>
             <Text color={colors.text} fontSize="$xs" opacity={0.6}>
-              Início: {new Date(task.start_date).toLocaleDateString('pt-BR')}
+              {t('components.taskManagementCard.startDate')}{' '}
+              {new Date(task.start_date).toLocaleDateString('pt-BR')}
             </Text>
           </VStack>
 
@@ -150,14 +156,16 @@ export function TaskManagementCard({ task, onEdit }: Props) {
         <AlertDialogContent bg={colors.card}>
           <AlertDialogHeader>
             <Heading size="lg" color={colors.title}>
-              Excluir Tarefa
+              {t('components.taskManagementCard.deleteDialogTitle')}
             </Heading>
           </AlertDialogHeader>
           <AlertDialogBody>
             <Text color={colors.text}>
               {isRecurrent
-                ? 'Tem certeza que deseja excluir esta tarefa recorrente? Todas as ocorrências futuras serão removidas.'
-                : 'Tem certeza que deseja excluir esta tarefa?'}
+                ? t(
+                    'components.taskManagementCard.deleteDialogMessageRecurrent',
+                  )
+                : t('components.taskManagementCard.deleteDialogMessage')}
             </Text>
           </AlertDialogBody>
           <AlertDialogFooter>
@@ -168,7 +176,7 @@ export function TaskManagementCard({ task, onEdit }: Props) {
                 borderRadius="$md"
               >
                 <Text color={colors.textInactive} fontWeight="$medium">
-                  Cancelar
+                  {t('components.taskManagementCard.deleteDialogCancel')}
                 </Text>
               </Pressable>
               <Pressable
@@ -183,7 +191,9 @@ export function TaskManagementCard({ task, onEdit }: Props) {
                   color={isPending ? '$trueGray500' : '$error500'}
                   fontWeight="$semibold"
                 >
-                  {isPending ? 'Excluindo...' : 'Sim, excluir'}
+                  {isPending
+                    ? t('components.taskManagementCard.deleteDialogDeleting')
+                    : t('components.taskManagementCard.deleteDialogConfirm')}
                 </Text>
               </Pressable>
             </ButtonGroup>

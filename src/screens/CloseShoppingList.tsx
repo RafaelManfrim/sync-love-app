@@ -29,29 +29,37 @@ import { zFormattedNumber } from '@utils/zFormattedNumber'
 import { useCallback, useEffect } from 'react'
 import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import { Platform } from 'react-native'
+import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@hooks/useLanguage'
 import z from 'zod'
-
-const itemSchema = z.object({
-  itemId: z.number(),
-  unitPrice: zFormattedNumber({ message: 'Informe o valor unitário' }),
-  name: z.string(),
-})
-
-const closeListFormSchema = z.object({
-  items: z.array(itemSchema),
-})
-
-type FormData = z.infer<typeof closeListFormSchema>
-
-type Field = {
-  id: number
-  itemId: number
-  unitPrice: number | string | unknown
-  name: string
-}
 
 export function CloseShoppingList() {
   const { colors } = useTheme()
+  const { t } = useTranslation()
+  const { getCurrencyConfig } = useLanguage()
+
+  const { locale, currency } = getCurrencyConfig()
+
+  const itemSchema = z.object({
+    itemId: z.number(),
+    unitPrice: zFormattedNumber({
+      message: t('closeShoppingList.unitPriceRequired'),
+    }),
+    name: z.string(),
+  })
+
+  const closeListFormSchema = z.object({
+    items: z.array(itemSchema),
+  })
+
+  type FormData = z.infer<typeof closeListFormSchema>
+
+  type Field = {
+    id: number
+    itemId: number
+    unitPrice: number | string | unknown
+    name: string
+  }
 
   const navigation = useNavigation<ShoppingListNavigationRoutesProps>()
   const route = useRoute()
@@ -103,7 +111,7 @@ export function CloseShoppingList() {
             id={id}
             onClose={() => toast.close(id)}
             action="success"
-            title="Lista de compras finalizada com sucesso!"
+            title={t('closeShoppingList.closeSuccess')}
           />
         ),
       })
@@ -117,7 +125,7 @@ export function CloseShoppingList() {
             id={id}
             onClose={() => toast.close(id)}
             action="error"
-            title="Erro ao fechar a lista"
+            title={t('closeShoppingList.closeError')}
           />
         ),
       })
@@ -145,7 +153,7 @@ export function CloseShoppingList() {
 
   return (
     <VStack flex={1}>
-      <ScreenHeader title="Fechar Lista de Compras" hasGoBackButton />
+      <ScreenHeader title={t('closeShoppingList.title')} hasGoBackButton />
 
       {isLoading ? (
         <Loading />
@@ -187,13 +195,19 @@ export function CloseShoppingList() {
                           isInvalid={!!errors.items?.[index]?.unitPrice}
                         >
                           <InputField
-                            placeholder="R$ 0,00"
+                            placeholder={t(
+                              'closeShoppingList.unitPricePlaceholder',
+                            )}
                             color={colors.text}
                             placeholderTextColor={colors.textInactive}
                             selectionColor={colors.primary500}
                             keyboardType="numeric"
                             onChangeText={(text) => {
-                              const numericValue = formatCurrencyMask(text)
+                              const numericValue = formatCurrencyMask(
+                                text,
+                                locale,
+                                currency,
+                              )
                               onChange(
                                 numericValue === '' ? null : numericValue,
                               )
@@ -214,16 +228,16 @@ export function CloseShoppingList() {
               ListHeaderComponent={
                 <HStack px="$2" pb="$2">
                   <Text flex={1} color={colors.textInactive} fontSize="$sm">
-                    Item
+                    {t('closeShoppingList.itemHeader')}
                   </Text>
                   <Text color={colors.textInactive} fontSize="$sm">
-                    Valor Unitário
+                    {t('closeShoppingList.unitPriceHeader')}
                   </Text>
                 </HStack>
               }
               ListEmptyComponent={() => (
                 <Text color={colors.textInactive} textAlign="center" mt="$8">
-                  Nenhum item na lista ainda.
+                  {t('closeShoppingList.emptyList')}
                 </Text>
               )}
               showsVerticalScrollIndicator={false}
@@ -243,7 +257,7 @@ export function CloseShoppingList() {
               )}
 
             <Button
-              title="Fechar Lista"
+              title={t('closeShoppingList.closeButton')}
               mt="$5"
               onPress={handleSubmit(handleCloseShoppingList)}
             />

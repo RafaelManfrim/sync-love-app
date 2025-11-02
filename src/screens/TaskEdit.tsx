@@ -35,31 +35,33 @@ import { TaskDetailsRouteParams } from '@routes/tasks.routes'
 import { Loading } from '@components/Loading'
 import {
   RecurrenceType,
-  recurrenceOptions,
+  getRecurrenceOptions,
   getRecurrenceRule,
   getRecurrenceTypeFromRule,
   getWeekDaysFromRule,
 } from '@utils/recurrenceTypes'
-
-// Esquema de validação Zod
-const editTaskFormSchema = z.object({
-  title: z
-    .string({ required_error: 'O título é obrigatório.' })
-    .min(1, 'O título é obrigatório.'),
-  description: z.string().nullable().optional(),
-  start_date: z.date({ required_error: 'A data de início é obrigatória.' }),
-  recurrence_rule: z.string().nullable().optional(),
-})
-
-type FormData = z.infer<typeof editTaskFormSchema>
+import { useTranslation } from 'react-i18next'
 
 export function TaskEdit() {
   const { colors } = useTheme()
+  const { t } = useTranslation()
   const navigation = useNavigation()
   const route = useRoute()
   const toast = useToast()
 
   const { taskId } = route.params as TaskDetailsRouteParams
+
+  // Esquema de validação Zod
+  const editTaskFormSchema = z.object({
+    title: z
+      .string({ required_error: t('taskEdit.titleRequired') })
+      .min(1, t('taskEdit.titleRequired')),
+    description: z.string().nullable().optional(),
+    start_date: z.date({ required_error: t('taskEdit.startDateRequired') }),
+    recurrence_rule: z.string().nullable().optional(),
+  })
+
+  type FormData = z.infer<typeof editTaskFormSchema>
 
   const { useFetchTaskDetails, useUpdateTask } = useHouseholdTaskQueries()
   const { data: task, isLoading: isLoadingTask } = useFetchTaskDetails(taskId)
@@ -152,7 +154,7 @@ export function TaskEdit() {
             render: ({ id }) => (
               <ToastMessage
                 id={id}
-                title="Tarefa atualizada com sucesso!"
+                title={t('taskEdit.updateSuccess')}
                 action="success"
                 onClose={() => toast.close(id)}
               />
@@ -166,7 +168,7 @@ export function TaskEdit() {
             render: ({ id }) => (
               <ToastMessage
                 id={id}
-                title="Erro ao atualizar tarefa"
+                title={t('taskEdit.updateError')}
                 description={error.message}
                 action="error"
                 onClose={() => toast.close(id)}
@@ -181,7 +183,7 @@ export function TaskEdit() {
   if (isLoadingTask) {
     return (
       <VStack flex={1} bg={colors.background}>
-        <ScreenHeader title="Editar Tarefa" hasGoBackButton />
+        <ScreenHeader title={t('taskEdit.title')} hasGoBackButton />
         <Loading />
       </VStack>
     )
@@ -189,7 +191,7 @@ export function TaskEdit() {
 
   return (
     <VStack flex={1} bg={colors.background}>
-      <ScreenHeader title="Editar Tarefa" hasGoBackButton />
+      <ScreenHeader title={t('taskEdit.title')} hasGoBackButton />
 
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 32 }}
@@ -200,7 +202,7 @@ export function TaskEdit() {
           <FormControl>
             <FormControlLabel>
               <FormControlLabelText color={colors.text}>
-                Título da Tarefa
+                {t('taskEdit.titleLabel')}
               </FormControlLabelText>
             </FormControlLabel>
             <Controller
@@ -208,7 +210,7 @@ export function TaskEdit() {
               name="title"
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
-                  placeholder="Ex: Lavar a louça"
+                  placeholder={t('taskEdit.titlePlaceholder')}
                   onChangeText={onChange}
                   onBlur={onBlur}
                   value={value}
@@ -226,7 +228,7 @@ export function TaskEdit() {
               <FormControl isInvalid={!!errors.description} mt="$4">
                 <FormControlLabel>
                   <FormControlLabelText color={colors.text}>
-                    Descrição (Opcional)
+                    {t('taskEdit.descriptionLabel')}
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Textarea
@@ -239,7 +241,7 @@ export function TaskEdit() {
                   isInvalid={!!errors.description}
                 >
                   <TextareaInput
-                    placeholder="Ex: Tirar o lixo também"
+                    placeholder={t('taskEdit.descriptionPlaceholder')}
                     value={value || ''}
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -258,7 +260,7 @@ export function TaskEdit() {
               <FormControl isInvalid={!!errors.start_date} mt="$4">
                 <FormControlLabel>
                   <FormControlLabelText color={colors.text}>
-                    Data de Início (ou Vencimento)
+                    {t('taskEdit.startDateLabel')}
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Pressable
@@ -304,13 +306,13 @@ export function TaskEdit() {
 
           {/* Recorrência */}
           <Select
-            label="Repetir"
-            items={recurrenceOptions}
-            placeholder="Escolha a repetição"
+            label={t('taskEdit.recurrenceLabel')}
+            items={getRecurrenceOptions()}
+            placeholder={t('taskEdit.recurrencePlaceholder')}
             selectedValue={recurrenceType}
             value={
-              recurrenceOptions.find((opt) => opt.value === recurrenceType)
-                ?.label || 'Não se repete'
+              getRecurrenceOptions().find((opt) => opt.value === recurrenceType)
+                ?.label || t('utils.recurrenceTypes.none')
             }
             onValueChange={handleRecurrenceChange}
             mt="$4"
@@ -321,7 +323,7 @@ export function TaskEdit() {
             <FormControl mt="$4">
               <FormControlLabel>
                 <FormControlLabelText color={colors.text}>
-                  Dias da Semana
+                  {t('taskEdit.weekDaysLabel')}
                 </FormControlLabelText>
               </FormControlLabel>
               <WeekDaySelector
@@ -334,7 +336,7 @@ export function TaskEdit() {
           {/* Botão Salvar */}
           <Box mt="$8">
             <Button
-              title="Salvar Alterações"
+              title={t('taskEdit.saveButton')}
               onPress={handleSubmit(handleUpdateTask)}
               isLoading={isPending}
             />

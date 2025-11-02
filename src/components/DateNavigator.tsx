@@ -1,6 +1,8 @@
 import { HStack, Pressable, Text } from '@gluestack-ui/themed'
 import { useTheme } from '@hooks/useTheme'
 import { Feather } from '@expo/vector-icons'
+import { useTranslation } from 'react-i18next'
+import { useLanguage } from '@hooks/useLanguage'
 
 type Props = {
   selectedDate: Date
@@ -9,6 +11,8 @@ type Props = {
 
 export function DateNavigator({ selectedDate, onChangeDate }: Props) {
   const { colors } = useTheme()
+  const { t } = useTranslation()
+  const { currentLanguage } = useLanguage()
 
   const handleDateChange = (daysToAdd: number) => {
     const newDate = new Date(selectedDate)
@@ -26,8 +30,8 @@ export function DateNavigator({ selectedDate, onChangeDate }: Props) {
   }
 
   const formattedDate = isToday()
-    ? 'Hoje'
-    : selectedDate.toLocaleDateString('pt-BR', {
+    ? t('components.dateNavigator.today')
+    : selectedDate.toLocaleDateString(currentLanguage, {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',

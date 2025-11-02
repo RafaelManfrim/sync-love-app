@@ -30,22 +30,7 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker'
 import { Loading } from '@components/Loading'
-
-// Esquema de validação Zod
-const editEventFormSchema = z
-  .object({
-    title: z.string().min(1, 'O título é obrigatório.'),
-    description: z.string().nullable().optional(),
-    start_time: z.date(),
-    end_time: z.date(),
-    is_all_day: z.boolean().default(false),
-    recurrence_rule: z.string().nullable().optional(),
-    category_id: z.number().nullable().optional(),
-  })
-  .refine((data) => data.end_time >= data.start_time, {
-    message: 'A data final deve ser após a data inicial.',
-    path: ['end_time'],
-  })
+import { useTranslation } from 'react-i18next'
 
 type FormData = {
   title: string
@@ -57,17 +42,6 @@ type FormData = {
   category_id?: number | null
 }
 
-// Opções de Recorrência
-const recurrenceOptions = [
-  { label: 'Não se repete', value: null },
-  { label: 'Diariamente', value: 'FREQ=DAILY' },
-  { label: 'Semanalmente', value: 'FREQ=WEEKLY' },
-  { label: 'A cada duas semanas', value: 'FREQ=WEEKLY;INTERVAL=2' },
-  { label: 'Mensalmente', value: 'FREQ=MONTHLY' },
-  { label: 'A cada dois meses', value: 'FREQ=MONTHLY;INTERVAL=2' },
-  { label: 'Anualmente', value: 'FREQ=YEARLY' },
-]
-
 // Modo do seletor de data/hora
 type DateTimePickerMode = 'date' | 'time'
 
@@ -78,11 +52,47 @@ type EventEditRouteParams = {
 
 export function EventEdit() {
   const { colors } = useTheme()
+  const { t } = useTranslation()
   const navigation = useNavigation()
   const route = useRoute()
   const toast = useToast()
 
   const { eventId } = route.params as EventEditRouteParams
+
+  // Esquema de validação Zod
+  const editEventFormSchema = z
+    .object({
+      title: z
+        .string({ required_error: t('eventEdit.titleRequired') })
+        .min(1, t('eventEdit.titleRequired')),
+      description: z.string().nullable().optional(),
+      start_time: z.date(),
+      end_time: z.date(),
+      is_all_day: z.boolean().default(false),
+      recurrence_rule: z.string().nullable().optional(),
+      category_id: z.number().nullable().optional(),
+    })
+    .refine((data) => data.end_time >= data.start_time, {
+      message: t('eventEdit.endDateError'),
+      path: ['end_time'],
+    })
+
+  // Opções de Recorrência
+  const recurrenceOptions = [
+    { label: t('eventEdit.recurrenceNone'), value: null },
+    { label: t('eventEdit.recurrenceDaily'), value: 'FREQ=DAILY' },
+    { label: t('eventEdit.recurrenceWeekly'), value: 'FREQ=WEEKLY' },
+    {
+      label: t('eventEdit.recurrenceBiweekly'),
+      value: 'FREQ=WEEKLY;INTERVAL=2',
+    },
+    { label: t('eventEdit.recurrenceMonthly'), value: 'FREQ=MONTHLY' },
+    {
+      label: t('eventEdit.recurrenceBimonthly'),
+      value: 'FREQ=MONTHLY;INTERVAL=2',
+    },
+    { label: t('eventEdit.recurrenceYearly'), value: 'FREQ=YEARLY' },
+  ]
 
   const {
     useFetchCalendarEvents,
@@ -208,7 +218,7 @@ export function EventEdit() {
             render: ({ id }) => (
               <ToastMessage
                 id={id}
-                title="Evento atualizado com sucesso!"
+                title={t('eventEdit.updateSuccess')}
                 action="success"
                 onClose={() => toast.close(id)}
               />
@@ -222,7 +232,7 @@ export function EventEdit() {
             render: ({ id }) => (
               <ToastMessage
                 id={id}
-                title="Erro ao atualizar evento"
+                title={t('eventEdit.updateError')}
                 description={error.message}
                 action="error"
                 onClose={() => toast.close(id)}
@@ -256,7 +266,7 @@ export function EventEdit() {
 
   return (
     <VStack flex={1} bg={colors.background}>
-      <ScreenHeader title="Editar Evento" hasGoBackButton />
+      <ScreenHeader title={t('eventEdit.title')} hasGoBackButton />
 
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 32 }}
@@ -267,7 +277,7 @@ export function EventEdit() {
           <FormControl isInvalid={!!errors.title}>
             <FormControlLabel>
               <FormControlLabelText color={colors.text}>
-                Título do Evento
+                {t('eventEdit.titleLabel')}
               </FormControlLabelText>
             </FormControlLabel>
             <Controller
@@ -275,7 +285,7 @@ export function EventEdit() {
               name="title"
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
-                  placeholder="Ex: Aniversário da Maria"
+                  placeholder={t('eventEdit.titlePlaceholder')}
                   onChangeText={onChange}
                   onBlur={onBlur}
                   value={value}
@@ -291,21 +301,21 @@ export function EventEdit() {
             name="category_id"
             render={({ field: { onChange, value } }) => (
               <Select
-                label="Categoria"
+                label={t('eventEdit.categoryLabel')}
                 items={categoryOptions}
                 selectedValue={
                   value === null ? 'null' : value ? String(value) : 'null'
                 }
                 value={
                   categoryOptions.find((opt) => opt.value === value)?.label ||
-                  'Nenhuma categoria'
+                  t('eventEdit.categoryNone')
                 }
                 onValueChange={(val) =>
                   onChange(val === 'null' ? null : Number(val))
                 }
                 errorMessage={errors.category_id?.message}
                 mt="$4"
-                placeholder="Nenhuma categoria"
+                placeholder={t('eventEdit.categoryNone')}
                 isLoading={isLoadingCategories}
               />
             )}
@@ -319,7 +329,7 @@ export function EventEdit() {
               <FormControl mt="$5">
                 <HStack justifyContent="space-between" alignItems="center">
                   <FormControlLabelText color={colors.text}>
-                    Dia Inteiro
+                    {t('eventEdit.allDayLabel')}
                   </FormControlLabelText>
                   <Switch
                     value={value}
@@ -338,7 +348,7 @@ export function EventEdit() {
           <FormControl isInvalid={!!errors.start_time} mt="$4">
             <FormControlLabel>
               <FormControlLabelText color={colors.text}>
-                Início
+                {t('eventEdit.startLabel')}
               </FormControlLabelText>
             </FormControlLabel>
             <HStack space="md">
@@ -383,7 +393,7 @@ export function EventEdit() {
           <FormControl isInvalid={!!errors.end_time} mt="$4">
             <FormControlLabel>
               <FormControlLabelText color={colors.text}>
-                Fim
+                {t('eventEdit.endLabel')}
               </FormControlLabelText>
             </FormControlLabel>
             <HStack space="md">
@@ -436,12 +446,12 @@ export function EventEdit() {
             name="recurrence_rule"
             render={({ field: { onChange, value } }) => (
               <Select
-                label="Repetir"
+                label={t('eventEdit.recurrenceLabel')}
                 items={recurrenceOptions}
                 selectedValue={value === null ? 'null' : value || 'null'}
                 value={
                   recurrenceOptions.find((opt) => opt.value === value)?.label ||
-                  'Não se repete'
+                  t('eventEdit.recurrenceNone')
                 }
                 onValueChange={(val) => onChange(val === 'null' ? null : val)}
                 errorMessage={errors.recurrence_rule?.message}
@@ -458,7 +468,7 @@ export function EventEdit() {
               <FormControl mt="$4">
                 <FormControlLabel>
                   <FormControlLabelText color={colors.text}>
-                    Descrição (Opcional)
+                    {t('eventEdit.descriptionLabel')}
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Textarea
@@ -470,7 +480,7 @@ export function EventEdit() {
                   $focus-borderColor={colors.primary500}
                 >
                   <TextareaInput
-                    placeholder="Ex: Levar presente..."
+                    placeholder={t('eventEdit.descriptionPlaceholder')}
                     value={value || ''}
                     onChangeText={onChange}
                     onBlur={onBlur}
@@ -486,7 +496,7 @@ export function EventEdit() {
           {/* Botão Salvar */}
           <Box mt="$8">
             <Button
-              title="Atualizar Evento"
+              title={t('eventEdit.saveButton')}
               onPress={handleSubmit(handleUpdateEvent as never)}
               isLoading={isPending}
             />

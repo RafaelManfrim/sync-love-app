@@ -23,17 +23,24 @@ import { ToastMessage } from '@components/ToastMessage'
 import { Platform, TouchableOpacity } from 'react-native'
 import { useTheme } from '@hooks/useTheme'
 import { ChevronLeft } from 'lucide-react-native'
+import { useTranslation } from 'react-i18next'
 
-const invitePartnerSchema = z.object({
-  email: z.string().email('E-mail inválido').nonempty('Informe o e-mail'),
-})
-
-type FormDataProps = z.infer<typeof invitePartnerSchema>
+type FormDataProps = {
+  email: string
+}
 
 export function InvitePartner() {
   const { colors } = useTheme()
+  const { t } = useTranslation()
 
   const [isLoading, setIsLoading] = useState(false)
+
+  const invitePartnerSchema = z.object({
+    email: z
+      .string()
+      .email(t('invitePartner.emailInvalid'))
+      .nonempty(t('invitePartner.emailRequired')),
+  })
 
   const { control, handleSubmit, formState } = useForm<FormDataProps>({
     resolver: zodResolver(invitePartnerSchema),
@@ -54,7 +61,7 @@ export function InvitePartner() {
           <ToastMessage
             id={id}
             action="success"
-            title="Convite enviado com sucesso!"
+            title={t('invitePartner.inviteSuccess')}
             onClose={() => toast.close(id)}
           />
         ),
@@ -86,22 +93,26 @@ export function InvitePartner() {
               <Icon as={ChevronLeft} color={colors.textInactive} size="xl" />
             </TouchableOpacity>
 
-            <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
+            <Image
+              source={Logo}
+              defaultSource={Logo}
+              alt={t('invitePartner.logoAlt')}
+            />
 
             <Text color={colors.text} fontSize="$sm" textAlign="center">
-              Tenha um relacionamento melhor com seu parceiro
+              {t('invitePartner.subtitle')}
             </Text>
           </Center>
 
           <Center gap="$2">
-            <Heading color={colors.title}>Convide seu parceiro</Heading>
+            <Heading color={colors.title}>{t('invitePartner.title')}</Heading>
 
             <Controller
               name="email"
               control={control}
               render={({ field: { onChange, value } }) => (
                 <Input
-                  placeholder="E-mail"
+                  placeholder={t('invitePartner.emailPlaceholder')}
                   keyboardType="email-address"
                   autoCapitalize="none"
                   onChangeText={onChange}
@@ -115,12 +126,12 @@ export function InvitePartner() {
           </Center>
           <Center flex={1} justifyContent="flex-end" mt="$4" gap="$3">
             <Button
-              title="Enviar Convite"
+              title={t('invitePartner.sendButton')}
               onPress={handleSubmit(handleInvite)}
               isLoading={isLoading}
             />
             <Button
-              title="Voltar"
+              title={t('invitePartner.backButton')}
               variant="outline"
               onPress={() => navigation.goBack()}
             />

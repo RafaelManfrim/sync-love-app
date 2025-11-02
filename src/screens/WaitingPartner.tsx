@@ -26,9 +26,11 @@ import { useAuth } from '@hooks/useAuth'
 import { useTheme } from '@hooks/useTheme'
 import { RecievedInviteCard } from '@components/RecievedInviteCard'
 import { SentInviteCard } from '@components/SentInviteCard'
+import { useTranslation } from 'react-i18next'
 
 export function WaitingPartner() {
   const { colors } = useTheme()
+  const { t } = useTranslation()
 
   const { data: invitations, isLoading } = useInvitations()
   const { mutate: acceptInvite, isPending: isAccepting } = useAcceptInvite()
@@ -56,15 +58,19 @@ export function WaitingPartner() {
   return (
     <VStack flex={1} px="$8" pb="$16">
       <Center my="$16">
-        <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
+        <Image
+          source={Logo}
+          defaultSource={Logo}
+          alt={t('waitingPartner.logoAlt')}
+        />
 
         <Text color={colors.text} fontSize="$sm" textAlign="center">
-          Tenha um relacionamento melhor com seu parceiro
+          {t('waitingPartner.subtitle')}
         </Text>
       </Center>
 
       <Center mb="$2">
-        <Heading color={colors.title}>Encontre seu parceiro</Heading>
+        <Heading color={colors.title}>{t('waitingPartner.title')}</Heading>
       </Center>
 
       <ScrollView
@@ -76,7 +82,7 @@ export function WaitingPartner() {
           <HStack alignItems="center" gap="$2" mb="$2">
             <Icon as={MailIcon} size="lg" color={colors.primary500} />
             <Text color={colors.title} fontSize="$lg" fontFamily="$heading">
-              Convites Recebidos
+              {t('waitingPartner.receivedInvites')}
             </Text>
           </HStack>
 
@@ -91,7 +97,7 @@ export function WaitingPartner() {
               <Center gap="$2">
                 <Icon as={MailIcon} size="xl" color={colors.textInactive} />
                 <Text color={colors.textInactive} textAlign="center">
-                  Nenhum convite recebido
+                  {t('waitingPartner.noReceivedInvites')}
                 </Text>
                 <Text
                   color={colors.textInactive}
@@ -99,7 +105,7 @@ export function WaitingPartner() {
                   textAlign="center"
                   opacity={0.7}
                 >
-                  Quando alguém te convidar, aparecerá aqui
+                  {t('waitingPartner.noReceivedInvitesDescription')}
                 </Text>
               </Center>
             </Box>
@@ -126,7 +132,7 @@ export function WaitingPartner() {
           <HStack alignItems="center" gap="$2" mb="$2">
             <Icon as={MailIcon} size="lg" color={colors.primary500} />
             <Text color={colors.title} fontSize="$lg" fontFamily="$heading">
-              Convites Enviados
+              {t('waitingPartner.sentInvites')}
             </Text>
           </HStack>
 
@@ -141,7 +147,7 @@ export function WaitingPartner() {
               <Center gap="$2">
                 <Icon as={MailIcon} size="xl" color={colors.textInactive} />
                 <Text color={colors.textInactive} textAlign="center">
-                  Nenhum convite enviado
+                  {t('waitingPartner.noSentInvites')}
                 </Text>
                 <Text
                   color={colors.textInactive}
@@ -149,7 +155,7 @@ export function WaitingPartner() {
                   textAlign="center"
                   opacity={0.7}
                 >
-                  Convide seu parceiro para começar
+                  {t('waitingPartner.noSentInvitesDescription')}
                 </Text>
               </Center>
             </Box>
@@ -166,7 +172,10 @@ export function WaitingPartner() {
       </ScrollView>
 
       <Center mt="$8">
-        <Button title="Convidar Parceiro" onPress={handleInvite} />
+        <Button
+          title={t('waitingPartner.inviteButton')}
+          onPress={handleInvite}
+        />
       </Center>
     </VStack>
   )

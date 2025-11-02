@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState, useEffect } from 'react'
+import { createContext, ReactNode, useState, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { LANGUAGE_STORAGE } from '@storage/config'
@@ -9,6 +9,8 @@ export type LanguageContextData = {
   currentLanguage: LanguageCode
   changeLanguage: (language: LanguageCode) => Promise<void>
   isLoading: boolean
+  localeKey: string
+  getCurrencyConfig: () => { locale: string; currency: string }
 }
 
 export const LanguageContext = createContext<LanguageContextData>(
@@ -19,6 +21,27 @@ export function LanguageContextProvider({ children }: { children: ReactNode }) {
   const { i18n } = useTranslation()
   const [currentLanguage, setCurrentLanguage] = useState<LanguageCode>('pt-BR')
   const [isLoading, setIsLoading] = useState(true)
+
+  const localeKey = useMemo(() => {
+    return currentLanguage === 'pt-BR'
+      ? 'pt-br'
+      : currentLanguage === 'en-US'
+        ? 'en'
+        : 'es'
+  }, [currentLanguage])
+
+  const getCurrencyConfig = () => {
+    switch (currentLanguage) {
+      case 'pt-BR':
+        return { locale: 'pt-BR', currency: 'BRL' }
+      case 'en-US':
+        return { locale: 'en-US', currency: 'USD' }
+      case 'es-ES':
+        return { locale: 'es-ES', currency: 'EUR' }
+      default:
+        return { locale: 'pt-BR', currency: 'BRL' }
+    }
+  }
 
   useEffect(() => {
     async function loadLanguageFromStorage() {
@@ -57,7 +80,13 @@ export function LanguageContextProvider({ children }: { children: ReactNode }) {
 
   return (
     <LanguageContext.Provider
-      value={{ currentLanguage, changeLanguage, isLoading }}
+      value={{
+        currentLanguage,
+        changeLanguage,
+        isLoading,
+        localeKey,
+        getCurrencyConfig,
+      }}
     >
       {children}
     </LanguageContext.Provider>

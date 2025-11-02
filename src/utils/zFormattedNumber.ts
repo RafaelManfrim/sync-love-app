@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import i18n from '../locales/i18n'
 
 type zCurrencyOptions = {
   message?: string
@@ -8,7 +9,10 @@ type zCurrencyOptions = {
 export const zFormattedNumber = (
   opts?: zCurrencyOptions,
 ): z.ZodType<number | null | string, z.ZodTypeDef, string | number | null> => {
-  const { message = 'Informe o valor', allowEmpty = false } = opts ?? {}
+  const {
+    message = i18n.t('utils.zFormattedNumber.defaultMessage'),
+    allowEmpty = false,
+  } = opts ?? {}
 
   return z.preprocess(
     (val) => {

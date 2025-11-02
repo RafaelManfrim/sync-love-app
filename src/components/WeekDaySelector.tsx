@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { HStack, Pressable, Text, VStack } from '@gluestack-ui/themed'
 import { useTheme } from '@hooks/useTheme'
+import { useTranslation } from 'react-i18next'
 
 export type WeekDay = 'SU' | 'MO' | 'TU' | 'WE' | 'TH' | 'FR' | 'SA'
 
@@ -10,23 +11,24 @@ interface WeekDaySelectorProps {
   disabled?: boolean
 }
 
-const weekDays: { label: string; value: WeekDay }[] = [
-  { label: 'D', value: 'SU' },
-  { label: 'S', value: 'MO' },
-  { label: 'T', value: 'TU' },
-  { label: 'Q', value: 'WE' },
-  { label: 'Q', value: 'TH' },
-  { label: 'S', value: 'FR' },
-  { label: 'S', value: 'SA' },
-]
-
 export function WeekDaySelector({
   selectedDays = [],
   onDaysChange,
   disabled = false,
 }: WeekDaySelectorProps) {
   const { colors } = useTheme()
+  const { t } = useTranslation()
   const [selected, setSelected] = useState<WeekDay[]>(selectedDays)
+
+  const weekDays: { label: string; value: WeekDay }[] = [
+    { label: t('components.weekDaySelector.sunday'), value: 'SU' },
+    { label: t('components.weekDaySelector.monday'), value: 'MO' },
+    { label: t('components.weekDaySelector.tuesday'), value: 'TU' },
+    { label: t('components.weekDaySelector.wednesday'), value: 'WE' },
+    { label: t('components.weekDaySelector.thursday'), value: 'TH' },
+    { label: t('components.weekDaySelector.friday'), value: 'FR' },
+    { label: t('components.weekDaySelector.saturday'), value: 'SA' },
+  ]
 
   useEffect(() => {
     setSelected(selectedDays)

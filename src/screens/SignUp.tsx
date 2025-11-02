@@ -24,31 +24,49 @@ import { Select } from '@components/Select'
 import { TextInput } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useTheme } from '@hooks/useTheme'
+import { useTranslation } from 'react-i18next'
 
-const signUpSchema = z
-  .object({
-    name: z.string().nonempty('Informe o nome'),
-    email: z.string().email('E-mail inválido').nonempty('Informe o e-mail'),
-    password: z
-      .string()
-      .min(6, 'A senha deve ter pelo menos 6 dígitos')
-      .nonempty('Informe a senha'),
-    password_confirm: z.string().nonempty('Confirme a senha'),
-    gender: z.enum(['MALE', 'FEMALE'], {
-      required_error: 'Selecione o gênero',
-    }),
-  })
-  .refine((data) => data.password === data.password_confirm, {
-    path: ['password_confirm'],
-    message: 'As senhas não conferem',
-  })
-
-type FormDataProps = z.infer<typeof signUpSchema>
+type FormDataProps = {
+  name: string
+  email: string
+  password: string
+  password_confirm: string
+  gender: 'MALE' | 'FEMALE'
+}
 
 export function SignUp() {
   const [isLoading, setIsLoading] = useState(false)
 
   const { colors } = useTheme()
+  const { t } = useTranslation()
+
+  const signUpSchema = z
+    .object({
+      name: z.string().nonempty(t('signUp.nameRequired')),
+      email: z
+        .string()
+        .email(t('signUp.emailInvalid'))
+        .nonempty(t('signUp.emailRequired')),
+      password: z
+        .string()
+        .min(6, t('signUp.passwordMin'))
+        .nonempty(t('signUp.passwordRequired')),
+      password_confirm: z
+        .string()
+        .nonempty(t('signUp.passwordConfirmRequired')),
+      gender: z.enum(['MALE', 'FEMALE'], {
+        required_error: t('signUp.genderRequired'),
+      }),
+    })
+    .refine((data) => data.password === data.password_confirm, {
+      path: ['password_confirm'],
+      message: t('signUp.passwordsMatch'),
+    })
+
+  const genderOptions = [
+    { label: t('signUp.genderMale'), value: 'MALE' },
+    { label: t('signUp.genderFemale'), value: 'FEMALE' },
+  ]
 
   const { control, handleSubmit, formState } = useForm<FormDataProps>({
     resolver: zodResolver(signUpSchema),
@@ -79,9 +97,7 @@ export function SignUp() {
       await signIn(email, password)
     } catch (error) {
       const isAppError = error instanceof AppError
-      const title = isAppError
-        ? error.message
-        : 'Não foi possível criar a conta. Tente novamente mais tarde.'
+      const title = isAppError ? error.message : t('signUp.signUpError')
 
       toast.show({
         placement: 'top',
@@ -116,22 +132,22 @@ export function SignUp() {
     >
       <VStack flex={1} px="$8" pb="$16">
         <Center my="$16">
-          <Image source={Logo} defaultSource={Logo} alt="Logo Sync Love" />
+          <Image source={Logo} defaultSource={Logo} alt={t('signUp.logoAlt')} />
 
           <Text color={colors.text} fontSize="$sm" textAlign="center">
-            Tenha um relacionamento melhor com seu parceiro
+            {t('signUp.subtitle')}
           </Text>
         </Center>
 
         <Center gap="$2">
-          <Heading color={colors.title}>Crie sua conta</Heading>
+          <Heading color={colors.title}>{t('signUp.title')}</Heading>
 
           <Controller
             name="name"
             control={control}
             render={({ field: { onChange, value } }) => (
               <Input
-                placeholder="Nome"
+                placeholder={t('signUp.namePlaceholder')}
                 onChangeText={onChange}
                 value={value}
                 errorMessage={formState.errors?.name?.message}
@@ -147,7 +163,7 @@ export function SignUp() {
             render={({ field: { onChange, value } }) => (
               <Input
                 ref={emailInputRef}
-                placeholder="E-mail"
+                placeholder={t('signUp.emailPlaceholder')}
                 keyboardType="email-address"
                 autoCapitalize="none"
                 onChangeText={onChange}
@@ -162,12 +178,9 @@ export function SignUp() {
             control={control}
             render={({ field: { onChange, value } }) => (
               <Select
-                label="Gênero"
-                items={[
-                  { label: 'Masculino', value: 'MALE' },
-                  { label: 'Feminino', value: 'FEMALE' },
-                ]}
-                placeholder="Selecione seu gênero"
+                label={t('signUp.genderLabel')}
+                items={genderOptions}
+                placeholder={t('signUp.genderPlaceholder')}
                 onValueChange={onChange}
                 selectedValue={value}
                 errorMessage={formState.errors?.gender?.message}
@@ -180,7 +193,7 @@ export function SignUp() {
             control={control}
             render={({ field: { onChange, value } }) => (
               <PasswordInput
-                placeholder="Senha"
+                placeholder={t('signUp.passwordPlaceholder')}
                 onChangeText={onChange}
                 value={value}
                 errorMessage={formState.errors?.password?.message}
@@ -196,7 +209,7 @@ export function SignUp() {
             render={({ field: { onChange, value } }) => (
               <PasswordInput
                 ref={passwordConfirmInputRef}
-                placeholder="Confirme a Senha"
+                placeholder={t('signUp.passwordConfirmPlaceholder')}
                 errorMessage={
                   formState.errors?.password_confirm?.message as string
                 }
@@ -209,7 +222,7 @@ export function SignUp() {
           />
 
           <Button
-            title="Criar e acessar"
+            title={t('signUp.signUpButton')}
             onPress={handleSubmit(handleSignUp)}
             isLoading={isLoading}
           />
@@ -217,7 +230,7 @@ export function SignUp() {
 
         <Center flex={1} justifyContent="flex-end" mt="$4">
           <Button
-            title="Voltar para o login"
+            title={t('signUp.backToLoginButton')}
             variant="outline"
             onPress={handleNavigateToSignIn}
           />

@@ -5,6 +5,7 @@ import {
 } from '@gluestack-ui/themed'
 import { useTheme } from '@hooks/useTheme'
 import { ComponentProps } from 'react'
+import { useTranslation } from 'react-i18next'
 
 type ButtonProps = ComponentProps<typeof GluestackButton> & {
   title: string
@@ -19,6 +20,7 @@ export function Button({
   ...rest
 }: ButtonProps) {
   const { colors } = useTheme()
+  const { t } = useTranslation()
 
   return (
     <GluestackButton
@@ -35,7 +37,7 @@ export function Button({
       {isLoading ? (
         <ButtonSpinner
           color={colors.textContrast}
-          accessibilityLabel="Carregando"
+          accessibilityLabel={t('components.button.loading')}
         />
       ) : (
         <Text

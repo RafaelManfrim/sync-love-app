@@ -5,6 +5,7 @@ import { ClockIcon, UserPlusIcon } from 'lucide-react-native'
 import { Button } from './Button'
 import { UserPhoto } from './UserPhoto'
 import { api } from '@services/api'
+import { useTranslation } from 'react-i18next'
 
 interface RecievedInviteCardProps {
   invite: InviteDTO
@@ -18,6 +19,7 @@ export function RecievedInviteCard({
   onReject,
 }: RecievedInviteCardProps) {
   const { colors } = useTheme()
+  const { t } = useTranslation()
 
   return (
     <Box
@@ -48,7 +50,9 @@ export function RecievedInviteCard({
                 }}
                 w="$6"
                 h="$6"
-                alt={`Foto de perfil do autor da lista: ${invite.inviter.name}`}
+                alt={t('components.receivedInviteCard.profilePhotoAlt', {
+                  name: invite.inviter.name,
+                })}
                 size="xl"
               />
             )}
@@ -63,7 +67,9 @@ export function RecievedInviteCard({
       <HStack alignItems="center" gap="$2" mb="$3">
         <Icon as={ClockIcon} size="xs" color={colors.textInactive} />
         <Text color={colors.textInactive} fontSize="$xs">
-          Recebido em {new Date(invite.invited_at).toLocaleDateString()} às{' '}
+          {t('components.receivedInviteCard.receivedAt')}{' '}
+          {new Date(invite.invited_at).toLocaleDateString()}{' '}
+          {t('components.receivedInviteCard.at')}{' '}
           {new Date(invite.invited_at).toLocaleTimeString()}
         </Text>
       </HStack>
@@ -72,14 +78,14 @@ export function RecievedInviteCard({
       <HStack gap="$3">
         <Button
           flex={1}
-          title="Recusar"
+          title={t('components.receivedInviteCard.rejectButton')}
           variant="outline"
           onPress={() => onReject(invite.id)}
           h="$12"
         />
         <Button
           flex={1}
-          title="Aceitar"
+          title={t('components.receivedInviteCard.acceptButton')}
           onPress={() => onAccept(invite.id)}
           h="$12"
         />

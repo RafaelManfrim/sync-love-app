@@ -17,9 +17,11 @@ import { format, startOfMonth, endOfMonth, parseISO } from 'date-fns'
 import { DatesNavigationRoutesProps } from '@routes/dates.routes'
 import { CalendarEventOccurrenceDTO } from '@dtos/CalendarEventDTO'
 import { AddRoundedButton } from '@components/AddRoundedButton'
+import { useTranslation } from 'react-i18next'
 
 export function ImportantDates() {
   const { colors } = useTheme()
+  const { t } = useTranslation()
   const navigation = useNavigation<DatesNavigationRoutesProps>()
   const [selectedDate, setSelectedDate] = useState(new Date())
 
@@ -45,7 +47,7 @@ export function ImportantDates() {
   const renderEmptyState = () => (
     <Center flex={1} px="$6">
       <Text color={colors.text} fontSize="$md" textAlign="center">
-        Nenhum evento cadastrado neste mês.
+        {t('importantDates.emptyMonth')}
       </Text>
       <Text
         color={colors.text}
@@ -54,15 +56,14 @@ export function ImportantDates() {
         mt="$2"
         opacity={0.7}
       >
-        Adicione datas importantes como aniversários, comemorações e
-        compromissos.
+        {t('importantDates.emptyDescription')}
       </Text>
     </Center>
   )
 
   return (
     <VStack flex={1} bg={colors.background}>
-      <ScreenHeader title="Datas Importantes" />
+      <ScreenHeader title={t('importantDates.title')} />
 
       <Box w="$full" gap="$3" p="$6">
         <CalendarView
@@ -91,7 +92,7 @@ export function ImportantDates() {
       ) : isError ? (
         <Center flex={1} px="$6">
           <Text color={colors.text} fontSize="$md" textAlign="center">
-            Erro ao carregar eventos.
+            {t('importantDates.errorLoading')}
           </Text>
           <Text
             color={colors.text}
@@ -100,7 +101,7 @@ export function ImportantDates() {
             mt="$2"
             opacity={0.7}
           >
-            Tente novamente mais tarde.
+            {t('importantDates.errorRetry')}
           </Text>
         </Center>
       ) : (

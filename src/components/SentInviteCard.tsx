@@ -9,6 +9,7 @@ import {
 } from 'lucide-react-native'
 import { InviteDTO } from '@dtos/InviteDTO'
 import { TouchableOpacity } from 'react-native'
+import { useTranslation } from 'react-i18next'
 
 interface SentInviteCardProps {
   invite: InviteDTO
@@ -17,6 +18,7 @@ interface SentInviteCardProps {
 
 export function SentInviteCard({ invite, onDelete }: SentInviteCardProps) {
   const { colors } = useTheme()
+  const { t } = useTranslation()
 
   return (
     <Box
@@ -56,9 +58,11 @@ export function SentInviteCard({ invite, onDelete }: SentInviteCardProps) {
           <Icon as={XCircleIcon} size="sm" color="$error500" />
           <VStack flex={1}>
             <Text color="$error500" fontSize="$sm" fontWeight="$bold">
-              Rejeitado{' '}
+              {t('components.sentInviteCard.rejected')}{' '}
               <Text color="$error500" fontSize="$xs">
-                em {new Date(invite.rejected_at).toLocaleDateString()} às{' '}
+                {t('components.sentInviteCard.on')}{' '}
+                {new Date(invite.rejected_at).toLocaleDateString()}{' '}
+                {t('components.sentInviteCard.at')}{' '}
                 {new Date(invite.rejected_at).toLocaleTimeString()}
               </Text>
             </Text>
@@ -69,9 +73,11 @@ export function SentInviteCard({ invite, onDelete }: SentInviteCardProps) {
           <Icon as={CheckCircleIcon} size="sm" color="$success500" />
           <VStack flex={1}>
             <Text color="$success500" fontSize="$sm" fontWeight="$bold">
-              Aceito{' '}
+              {t('components.sentInviteCard.accepted')}{' '}
               <Text color="$success500" fontSize="$xs">
-                em {new Date(invite.accepted_at).toLocaleDateString()} às{' '}
+                {t('components.sentInviteCard.on')}{' '}
+                {new Date(invite.accepted_at).toLocaleDateString()}{' '}
+                {t('components.sentInviteCard.at')}{' '}
                 {new Date(invite.accepted_at).toLocaleTimeString()}
               </Text>
             </Text>
@@ -82,10 +88,12 @@ export function SentInviteCard({ invite, onDelete }: SentInviteCardProps) {
           <Icon as={ClockIcon} size="sm" color={colors.primary500} />
           <VStack flex={1}>
             <Text color={colors.text} fontSize="$sm" fontWeight="$bold">
-              Aguardando resposta
+              {t('components.sentInviteCard.waiting')}
             </Text>
             <Text color={colors.textInactive} fontSize="$xs">
-              Enviado em {new Date(invite.invited_at).toLocaleDateString()} às{' '}
+              {t('components.sentInviteCard.sentAt')}{' '}
+              {new Date(invite.invited_at).toLocaleDateString()}{' '}
+              {t('components.sentInviteCard.at')}{' '}
               {new Date(invite.invited_at).toLocaleTimeString()}
             </Text>
           </VStack>

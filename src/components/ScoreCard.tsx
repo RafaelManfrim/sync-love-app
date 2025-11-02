@@ -10,6 +10,7 @@ import { useTheme } from '@hooks/useTheme'
 import { UserPhoto } from './UserPhoto'
 import DefaultUserPhoto from '@assets/userPhotoDefault.png'
 import { api } from '@services/api'
+import { useTranslation } from 'react-i18next'
 
 type Props = {
   currentPoints: number
@@ -20,6 +21,7 @@ type Props = {
 
 export function ScoreCard({ currentPoints, goalPoints, me, partner }: Props) {
   const { colors } = useTheme()
+  const { t } = useTranslation()
 
   const progressValue = (currentPoints / goalPoints) * 100
 
@@ -28,10 +30,10 @@ export function ScoreCard({ currentPoints, goalPoints, me, partner }: Props) {
       <VStack>
         <HStack justifyContent="space-between" alignItems="center" mb="$1">
           <Heading color={colors.title} fontSize="$md">
-            Placar do Mês
+            {t('components.scoreCard.monthlyScore')}
           </Heading>
           <Text color={colors.primary500} fontSize="$sm" fontWeight="$bold">
-            {currentPoints} / {goalPoints} tarefas
+            {currentPoints} / {goalPoints} {t('components.scoreCard.tasks')}
           </Text>
         </HStack>
         <Progress value={progressValue} w="100%" h="$2">
@@ -57,7 +59,7 @@ export function ScoreCard({ currentPoints, goalPoints, me, partner }: Props) {
               {me.name}
             </Text>
             <Text color={colors.primary500} fontSize="$xs">
-              {me.score} tarefas
+              {me.score} {t('components.scoreCard.tasks')}
             </Text>
           </VStack>
         </HStack>
@@ -72,7 +74,7 @@ export function ScoreCard({ currentPoints, goalPoints, me, partner }: Props) {
               {partner.name}
             </Text>
             <Text color={colors.primary500} fontSize="$xs" textAlign="right">
-              {partner.score} tarefas
+              {partner.score} {t('components.scoreCard.tasks')}
             </Text>
           </VStack>
           <UserPhoto

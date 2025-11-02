@@ -19,9 +19,11 @@ import { TaskSummary } from '@components/TaskSummary'
 import { AddRoundedButton } from '@components/AddRoundedButton'
 import { Tags } from 'lucide-react-native'
 import { TaskForDayDTO } from '@dtos/HouseholdTaskDTO'
+import { useTranslation } from 'react-i18next'
 
 export function Tasks() {
   const { colors } = useTheme()
+  const { t } = useTranslation()
   const [selectedDate, setSelectedDate] = useState(new Date())
   const navigation = useNavigation<TasksNavigationRoutesProps>()
 
@@ -48,7 +50,7 @@ export function Tasks() {
   return (
     <VStack flex={1} bg={colors.background}>
       <ScreenHeader
-        title="Tarefas"
+        title={t('tasks.title')}
         rightComponent={
           <Pressable onPress={handleNavigateToManagement}>
             <Icon as={Tags} color={colors.primary600} size="xl" />
@@ -89,7 +91,7 @@ export function Tasks() {
           ListEmptyComponent={() => (
             <Box h="$40" justifyContent="center" alignItems="center">
               <Text color={colors.text} opacity={0.6}>
-                Nenhuma tarefa para este dia.
+                {t('tasks.emptyDay')}
               </Text>
             </Box>
           )}

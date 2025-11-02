@@ -5,6 +5,7 @@ import { AppError } from '@utils/AppError'
 import { ToastMessage } from '@components/ToastMessage'
 import { useNavigation } from '@react-navigation/native'
 import { useAuth } from '@hooks/useAuth'
+import { useTranslation } from 'react-i18next'
 
 type UpdatePasswordParams = {
   oldPassword: string
@@ -21,6 +22,7 @@ async function updatePassword({
 export function useUpdatePassword() {
   const toast = useToast()
   const navigation = useNavigation()
+  const { t } = useTranslation()
 
   return useMutation({
     mutationFn: updatePassword,
@@ -30,7 +32,7 @@ export function useUpdatePassword() {
         render: ({ id }) => (
           <ToastMessage
             id={id}
-            title="Senha atualizada com sucesso!"
+            title={t('hooks.userQueries.passwordSuccess')}
             action="success"
             onClose={() => toast.close(id)}
           />
@@ -42,7 +44,7 @@ export function useUpdatePassword() {
       const isAppError = error instanceof AppError
       const title = isAppError
         ? error.message
-        : 'Não foi possível atualizar a senha.'
+        : t('hooks.userQueries.passwordError')
       toast.show({
         placement: 'top',
         render: ({ id }) => (
@@ -67,6 +69,7 @@ export function useUpdateUserName() {
   const { user, updateUserProfile } = useAuth()
   const queryClient = useQueryClient()
   const navigation = useNavigation()
+  const { t } = useTranslation()
 
   return useMutation({
     mutationFn: updateUserName,
@@ -84,7 +87,7 @@ export function useUpdateUserName() {
         render: ({ id }) => (
           <ToastMessage
             id={id}
-            title="Nome atualizado com sucesso!"
+            title={t('hooks.userQueries.profileSuccess')}
             action="success"
             onClose={() => toast.close(id)}
           />
@@ -97,7 +100,7 @@ export function useUpdateUserName() {
       const isAppError = error instanceof AppError
       const title = isAppError
         ? error.message
-        : 'Não foi possível atualizar o nome.'
+        : t('hooks.userQueries.profileError')
       toast.show({
         placement: 'top',
         render: ({ id }) => (
@@ -121,6 +124,7 @@ export function useDeleteAccount() {
   const toast = useToast()
   const { signOut } = useAuth()
   const queryClient = useQueryClient()
+  const { t } = useTranslation()
 
   return useMutation({
     mutationFn: deleteUserAccount,
@@ -130,7 +134,7 @@ export function useDeleteAccount() {
         render: ({ id }) => (
           <ToastMessage
             id={id}
-            title="Conta excluída com sucesso."
+            title={t('hooks.userQueries.accountDeleteSuccess')}
             action="success"
             onClose={() => toast.close(id)}
           />
@@ -144,7 +148,7 @@ export function useDeleteAccount() {
       const isAppError = error instanceof AppError
       const title = isAppError
         ? error.message
-        : 'Não foi possível excluir a conta.'
+        : t('hooks.userQueries.accountDeleteError')
       toast.show({
         placement: 'top',
         render: ({ id }) => (
