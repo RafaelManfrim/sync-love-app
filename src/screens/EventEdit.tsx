@@ -32,6 +32,7 @@ import DateTimePicker, {
 import { Loading } from '@components/Loading'
 import { useTranslation } from 'react-i18next'
 import { translateApiError } from '@utils/translateApiError'
+import { useLanguage } from '@hooks/useLanguage'
 
 type FormData = {
   title: string
@@ -54,6 +55,7 @@ type EventEditRouteParams = {
 export function EventEdit() {
   const { colors } = useTheme()
   const { t } = useTranslation()
+  const { currentLanguage } = useLanguage()
   const navigation = useNavigation()
   const route = useRoute()
   const toast = useToast()
@@ -249,14 +251,14 @@ export function EventEdit() {
 
   // --- Helper de Formatação de Data/Hora ---
   const formatDisplayDate = (date: Date) => {
-    return date.toLocaleDateString('pt-BR', {
+    return date.toLocaleDateString(currentLanguage, {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
     })
   }
   const formatDisplayTime = (date: Date) => {
-    return date.toLocaleTimeString('pt-BR', {
+    return date.toLocaleTimeString(currentLanguage, {
       hour: '2-digit',
       minute: '2-digit',
     })
@@ -514,6 +516,7 @@ export function EventEdit() {
           mode={pickerMode}
           display="spinner"
           onChange={onPickerChange}
+          locale={currentLanguage}
         />
       )}
     </VStack>

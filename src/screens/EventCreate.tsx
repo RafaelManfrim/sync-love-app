@@ -31,6 +31,7 @@ import DateTimePicker, {
 } from '@react-native-community/datetimepicker'
 import { useTranslation } from 'react-i18next'
 import { translateApiError } from '@utils/translateApiError'
+import { useLanguage } from '@hooks/useLanguage'
 
 type FormData = {
   title: string
@@ -48,6 +49,7 @@ type DateTimePickerMode = 'date' | 'time'
 export function EventCreate() {
   const { colors } = useTheme()
   const { t } = useTranslation()
+  const { currentLanguage } = useLanguage()
   const navigation = useNavigation()
   const toast = useToast()
 
@@ -223,14 +225,14 @@ export function EventCreate() {
 
   // --- Helper de Formatação de Data/Hora ---
   const formatDisplayDate = (date: Date) => {
-    return date.toLocaleDateString('pt-BR', {
+    return date.toLocaleDateString(currentLanguage, {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
     })
   }
   const formatDisplayTime = (date: Date) => {
-    return date.toLocaleTimeString('pt-BR', {
+    return date.toLocaleTimeString(currentLanguage, {
       hour: '2-digit',
       minute: '2-digit',
     })
@@ -483,6 +485,7 @@ export function EventCreate() {
           mode={pickerMode}
           display="spinner" // ou "default" para nativo
           onChange={onPickerChange}
+          locale={currentLanguage}
         />
       )}
     </VStack>

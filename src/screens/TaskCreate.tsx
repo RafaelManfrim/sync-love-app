@@ -38,10 +38,12 @@ import {
 } from '@utils/recurrenceTypes'
 import { useTranslation } from 'react-i18next'
 import { translateApiError } from '@utils/translateApiError'
+import { useLanguage } from '@hooks/useLanguage'
 
 export function TaskCreate() {
   const { colors } = useTheme()
   const { t } = useTranslation()
+  const { currentLanguage } = useLanguage()
   const navigation = useNavigation()
   const toast = useToast()
 
@@ -240,7 +242,11 @@ export function TaskCreate() {
                   flexDirection="row"
                 >
                   <Text color={colors.text}>
-                    {selectedDate.toLocaleDateString('pt-BR')}
+                    {selectedDate.toLocaleDateString(currentLanguage, {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric',
+                    })}
                   </Text>
                   <CalendarDays size={20} color={colors.text} />
                 </Pressable>

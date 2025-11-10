@@ -21,6 +21,7 @@ import { useHouseholdTaskQueries } from '@hooks/api/useHouseholdTaskQueries'
 import { ToastMessage } from './ToastMessage'
 import { useTranslation } from 'react-i18next'
 import { translateApiError } from '@utils/translateApiError'
+import { useLanguage } from '@hooks/useLanguage'
 
 type Props = {
   task: HouseholdTaskDTO
@@ -33,6 +34,7 @@ export function TaskManagementCard({ task, onEdit }: Props) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const cancelRef = useRef(null)
   const { t } = useTranslation()
+  const { currentLanguage } = useLanguage()
 
   const { useDeleteTask } = useHouseholdTaskQueries()
   const { mutate: deleteTask, isPending } = useDeleteTask()
@@ -122,7 +124,11 @@ export function TaskManagementCard({ task, onEdit }: Props) {
             </Text>
             <Text color={colors.text} fontSize="$xs" opacity={0.6}>
               {t('components.taskManagementCard.startDate')}{' '}
-              {new Date(task.start_date).toLocaleDateString('pt-BR')}
+              {new Date(task.start_date).toLocaleDateString(currentLanguage, {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+              })}
             </Text>
           </VStack>
 

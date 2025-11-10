@@ -19,10 +19,10 @@ import { Pencil, Trash2, Clock, Tag } from 'lucide-react-native'
 import { useState, useRef } from 'react'
 import { useCalendarQueries } from '@hooks/api/useCalendarQueries'
 import { ToastMessage } from './ToastMessage'
-import { format, parseISO } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
+import { parseISO } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 import { translateApiError } from '@utils/translateApiError'
+import { useLanguage } from '@hooks/useLanguage'
 
 type Props = {
   event: CalendarEventOccurrenceDTO
@@ -35,6 +35,7 @@ export function EventManagementCard({ event, onEdit }: Props) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const cancelRef = useRef(null)
   const { t } = useTranslation()
+  const { currentLanguage } = useLanguage()
 
   const { useDeleteCalendarEvent } = useCalendarQueries()
   const { mutate: deleteEvent, isPending } = useDeleteCalendarEvent()
@@ -100,9 +101,19 @@ export function EventManagementCard({ event, onEdit }: Props) {
   const formatDateTime = (dateString: string, isAllDay: boolean) => {
     const date = parseISO(dateString)
     if (isAllDay) {
-      return format(date, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })
+      return date.toLocaleDateString(currentLanguage, {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+      })
     }
-    return format(date, "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })
+    return date.toLocaleString(currentLanguage, {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    })
   }
 
   return (
