@@ -23,6 +23,7 @@
       },
       "edgeToEdgeEnabled": true,
       "permissions": [
+        "android.permission.RECORD_AUDIO",
         "android.permission.RECORD_AUDIO"
       ],
       "package": "com.anonymous.syncloveapp"
@@ -37,7 +38,27 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
-      ]
-    ]
+      ],
+      "expo-localization"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "d88dd52b-0755-4015-8fd4-c897a93c539a"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/d88dd52b-0755-4015-8fd4-c897a93c539a"
+    },
+    "build": {
+      "preview": {
+        "channel": "preview"
+      },
+      "production": {
+        "channel": "production"
+      }
+    }
   }
 }
