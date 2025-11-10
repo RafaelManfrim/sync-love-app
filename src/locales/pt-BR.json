@@ -113,6 +113,16 @@
     "createSuccess": "Lista de compras criada com sucesso!",
     "createError": "Não foi possível criar a lista de compras."
   },
+  "shoppingListEdit": {
+    "title": "Editar Lista de Compras",
+    "nameLabel": "Nome",
+    "namePlaceholder": "Título da lista",
+    "titleMinLength": "O título deve ter no mínimo 3 caracteres.",
+    "titleMaxLength": "O título deve ter no máximo 30 caracteres.",
+    "updateButton": "Salvar",
+    "updateSuccess": "Lista de compras atualizada com sucesso!",
+    "updateError": "Não foi possível atualizar a lista de compras."
+  },
   "closeShoppingList": {
     "title": "Fechar Lista de Compras",
     "itemHeader": "Item",
@@ -397,7 +407,14 @@
       "items": "{{count}} itens",
       "createdBy": "Criada por:",
       "createdByPhotoAlt": "Foto de perfil do autor da lista: {{name}}",
-      "closedAt": "Concluída em:"
+      "closedAt": "Concluída em:",
+      "deleteSuccess": "Lista excluída com sucesso!",
+      "deleteError": "Erro ao excluir lista",
+      "deleteDialogTitle": "Excluir Lista",
+      "deleteDialogMessage": "Tem certeza que deseja excluir esta lista de compras?",
+      "deleteDialogCancel": "Cancelar",
+      "deleteDialogConfirm": "Sim, excluir",
+      "deleteDialogDeleting": "Excluindo..."
     },
     "scoreCard": {
       "monthlyScore": "Placar do Mês",

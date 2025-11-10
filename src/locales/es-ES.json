@@ -113,6 +113,16 @@
     "createSuccess": "¡Lista de compras creada con éxito!",
     "createError": "No se pudo crear la lista de compras."
   },
+  "shoppingListEdit": {
+    "title": "Editar Lista de Compras",
+    "nameLabel": "Nombre",
+    "namePlaceholder": "Título de la lista",
+    "titleMinLength": "El título debe tener al menos 3 caracteres.",
+    "titleMaxLength": "El título debe tener como máximo 30 caracteres.",
+    "updateButton": "Guardar",
+    "updateSuccess": "¡Lista de compras actualizada con éxito!",
+    "updateError": "No se pudo actualizar la lista de compras."
+  },
   "closeShoppingList": {
     "title": "Cerrar Lista de Compras",
     "itemHeader": "Artículo",
@@ -397,7 +407,14 @@
       "items": "{{count}} artículos",
       "createdBy": "Creada por:",
       "createdByPhotoAlt": "Foto de perfil del autor de la lista: {{name}}",
-      "closedAt": "Cerrada el:"
+      "closedAt": "Cerrada el:",
+      "deleteSuccess": "Lista eliminada con éxito!",
+      "deleteError": "Error al eliminar la lista",
+      "deleteDialogTitle": "Eliminar Lista",
+      "deleteDialogMessage": "¿Está seguro de que desea eliminar esta lista de compras?",
+      "deleteDialogCancel": "Cancelar",
+      "deleteDialogConfirm": "Sí, eliminar",
+      "deleteDialogDeleting": "Eliminando..."
     },
     "scoreCard": {
       "monthlyScore": "Marcador del Mes",

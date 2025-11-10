@@ -30,7 +30,7 @@ export function DateNavigator({ selectedDate, onChangeDate }: Props) {
   }
 
   const formattedDate = isToday()
-    ? t('components.dateNavigator.today')
+    ? t('components.calendarView.today')
     : selectedDate.toLocaleDateString(currentLanguage, {
         day: '2-digit',
         month: '2-digit',

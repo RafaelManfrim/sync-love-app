@@ -113,6 +113,16 @@
     "createSuccess": "Einkaufsliste erfolgreich erstellt!",
     "createError": "Einkaufsliste konnte nicht erstellt werden."
   },
+  "shoppingListEdit": {
+    "title": "Einkaufsliste bearbeiten",
+    "nameLabel": "Name",
+    "namePlaceholder": "Listentitel",
+    "titleMinLength": "Der Titel muss mindestens 3 Zeichen haben.",
+    "titleMaxLength": "Der Titel darf höchstens 30 Zeichen haben.",
+    "updateButton": "Speichern",
+    "updateSuccess": "Einkaufsliste erfolgreich aktualisiert!",
+    "updateError": "Einkaufsliste konnte nicht aktualisiert werden."
+  },
   "closeShoppingList": {
     "title": "Einkaufsliste schließen",
     "itemHeader": "Artikel",
@@ -397,7 +407,14 @@
       "items": "{{count}} Artikel",
       "createdBy": "Erstellt von:",
       "createdByPhotoAlt": "Profilfoto des Listenerstellers: {{name}}",
-      "closedAt": "Abgeschlossen am:"
+      "closedAt": "Abgeschlossen am:",
+      "deleteSuccess": "Liste erfolgreich gelöscht!",
+      "deleteError": "Fehler beim Löschen der Liste",
+      "deleteDialogTitle": "Liste löschen",
+      "deleteDialogMessage": "Sind Sie sicher, dass Sie diese Einkaufsliste löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+      "deleteDialogCancel": "Abbrechen",
+      "deleteDialogConfirm": "Ja, löschen",
+      "deleteDialogDeleting": "Wird gelöscht..."
     },
     "scoreCard": {
       "monthlyScore": "Punktestand des Monats",

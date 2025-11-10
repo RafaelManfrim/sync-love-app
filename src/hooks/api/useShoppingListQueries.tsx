@@ -9,6 +9,11 @@ type CreateListPayload = {
   name?: string | null
 }
 
+type UpdateListPayload = {
+  listId: number
+  name: string
+}
+
 type AddItemPayload = {
   listId: number
   itemName?: string
@@ -229,6 +234,37 @@ export function useShoppingListQueries() {
     })
   }
 
+  /**
+   * (PUT /shopping-lists/:id)
+   * Atualiza o nome de uma lista de compras.
+   */
+  const useUpdateShoppingList = () => {
+    return useMutation({
+      mutationFn: async ({ listId, name }: UpdateListPayload) => {
+        return api.put(`/shopping-lists/${listId}`, { name })
+      },
+      onSuccess: (_, variables) => {
+        invalidateListDetails(variables.listId)
+        invalidateShoppingLists()
+      },
+    })
+  }
+
+  /**
+   * (DELETE /shopping-lists/:id)
+   * Exclui uma lista de compras.
+   */
+  const useDeleteShoppingList = () => {
+    return useMutation({
+      mutationFn: async (listId: number) => {
+        return api.delete(`/shopping-lists/${listId}`)
+      },
+      onSuccess: () => {
+        invalidateShoppingLists()
+      },
+    })
+  }
+
   return {
     useFetchShoppingLists,
     useFetchShoppingListDetails,
@@ -237,6 +273,8 @@ export function useShoppingListQueries() {
     useAddItemToList,
     useToggleItemCheck,
     useCloseShoppingList,
+    useUpdateShoppingList,
+    useDeleteShoppingList,
     // Exporta invalidadores para uso customizado
     invalidateShoppingLists,
     invalidateListDetails,

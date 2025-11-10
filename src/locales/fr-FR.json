@@ -113,6 +113,16 @@
     "createSuccess": "Liste de courses créée avec succès !",
     "createError": "Impossible de créer la liste de courses."
   },
+  "shoppingListEdit": {
+    "title": "Modifier la liste de courses",
+    "nameLabel": "Nom",
+    "namePlaceholder": "Titre de la liste",
+    "titleMinLength": "Le titre doit contenir au moins 3 caractères.",
+    "titleMaxLength": "Le titre doit contenir au maximum 30 caractères.",
+    "updateButton": "Enregistrer",
+    "updateSuccess": "Liste de courses mise à jour avec succès !",
+    "updateError": "Impossible de mettre à jour la liste de courses."
+  },
   "closeShoppingList": {
     "title": "Fermer la liste de courses",
     "itemHeader": "Article",
@@ -397,7 +407,14 @@
       "items": "{{count}} articles",
       "createdBy": "Créée par :",
       "createdByPhotoAlt": "Photo de profil de l'auteur de la liste : {{name}}",
-      "closedAt": "Terminée le :"
+      "closedAt": "Terminée le :",
+      "deleteSuccess": "Liste supprimée avec succès !",
+      "deleteError": "Erreur lors de la suppression de la liste",
+      "deleteDialogTitle": "Supprimer la liste",
+      "deleteDialogMessage": "Êtes-vous sûr de vouloir supprimer cette liste de courses ? Cette action est irréversible.",
+      "deleteDialogCancel": "Annuler",
+      "deleteDialogConfirm": "Oui, supprimer",
+      "deleteDialogDeleting": "Suppression en cours..."
     },
     "scoreCard": {
       "monthlyScore": "Score du mois",

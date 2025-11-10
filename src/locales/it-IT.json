@@ -113,6 +113,16 @@
     "createSuccess": "Lista della spesa creata con successo!",
     "createError": "Impossibile creare la lista della spesa."
   },
+  "shoppingListEdit": {
+    "title": "Modifica lista della spesa",
+    "nameLabel": "Nome",
+    "namePlaceholder": "Titolo della lista",
+    "titleMinLength": "Il titolo deve avere almeno 3 caratteri.",
+    "titleMaxLength": "Il titolo deve avere al massimo 30 caratteri.",
+    "updateButton": "Salva",
+    "updateSuccess": "Lista della spesa aggiornata con successo!",
+    "updateError": "Impossibile aggiornare la lista della spesa."
+  },
   "closeShoppingList": {
     "title": "Chiudere lista della spesa",
     "itemHeader": "Articolo",
@@ -397,7 +407,14 @@
       "items": "{{count}} articoli",
       "createdBy": "Creata da:",
       "createdByPhotoAlt": "Foto profilo dell'autore della lista: {{name}}",
-      "closedAt": "Conclusa il:"
+      "closedAt": "Conclusa il:",
+      "deleteSuccess": "Lista eliminata con successo!",
+      "deleteError": "Errore durante l'eliminazione della lista",
+      "deleteDialogTitle": "Eliminare lista",
+      "deleteDialogMessage": "Sei sicuro di voler eliminare questa lista della spesa? Questa azione non può essere annullata.",
+      "deleteDialogCancel": "Annulla",
+      "deleteDialogConfirm": "Sì, elimina",
+      "deleteDialogDeleting": "Eliminazione in corso..."
     },
     "scoreCard": {
       "monthlyScore": "Punteggio del mese",

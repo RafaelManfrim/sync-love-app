@@ -6,6 +6,7 @@ import { CloseShoppingList } from '@screens/CloseShoppingList'
 
 import { NewShoppingList } from '@screens/NewShoppingList'
 import { ShoppingList } from '@screens/ShoppingList'
+import { ShoppingListEdit } from '@screens/ShoppingListEdit'
 import { ShoppingLists } from '@screens/ShoppingLists'
 
 export type ShoppingListScreenProps = {
@@ -16,10 +17,15 @@ export type CloseShoppingListScreenProps = {
   shoppingListId: number
 }
 
+export type EditShoppingListScreenProps = {
+  shoppingListId: number
+}
+
 type ShoppingListRoutesProps = {
   shoppingLists: undefined
   newShoppingList: undefined
   shoppingList: ShoppingListScreenProps
+  shoppingListEdit: EditShoppingListScreenProps
   closeShoppingList: CloseShoppingListScreenProps
 }
 
@@ -35,6 +41,7 @@ export function ListsRoutes() {
       <Screen name="shoppingLists" component={ShoppingLists} />
       <Screen name="shoppingList" component={ShoppingList} />
       <Screen name="newShoppingList" component={NewShoppingList} />
+      <Screen name="shoppingListEdit" component={ShoppingListEdit} />
       <Screen name="closeShoppingList" component={CloseShoppingList} />
     </Navigator>
   )

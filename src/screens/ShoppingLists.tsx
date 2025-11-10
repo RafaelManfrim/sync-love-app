@@ -46,6 +46,10 @@ export function ShoppingLists() {
     navigation.navigate('shoppingList', { shoppingListId })
   }
 
+  function handleEditShoppingList(shoppingListId: number) {
+    navigation.navigate('shoppingListEdit', { shoppingListId })
+  }
+
   function handleNewShoppingList() {
     navigation.navigate('newShoppingList')
   }
@@ -136,6 +140,7 @@ export function ShoppingLists() {
                   <ShoppingListCard
                     shoppingList={shoppingList}
                     handleOpenShoppingList={handleOpenShoppingList}
+                    handleEditShoppingList={handleEditShoppingList}
                   />
                 )
               }}
