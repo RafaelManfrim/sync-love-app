@@ -181,7 +181,7 @@ export function SignUp() {
             control={control}
             render={({ field: { onChange, value } }) => (
               <Select
-                label={t('signUp.genderLabel')}
+                // label={t('signUp.genderLabel')}
                 items={genderOptions}
                 placeholder={t('signUp.genderPlaceholder')}
                 onValueChange={onChange}
