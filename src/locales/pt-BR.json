@@ -488,6 +488,7 @@
     "REFRESH_TOKEN_NOT_FOUND": "O token de refresh não foi encontrado.",
     "REFRESH_TOKEN_EXPIRED": "O token de refresh expirou.",
     "INTERNAL_SERVER_ERROR": "Erro interno do servidor.",
+    "NO_FILE_UPLOADED": "Nenhum arquivo enviado.",
     "UNKNOWN_ERROR": "Ocorreu um erro inesperado."
   }
 }

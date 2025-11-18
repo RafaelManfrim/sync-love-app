@@ -488,6 +488,7 @@
     "REFRESH_TOKEN_NOT_FOUND": "Le jeton de rafraîchissement est introuvable.",
     "REFRESH_TOKEN_EXPIRED": "Le jeton de rafraîchissement a expiré.",
     "INTERNAL_SERVER_ERROR": "Erreur interne du serveur.",
+    "NO_FILE_UPLOADED": "Aucun fichier téléchargé.",
     "UNKNOWN_ERROR": "Une erreur inattendue s'est produite."
   }
 }
