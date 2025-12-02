@@ -45,7 +45,7 @@ export function useEndRelationship() {
           <ToastMessage
             id={id}
             onClose={() => toast.close(id)}
-            title={t('hooks.coupleQueries.endSuccess')}
+            title={t('hooks.coupleQueries.coupleEndSuccess')}
             action="success"
           />
         ),
@@ -56,7 +56,7 @@ export function useEndRelationship() {
       const isAppError = error instanceof AppError
       const title = isAppError
         ? translateApiError(error)
-        : t('hooks.coupleQueries.endError')
+        : t('hooks.coupleQueries.coupleEndError')
       toast.show({
         render: ({ id }) => (
           <ToastMessage
